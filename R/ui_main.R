@@ -15,6 +15,7 @@ main_ui <- {
   
   navbarPage('titulo',
              sample_plot_ui('ejemplo'),
+             tasas_sexo_ui('tasas_sexo'),
              about_ui
              )
 }
