@@ -11,12 +11,8 @@ library(shinyjs)
 
 ui <- fluidPage( 
     theme = shinytheme("journal"),
-    
-    # shinyjs::useShinyjs(),
-    # introjsUI(),
 
     uiOutput(outputId = "main_ui")
-    
 )
 
 

@@ -1,7 +1,4 @@
-library(tidyverse)
-library(plotly)
-library(ggthemes)
-library(scales)
+ 
 
 sample_plot_server <- function(id) {
   moduleServer(id, function(input, output, session) {
