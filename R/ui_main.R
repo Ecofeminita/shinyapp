@@ -15,7 +15,11 @@ main_ui <- {
   
   navbarPage('titulo',
              sample_plot_ui('ejemplo'),
-             tasas_sexo_ui('tasas_sexo'),
-             about_ui
+             about_ui,
+             
+             navbarMenu(title = 'Mercado de Trabajo',
+             tasas_sexo_ui('tasas_sexo')
+             )
+             
              )
 }

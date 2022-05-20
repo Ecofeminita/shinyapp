@@ -20,13 +20,13 @@ tasas_por_sexo <- function(base){
               Suboc_demandante  = sum(PONDERA[ESTADO == 1 & INTENSI ==1 & PP03J==1]),
               Suboc_no_demand   = sum(PONDERA[ESTADO == 1 & INTENSI ==1 & PP03J %in% c(2,9)]),
               Subocupados       = Suboc_demandante + Suboc_no_demand,
-              'Tasa Actividad'                  = round(PEA/Poblacion*100, 1),
-              'Tasa Empleo'                     = round(Ocupados/Poblacion*100, 1),
-              'Tasa Desocupación'               = round(Desocupados/PEA*100, 1),
-              'Tasa Ocupados Demandantes'       = round(Ocupados_demand/PEA*100, 1),
-              'Tasa Subocupación'               = round(Subocupados/PEA*100, 1),
-              'Tasa Subocupación demandante'    = round(Suboc_demandante/PEA*100, 1),
-              'Tasa Subocupación no demandante' = round(Suboc_no_demand/PEA*100, 1)) %>% 
+              'Tasa de Actividad'                  = round(PEA/Poblacion*100, 1),
+              'Tasa de Empleo'                     = round(Ocupados/Poblacion*100, 1),
+              'Tasa de Desocupación'               = round(Desocupados/PEA*100, 1),
+              'Tasa de Ocupados Demandantes'       = round(Ocupados_demand/PEA*100, 1),
+              'Tasa de Subocupación'               = round(Subocupados/PEA*100, 1),
+              'Tasa de Subocupación demandante'    = round(Suboc_demandante/PEA*100, 1),
+              'Tasa de Subocupación no demandante' = round(Suboc_no_demand/PEA*100, 1)) %>% 
     gather(indicador, valor, 4:ncol(.))
   
   return(tabla)
@@ -47,10 +47,10 @@ tasas_por_sexo_edad <- function(base){
               Suboc_demandante  = sum(PONDERA[ESTADO == 1 & INTENSI ==1 & PP03J==1]),
               Suboc_no_demand   = sum(PONDERA[ESTADO == 1 & INTENSI ==1 & PP03J %in% c(2,9)]),
               Subocupados       = Suboc_demandante + Suboc_no_demand,
-              'Tasa Actividad'                  = round(PEA/Poblacion*100, 1),
-              'Tasa Empleo'                     = round(Ocupados/Poblacion*100, 1),
-              'Tasa Desocupación'               = round(Desocupados/PEA*100, 1),
-              'Tasa Subocupación'               = round(Subocupados/PEA*100, 1)) %>% 
+              'Tasa de Actividad'                  = round(PEA/Poblacion*100, 1),
+              'Tasa de Empleo'                     = round(Ocupados/Poblacion*100, 1),
+              'Tasa de Desocupación'               = round(Desocupados/PEA*100, 1),
+              'Tasa de Subocupación'               = round(Subocupados/PEA*100, 1)) %>% 
     gather(indicador, valor, 5:ncol(.))
   
   return(tabla)
