@@ -28,7 +28,7 @@ tasas_sexo_server <- function(id) {
     generar_titulo <- function(variables, periodo_i, periodo_f){
       nombre_variable <-  paste0(variables, collapse = ", ")
       nombre_variable <- sub(",([^,]*)$", " y\\1", nombre_variable)   
-      titulo <- paste0(nombre_variable ," desde ", periodo_i, " hasta ", periodo_f)
+      titulo <- paste0(nombre_variable ," desde ", periodo_i, " hasta ", periodo_f, ". Población de 14 años y más.")
     }
     
     graficos_series <- function(dataframe, 
@@ -162,7 +162,7 @@ tasas_sexo_ui <- function(id) {
                         br(),
                         box(width = NULL, textOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot')),
+                        plotlyOutput(ns('plot'), height = 500),
                         br(),
                         box(title = "Metadata", width = NULL, textOutput(ns('metadata1'))
                             ),

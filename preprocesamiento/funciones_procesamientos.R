@@ -71,15 +71,31 @@ tasas_no_registro <- function(base){
 }
 
 # Función de jerarquías en cada sexo (ocupades con jerarquía válida)
-sexo_segun_jerarquias <- function(base){
+# sexo_segun_jerarquias <- function(base){
+#   
+#   tabla <- base %>% 
+#     filter(JERARQUIA != "0", # Jerarquia valida
+#            ESTADO == 1) %>%  # Ocupades
+#     group_by(Sexo) %>% 
+#     mutate(Frecuencia = sum(PONDERA)) %>% 
+#     group_by(ANO4, TRIMESTRE, Sexo, JERARQUIA) %>% 
+#     summarise(tasa = round(sum(PONDERA)/unique(Frecuencia)*100, 1))
+#   
+#   return(tabla)
+#   
+# }
+
+sexo_segun_jerarquias <- function(bases){
   
-  tabla <- base %>% 
+  tabla <- bases %>% 
     filter(JERARQUIA != "0", # Jerarquia valida
            ESTADO == 1) %>%  # Ocupades
-    group_by(Sexo) %>% 
-    mutate(Frecuencia = sum(PONDERA)) %>% 
     group_by(ANO4, TRIMESTRE, Sexo, JERARQUIA) %>% 
-    summarise(tasa = round(sum(PONDERA)/unique(Frecuencia)*100, 1))
+    summarise(Frecuencia = sum(PONDERA)) %>% 
+    ungroup() %>% 
+    group_by(ANO4, TRIMESTRE,Sexo) %>% 
+    mutate(tasa = round(Frecuencia/sum(Frecuencia)*100, 1)) %>% 
+    select(-Frecuencia)
   
   return(tabla)
   

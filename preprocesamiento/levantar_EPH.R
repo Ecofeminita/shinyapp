@@ -62,7 +62,6 @@ limpieza_individuos <- function(base){
 bases <- limpieza_individuos(bases)
 
 
-
 ###Para más adelante
 
 # Función de recambio de nombres (de version 03-06 a 16)
