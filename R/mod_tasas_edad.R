@@ -1,26 +1,33 @@
+tabla_resultados[[2]]
+
+
 library(plotly)
 library(shinyWidgets)
 library(shinydashboard)
 
-tasas_sexo_server <- function(id) {
+
+tasas_edad_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
     colores = c("#FE1764", "#00BDD6")
     
     armar_tabla <- function(dataframe,
-                              variable = "indicador", 
-                              valores_filter = c("Tasa de Actividad"),
-                              periodo_i,
-                              periodo_f
+                            variable = "indicador", 
+                            valores_filter = c("Tasa de Actividad"),
+                            grupos,
+                            periodo_i,
+                            periodo_f
     ){
-      datagraf1 <- tabla_resultados[[dataframe]] %>%                          
+      datagraf1 <- tabla_resultados[[dataframe]] %>%  
+        filter(!is.na(GRUPO_EDAD)) %>% 
+        filter(GRUPO_EDAD %in% grupos) %>% 
         mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
                                 levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
         filter(eval(parse(text=variable)) %in% valores_filter) 
       
       datagraf <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
-        select(-periodo,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Indicador" = "indicador", "Sexo", "Valor" = "valor")
+        select(-periodo,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Indicador" = "indicador", "Grupo edad" = "GRUPO_EDAD", "Sexo", "Valor" = "valor")
       
       datagraf
     }
@@ -41,10 +48,12 @@ tasas_sexo_server <- function(id) {
                                 subtitulo = "Subtitulo",
                                 porcentaje = TRUE,
                                 periodo_i,
-                                periodo_f
-                                ){
+                                periodo_f,
+                                grupos
+    ){
       
       datagraf1 <- tabla_resultados[[dataframe]] %>%                           # Daraframe para 2016-19
+        filter(GRUPO_EDAD %in% grupos) %>% 
         mutate(dummy = case_when(ANO4 %in% c(2004:2006) ~ "2004-2006",              # Identifico periodos
                                  TRUE ~ "2016-2019"),
                grp = paste0(Sexo, dummy),                                           # Grupos por Sexo y Período (4 grupos)
@@ -54,7 +63,7 @@ tasas_sexo_server <- function(id) {
       
       datagraf <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
-       
+      
       
       if (filtro) {                                    # Por si tengo que filtrar la base antes
         datagraf <- datagraf %>% 
@@ -63,7 +72,7 @@ tasas_sexo_server <- function(id) {
       
       grafico <- ggplot(datagraf, aes(periodo, valor, color = Sexo, group = grp
                                       ,text=paste0('</br>',Sexo,'</br>Tasa: ',valor,'%', '</br>Período: ',periodo)
-                                      )) +
+      )) +
         geom_line(size = 1, alpha = 0.75) +
         geom_point(size = 1) +
         theme_minimal() +
@@ -79,8 +88,8 @@ tasas_sexo_server <- function(id) {
              x = eje_x,
              y = eje_y,
              color = "",
-             caption = "Fuente: Elaboración propia en base a EPH-INDEC")
-      #scale_x_yearqtr(format = "%yQ%q", n = 19)               # Para trabajar con formato fecha
+             caption = "Fuente: Elaboración propia en base a EPH-INDEC")+
+        facet_wrap(~GRUPO_EDAD, nrow = 2)
       
       if(porcentaje){
         grafico <- grafico + 
@@ -99,7 +108,7 @@ tasas_sexo_server <- function(id) {
     
     
     
-    output$plot <- renderPlotly({graficos_series(dataframe= "tasas_por_sexo_df",
+    output$plot <- renderPlotly({graficos_series(dataframe= "tasas_por_sexo_edad_df",
                                                  filtro = TRUE, 
                                                  variable = "indicador", 
                                                  valores_filter = input$indicador,
@@ -108,15 +117,17 @@ tasas_sexo_server <- function(id) {
                                                  titulo = "",#input$indicador, 
                                                  subtitulo = "Población de 14 años y más. Por sexo y período. Total 31 aglomerados urbanos.",
                                                  periodo_i = input$id_periodo[1],
-                                                 periodo_f = input$id_periodo[2]
-                                                 )})
+                                                 periodo_f = input$id_periodo[2],
+                                                 grupos = input$g_edad
+    )})
     
     output$tabla <- renderTable({
-      armar_tabla(dataframe= "tasas_por_sexo_df",
+      armar_tabla(dataframe= "tasas_por_sexo_edad_df",
                   variable = "indicador", 
                   valores_filter = input$indicador,
+                  grupos = input$g_edad,
                   input$id_periodo[1],input$id_periodo[2]
-                  )
+      )
     })
     
     output$metadata1 <- renderText({"blabla"})
@@ -131,47 +142,53 @@ tasas_sexo_server <- function(id) {
 }
 
 
-tasas <- tabla_resultados[["tasas_por_sexo_df"]]$indicador %>% unique()
+tasas <- tabla_resultados[["tasas_por_sexo_edad_df"]]$indicador %>% unique()
 
 tasas <- tasas[grepl("Tasa",tasas)]
 
-trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% 
+trimestres <- tabla_resultados[["tasas_por_sexo_edad_df"]] %>% 
   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
   select(periodo) %>% unique()
 
 trimestres <- trimestres$periodo
 
-tasas_sexo_ui <- function(id) {
+grupos_edad <- (tabla_resultados[["tasas_por_sexo_edad_df"]] %>% drop_na())$GRUPO_EDAD %>% unique() 
+
+tasas_edad_ui <- function(id) {
   ns <- NS(id)
-  tabPanel(title = 'Tasas básicas',
+  tabPanel(title = 'Por grupos de edad',
            sidebarLayout(
              sidebarPanel(
                selectInput(ns('indicador'),label = 'Elegir indicador',
                            choices = tasas,
                            selected = tasas[1],
                            multiple = FALSE),
+               selectInput(ns('g_edad'),label = 'Grupo de edad:',
+                           choices = grupos_edad,
+                           selected = grupos_edad[1],
+                           multiple = TRUE),
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4"))
-            
+               
              ),
              mainPanel( tabsetPanel(
                
                tabPanel("Gráfico",
-                        value = "g_tb",
+                        value = "g_ted",
                         
                         br(),
                         box(width = NULL, textOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot')),
+                        plotlyOutput(ns('plot'), height = 800),
                         br(),
                         box(title = "Metadata", width = NULL, textOutput(ns('metadata1'))
-                            ),
-                       
+                        ),
+                        
                         
                ),
                
                tabPanel("Tabla",
-                        value = "t_tb",
+                        value = "t_ted",
                         
                         br(),
                         box(width = NULL, textOutput(ns('titulo2'))), 
@@ -187,15 +204,15 @@ tasas_sexo_ui <- function(id) {
                                  ))
                         )
                         
-                        )
+               )
                
                
              )
-                        
-                        
-                        )
-               
-               
+             
+             
+             )
+             
+             
            )
   )
 }

@@ -18,7 +18,8 @@ main_ui <- {
              about_ui,
              
              navbarMenu(title = 'Mercado de Trabajo',
-             tasas_sexo_ui('tasas_sexo')
+             tasas_sexo_ui('tasas_sexo'),
+             tasas_edad_ui('tasas_edad')
              )
              
              )

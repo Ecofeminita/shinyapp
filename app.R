@@ -30,6 +30,7 @@ server <- function (input, output,session) {
     # Output modules ----------------------------------------------------------
     sample_plot_server('ejemplo')
     tasas_sexo_server('tasas_sexo')
+    tasas_edad_server('tasas_edad')
 
 }
 
