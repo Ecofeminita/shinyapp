@@ -116,6 +116,37 @@ jerarquias_segun_sexo <- function(base){
   
 }
 
+
+rama_ocupacion <- function(base){
+  
+  tabla <- organize_caes(base) %>% 
+    mutate(Rama = caes_eph_label) %>% 
+    filter(ESTADO == 1,
+           PP3E_TOT > 0, # Horas trabajadas positivas
+           PP3E_TOT != 999,
+           P21 > 0,
+           PONDIIO > 0) %>%  # Ingresos positivos
+    mutate(PP3E_TOT = as.numeric(gsub(",", #cambio "." por "comas"," en los decimales para poder operar
+                                      ".",
+                                      PP3E_TOT,
+                                      fixed = TRUE))) %>% 
+    group_by(ANO4, TRIMESTRE,Rama) %>% 
+    summarise(tasa_feminizacion = (sum(PONDERA[Sexo == "Mujeres"])/sum(PONDERA))*100,
+              ingreso_promedio = round(weighted.mean(P21, PONDIIO/sum(PONDIIO)), 2),
+              ingreso_hor = round(weighted.mean(P21/(PP3E_TOT * 30 / 7), PONDIIO), 2)) %>% 
+    # filter(Rama %in% c("Servicio domestico", "Ensenanza", "Servicios sociales y de salud", 
+    #                    "Industria manufacturera", "Actividades primarias", "Transporte, almacenamiento y comunicaciones",
+    #                    "Construccion")) %>% 
+    transmute("Rama de la ocupación" = Rama,
+              "Tasa de feminización" = tasa_feminizacion,
+              "Ingreso mensual promedio" = ingreso_promedio,
+              "Ingreso horario" = ingreso_hor)
+  
+  return(tabla)
+  
+}
+
+
 # Función de brecha del ingreso total individual (perceptores)
 brecha_ITI <- function(base){
   

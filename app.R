@@ -32,6 +32,7 @@ server <- function (input, output,session) {
     tasas_sexo_server('tasas_sexo')
     tasas_edad_server('tasas_edad')
     tipo_insercion_server('jerarquias')
+    ramas_server('ramas')
 
 }
 

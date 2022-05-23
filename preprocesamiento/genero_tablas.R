@@ -16,6 +16,7 @@ creador_tablas <- function(base#,
   tasas_no_registro_df           <- tasas_no_registro(base)
   sexo_segun_jerarquias_df       <- sexo_segun_jerarquias(base)
   jerarquias_segun_sexo_df       <- jerarquias_segun_sexo(base)
+  ramas_sexo_df                  <- rama_ocupacion(base)
   brecha_ITI_df                  <- brecha_ITI(base)
   brecha_IOP_df                  <- brecha_IOP(base)
   brecha_IOP_no_reg_df           <- brecha_IOP_no_reg(base)
@@ -44,6 +45,7 @@ creador_tablas <- function(base#,
                  "tasas_no_registro_df" = tasas_no_registro_df,
                  "sexo_segun_jerarquias_df" = sexo_segun_jerarquias_df,
                  "jerarquias_segun_sexo_df" = jerarquias_segun_sexo_df,
+                "ramas_sexo_df" = ramas_sexo_df,
                  "brecha_ITI_df" = brecha_ITI_df,
                 "brecha_IOP_df" = brecha_IOP_df,
                 "brecha_IOP_no_reg_df" = brecha_IOP_no_reg_df,

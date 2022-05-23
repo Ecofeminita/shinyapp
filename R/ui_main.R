@@ -20,8 +20,13 @@ main_ui <- {
              navbarMenu(title = 'Mercado de Trabajo',
              tasas_sexo_ui('tasas_sexo'),
              tasas_edad_ui('tasas_edad'),
-             tipo_insercion_ui('jerarquias')
-             )
+             tipo_insercion_ui('jerarquias'),
+             ramas_ui('ramas')
+             ),
+             
+             # navbarMenu(title = 'Ingresos',
+             #            
+             # )
              
              )
 }
