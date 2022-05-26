@@ -11,7 +11,6 @@ tasas_edad_server <- function(id) {
     
     colores = c("#FE1764", "#00BDD6")
     
-    windowsFonts(A = windowsFont("Times New Roman"))
     
     armar_tabla <- function(dataframe,
                             variable = "indicador", 
@@ -98,7 +97,7 @@ tasas_edad_server <- function(id) {
           scale_y_continuous(labels = function(x) paste0(x, "%"))    # Para que se peque el valor y el signo de %
       }
       
-      grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "A"))
+      grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "Times New Roman"))
       
       return(grafico)
     }

@@ -22,3 +22,5 @@ eval(parse('preprocesamiento/genero_tablas.R', encoding="UTF-8"))
 #problemas con tildes guardando el .Rdata, alguna idea para solucionarlo?
 
 #save.image('data.Rdata')
+
+

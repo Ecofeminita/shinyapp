@@ -32,7 +32,7 @@ brechas_server <- function(id) {
     
     colores <-  c("#FE1764", "#00BDD6", "black")
     
-    windowsFonts(A = windowsFont("Times New Roman"))
+   
     
     armar_tabla <- function(dataframe,
                             brecha,
@@ -89,7 +89,7 @@ brechas_server <- function(id) {
         yaxis = list(title = "Período"),
         margin = list(l = 65),
         showlegend = T,
-        font = list(family = "A")
+        font = list(family = "Times New Roman")
       )
       
       fig

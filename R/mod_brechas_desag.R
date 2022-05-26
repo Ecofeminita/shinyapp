@@ -29,13 +29,25 @@ nombres_brechas_desag <- data.frame("tabla" =c("brecha_IOP_calif_df",
                               "variable_desag" = c("CALIFICACION", "CALIFICACION", "NIVEL_EDUCATIVO","NIVEL_EDUCATIVO"),
                               "variable_desag_nombre" = c("Calificación", "Calificación", "Nivel educativo","Nivel educativo"))
 
+
+trimestres <- tabla_resultados[[(nombres_brechas_desag$tabla[1])]] %>% ungroup() %>% 
+  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+  select(periodo) %>% unique()
+
+trimestres <- trimestres$periodo
+
+
+
 brechas_desag_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
     
     colores <-  c("#FE1764", "#00BDD6", "black")
     
-    windowsFonts(A = windowsFont("Times New Roman"))
+    
+    
+    #armar_tabla(tabla_resultados[["brecha_IOP_calif_df"]],"brecha.IOP.calif","CALIFICACION", nombre_facet="Calificación","16T2","19T2")
     
     armar_tabla <- function(dataframe,
                             brecha,
@@ -45,6 +57,7 @@ brechas_desag_server <- function(id) {
                             periodo_i,
                             periodo_f
     ){
+      
       datagraf1 <- dataframe %>% 
         
         mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
@@ -52,14 +65,27 @@ brechas_desag_server <- function(id) {
         rename("brecha" = brecha,
                "var_filtro" = facet_var) 
       
+      
+      
       datagraf <- datagraf1%>% 
         
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))#%>% 
+        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
+        select(-periodo) %>% 
+      #%>% 
         #filter(var_filtro %in% c(valores))
         
-        select(-periodo,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", nombre_facet = "var_filtro", "Mujeres (Ingreso medio)"="media.mujeres","Varones (Ingreso medio)"="media.varones", "Brecha" = "brecha")
+        rename("Año" = "ANO4", 
+               "Trimestre" = "TRIMESTRE", 
+               "Mujeres (Ingreso medio)"="media.mujeres",
+               "Varones (Ingreso medio)"="media.varones", 
+               "Brecha" = "brecha")
+      
+      str_nombre <- paste0(nombre_facet)
+      
+      colnames(datagraf)[3] <- str_nombre
       
       datagraf
+      
     }
     
     generar_titulo <- function(variables, periodo_i, periodo_f){
@@ -69,6 +95,7 @@ brechas_desag_server <- function(id) {
     }
     
     
+    #plot(tabla_resultados[["brecha_IOP_calif_df"]],"brecha.IOP.calif","CALIFICACION", "Ingreso mensual de la Ocupación Principal","16T2","19T2")
     
     
     plot <- function(base,var, facet_var,
@@ -85,8 +112,8 @@ brechas_desag_server <- function(id) {
       
       
       tabla <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
-        filter(var_facet %in% c(valores))
+        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))# %>% 
+       # filter(var_facet %in% c(valores))
       
       
       tabla%>%   
@@ -101,8 +128,8 @@ brechas_desag_server <- function(id) {
              add_markers(x = ~media.varones, y = ~periodo, name = "Varones", color = I(colores[2]),
                          hoverinfo = 'text',
                          text = ~paste0('</br><b>Varones</b>','</br>',var_facet,'</br>$',round(media.varones,0))) %>% 
-             add_text(xref='x domain',
-                      yref='y domain',
+             add_text(#xref='x domain',
+                      #yref='y domain',
                       x=15000,
                       y=trimestres[(as.integer(unique(datagraf1$periodo[datagraf1$periodo == periodo_f])) + 1)],
                       color = I(colores[3]),
@@ -112,9 +139,9 @@ brechas_desag_server <- function(id) {
                       #showarrow=F,
                       #row=3, col=1
              )%>% 
-             add_text(xref='x domain',
-                      yref='y domain',
-                      x=15000,
+             add_text(#xref='x domain',
+                      #yref='y domain',
+                      x=5000,
                       y=trimestres[(as.integer(unique(datagraf1$periodo[datagraf1$periodo == periodo_f])) + 2)],
                       text="", 
                       showlegend = FALSE, 
@@ -132,7 +159,7 @@ brechas_desag_server <- function(id) {
                             ),
                margin = list(l = 65),
                showlegend = F,
-               font = list(family = "A")
+               font = list(family = "Times New Roman")
              )
            
         ) %>% 
@@ -140,7 +167,7 @@ brechas_desag_server <- function(id) {
       
     }
     
-    #plot(tabla_resultados[["brecha_IOP_calif_df"]],"brecha.IOP.calif","CALIFICACION","Profesionales", "Ingreso mensual de la Ocupación Principal","16T2","19T2")
+    
     
     generar_titulo <- function(nombre,facet_var,periodo_i, periodo_f){
       titulo <- paste0("<b>","<font size='+2'>","Brechas de ", nombre , " por ", facet_var, ". Desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
@@ -182,23 +209,28 @@ brechas_desag_server <- function(id) {
     output$metadata1 <- renderText({"blabla"})
     output$metadata2 <- renderText({"blabla"})
     
-    output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id,input$id_periodo[2])})
+    output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, input$id_periodo[1],input$id_periodo[2])})
+    
+    
+    
+    # observeEvent(input$var_desag_id,{
+    #   updateSelectInput(session,'valores_id',choices = get(a[input$var_desag_id]))
+    # })
+    
     
   })
 }
 
 
+v1 <- as.character(unique(tabla_resultados[["brecha_IOP_calif_df"]]$CALIFICACION))
+v2 <- as.character(unique(tabla_resultados[["brecha_IOP_nivel_educ_df"]]$NIVEL_EDUCATIVO))
 
+a <- list()
+a$"Calificación" <- v1
+a$"Nivel educativo" <- v2
+#a<- data.frame("Calificación" = v1,"Nivel educativo" = v2)
 
-trimestres <- tabla_resultados[[(nombres_brechas_desag$tabla[1])]] %>% ungroup() %>% 
-  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-  select(periodo) %>% unique()
-
-trimestres <- trimestres$periodo
-
-valores1 <- unique(tabla_resultados[["brecha_IOP_calif_df"]]$CALIFICACION)
 
 
 brechas_desag_ui <- function(id) {
@@ -206,18 +238,21 @@ brechas_desag_ui <- function(id) {
   tabPanel(title = 'Brechas de ingresos - desagregado',
            sidebarLayout(
              sidebarPanel(
-               selectInput(ns('ingreso_id'),label = 'Elegir tipo de ingreso',
+               selectInput(ns('ingreso_id'),label = 'Elegir tipo de ingreso:',
                            choices = unique(nombres_brechas_desag$nombre),
                            selected = unique(nombres_brechas_desag$nombre)[1],
                            multiple = FALSE),
-               selectInput(ns('var_desag_id'),label = 'Elegir desagregación',
+               selectInput(ns('var_desag_id'),label = 'Elegir desagregación:',
                            choices = unique(nombres_brechas_desag$variable_desag_nombre),
                            selected = unique(nombres_brechas_desag$variable_desag_nombre)[1],
                            multiple = FALSE),
-               selectInput(ns('valores_id'),label = 'Elegir valores',
-                           choices = valores1,
-                           selected = "Profesionales",
-                           multiple = T),
+               #conditionalPanel(condition = "input.var_desag_id=='Calificación'",
+               selectInput(ns('valores_id'),label = 'Elegir valores:',
+                           choices = NULL,
+                           selected = NULL,
+                           multiple = T)
+              # )
+               ,
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T2"))
                
              ),

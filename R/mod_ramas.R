@@ -17,7 +17,7 @@ library(shinydashboard)
 ramas_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
-    windowsFonts(A = windowsFont("Times New Roman"))
+   
     
     armar_tabla <- function(dataframe,
                             valores_filter,
@@ -85,7 +85,7 @@ ramas_server <- function(id) {
       #grafico
       ggplotly(grafico, tooltip = c("text")) %>%
         layout(showlegend = F,
-               font = list(family = "A"))
+               font = list(family = "Times New Roman"))
     }
     
     

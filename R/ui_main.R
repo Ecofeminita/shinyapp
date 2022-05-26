@@ -7,6 +7,8 @@ library(markdown)
 
 # load('data.Rdata')
 
+tabla_resultados <- readRDS("tabla_resultados.RDS")
+
 about_ui <- tabPanel(title = 'about',
                      includeMarkdown('README.md'))
 
