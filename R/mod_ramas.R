@@ -17,6 +17,8 @@ library(shinydashboard)
 ramas_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
+    windowsFonts(A = windowsFont("Times New Roman"))
+    
     armar_tabla <- function(dataframe,
                             valores_filter,
                             periodo_i,
@@ -82,12 +84,13 @@ ramas_server <- function(id) {
       
       #grafico
       ggplotly(grafico, tooltip = c("text")) %>%
-        layout(showlegend = F)
+        layout(showlegend = F,
+               font = list(family = "A"))
     }
     
     
     generar_titulo <- function(periodo_i, periodo_f){
-      titulo <- paste0("Tasa de feminización e ingresos por rama de actividad desde ", periodo_i, " hasta ", periodo_f)
+      titulo <- paste0("<b>","<font size='+2'>","Tasa de feminización e ingresos por rama de actividad desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
       titulo
     }
     
@@ -158,7 +161,7 @@ ramas_ui <- function(id) {
                         value = "g_ramas",
                         
                         br(),
-                        box(width = NULL, textOutput(ns('titulo1'))), 
+                        box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
                         plotlyOutput(ns('plot'), height = 600),
                         br(),
@@ -172,7 +175,7 @@ ramas_ui <- function(id) {
                         value = "t_ramas",
                         
                         br(),
-                        box(width = NULL, textOutput(ns('titulo2'))), 
+                        box(width = NULL, htmlOutput(ns('titulo2'))), 
                         br(),
                         fluidRow(
                           column(12,

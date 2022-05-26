@@ -14,7 +14,7 @@ about_ui <- tabPanel(title = 'about',
 main_ui <- {
   
   navbarPage('titulo',
-             sample_plot_ui('ejemplo'),
+             #sample_plot_ui('ejemplo'),
              about_ui,
              
              navbarMenu(title = 'Mercado de Trabajo',
@@ -24,9 +24,10 @@ main_ui <- {
              ramas_ui('ramas')
              ),
              
-             # navbarMenu(title = 'Ingresos',
-             #            
-             # )
+             navbarMenu(title = 'Ingresos',
+             brechas_ui('brechas_general')
+
+             )
              
              )
 }

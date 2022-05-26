@@ -11,6 +11,8 @@ tasas_edad_server <- function(id) {
     
     colores = c("#FE1764", "#00BDD6")
     
+    windowsFonts(A = windowsFont("Times New Roman"))
+    
     armar_tabla <- function(dataframe,
                             variable = "indicador", 
                             valores_filter = c("Tasa de Actividad"),
@@ -35,7 +37,7 @@ tasas_edad_server <- function(id) {
     generar_titulo <- function(variables, periodo_i, periodo_f){
       nombre_variable <-  paste0(variables, collapse = ", ")
       nombre_variable <- sub(",([^,]*)$", " y\\1", nombre_variable)   
-      titulo <- paste0(nombre_variable ," desde ", periodo_i, " hasta ", periodo_f)
+      titulo <- paste0("<b>","<font size='+2'>",nombre_variable ," desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
     }
     
     graficos_series <- function(dataframe, 
@@ -96,7 +98,7 @@ tasas_edad_server <- function(id) {
           scale_y_continuous(labels = function(x) paste0(x, "%"))    # Para que se peque el valor y el signo de %
       }
       
-      grafico <- ggplotly(grafico, tooltip = c("text"))
+      grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "A"))
       
       return(grafico)
     }
@@ -172,7 +174,7 @@ tasas_edad_ui <- function(id) {
                         value = "g_ted",
                         
                         br(),
-                        box(width = NULL, textOutput(ns('titulo1'))), 
+                        box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
                         plotlyOutput(ns('plot'), height = 800),
                         br(),
@@ -186,7 +188,7 @@ tasas_edad_ui <- function(id) {
                         value = "t_ted",
                         
                         br(),
-                        box(width = NULL, textOutput(ns('titulo2'))), 
+                        box(width = NULL, htmlOutput(ns('titulo2'))), 
                         br(),
                         fluidRow(
                           column(12,
