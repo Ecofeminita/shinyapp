@@ -35,6 +35,7 @@ server <- function (input, output,session) {
     ramas_server('ramas')
     
     brechas_server('brechas_general')
+    brechas_desag_server('brechas_desag')
 
 }
 

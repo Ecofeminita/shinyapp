@@ -25,7 +25,8 @@ main_ui <- {
              ),
              
              navbarMenu(title = 'Ingresos',
-             brechas_ui('brechas_general')
+             brechas_ui('brechas_general'),
+             brechas_desag_ui('brechas_desag')
 
              )
              
