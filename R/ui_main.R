@@ -7,13 +7,15 @@ library(markdown)
 
 # load('data.Rdata')
 
-tabla_resultados <- readRDS("tabla_resultados.RDS")
+
 
 about_ui <- tabPanel(title = 'about',
                      includeMarkdown('README.md'))
 
 
 main_ui <- {
+  
+  tabla_resultados <- readRDS("www/tabla_resultados.RDS")
   
   navbarPage('titulo',
              #sample_plot_ui('ejemplo'),

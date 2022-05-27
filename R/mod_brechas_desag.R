@@ -30,7 +30,18 @@ nombres_brechas_desag <- data.frame("tabla" =c("brecha_IOP_calif_df",
                               "variable_desag_nombre" = c("Calificación", "Calificación", "Nivel educativo","Nivel educativo"))
 
 
-trimestres <- tabla_resultados[[(nombres_brechas_desag$tabla[1])]] %>% ungroup() %>% 
+v1 <- as.character(unique(tabla_resultados[["brecha_IOP_calif_df"]]$CALIFICACION))
+v2 <- as.character(unique(tabla_resultados[["brecha_IOP_nivel_educ_df"]]$NIVEL_EDUCATIVO))
+
+
+opciones_actualizacion<- data.frame("Calificación" = v1,"Nivel educativo" = v2, "id" = c(1,2,3,4)
+               ) %>% 
+  pivot_longer(!id,names_to = "variable", values_to = "valores")
+
+opciones_actualizacion$variable[opciones_actualizacion$variable =="Nivel.educativo"] <- "Nivel educativo"
+
+
+trimestres <- tabla_resultados[[(nombres_brechas_desag$tabla[1])]] %>% #ungroup() %>% 
   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
   select(periodo) %>% unique()
@@ -139,15 +150,12 @@ brechas_desag_server <- function(id) {
                       #showarrow=F,
                       #row=3, col=1
              )%>% 
-             add_text(#xref='x domain',
-                      #yref='y domain',
-                      x=5000,
+             add_text(x=5000,
                       y=trimestres[(as.integer(unique(datagraf1$periodo[datagraf1$periodo == periodo_f])) + 2)],
                       text="", 
                       showlegend = FALSE, 
                       hoverinfo='skip'
-                      #showarrow=F,
-                      #row=3, col=1
+                      
              )
            
            
@@ -163,7 +171,8 @@ brechas_desag_server <- function(id) {
              )
            
         ) %>% 
-        subplot(nrows = length(unique(datagraf1$var_facet)), shareX = TRUE, shareY = TRUE)
+        subplot(nrows = length(unique(datagraf1$var_facet)), 
+                shareX = TRUE, shareY = TRUE)
       
     }
     
@@ -212,24 +221,26 @@ brechas_desag_server <- function(id) {
     output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, input$id_periodo[1],input$id_periodo[2])})
     
-    
-    
-    # observeEvent(input$var_desag_id,{
-    #   updateSelectInput(session,'valores_id',choices = get(a[input$var_desag_id]))
-    # })
+    #intento actualizar valores
+    observe({
+      x <- input$var_desag_id
+
+      options = opciones_actualizacion %>%
+        filter(variable %in% x) %>%
+        pull(valores)
+
+
+      updateSelectInput(session, 'valores_id',
+                        choices = options,
+                        selected = options)
+    })
     
     
   })
 }
 
 
-v1 <- as.character(unique(tabla_resultados[["brecha_IOP_calif_df"]]$CALIFICACION))
-v2 <- as.character(unique(tabla_resultados[["brecha_IOP_nivel_educ_df"]]$NIVEL_EDUCATIVO))
 
-a <- list()
-a$"Calificación" <- v1
-a$"Nivel educativo" <- v2
-#a<- data.frame("Calificación" = v1,"Nivel educativo" = v2)
 
 
 
@@ -244,7 +255,7 @@ brechas_desag_ui <- function(id) {
                            multiple = FALSE),
                selectInput(ns('var_desag_id'),label = 'Elegir desagregación:',
                            choices = unique(nombres_brechas_desag$variable_desag_nombre),
-                           selected = unique(nombres_brechas_desag$variable_desag_nombre)[1],
+                           selected = NULL,#unique(nombres_brechas_desag$variable_desag_nombre)[1],
                            multiple = FALSE),
                #conditionalPanel(condition = "input.var_desag_id=='Calificación'",
                selectInput(ns('valores_id'),label = 'Elegir valores:',
