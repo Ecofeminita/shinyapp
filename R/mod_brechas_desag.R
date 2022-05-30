@@ -66,7 +66,7 @@ brechas_desag_server <- function(id) {
                             brecha,
                             facet_var,
                             nombre_facet,
-                            #valores,
+                            valores,
                             periodo_i,
                             periodo_f
     ){
@@ -84,8 +84,8 @@ brechas_desag_server <- function(id) {
         
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
         select(-periodo) %>% 
-      #%>% 
-        #filter(var_filtro %in% c(valores))
+      
+        filter(var_filtro %in% c(valores)) %>% 
         
         rename("Año" = "ANO4", 
                "Trimestre" = "TRIMESTRE", 
@@ -108,99 +108,258 @@ brechas_desag_server <- function(id) {
     }
     
     
-    #plot(tabla_resultados[["brecha_IOP_calif_df"]],"brecha.IOP.calif","CALIFICACION", "Ingreso mensual de la Ocupación Principal","16T2","19T2")
+   
     
     
-    plot <- function(base,var, facet_var,
-                     #valores, 
+    
+    #### versión sin los paneles
+    
+    plot <- function(base,var,facet_var,
+                     valores, 
                      nombre,periodo_i, periodo_f){
-      
       
       datagraf1 <- base %>% 
         mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
                                 levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-        mutate(x = (media.mujeres+media.varones)/2) %>%
+        mutate(x = (media.mujeres+media.varones)/2) %>% 
         rename("brecha" = var) %>% 
-        rename("var_facet" = facet_var)
-      
+        rename("var_facet" = facet_var)%>% 
+        filter(var_facet %in% c(valores))
       
       tabla <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))# %>% 
-       # filter(var_facet %in% c(valores))
+        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
       
       
-      tabla%>%   
-        
-        group_by(var_facet) %>% 
-        do(p=plot_ly(., color = I("gray80")) %>% 
-             add_segments(x = ~media.mujeres, xend = ~media.varones, y = ~periodo, yend = ~periodo, alpha = .3, showlegend = FALSE)%>% 
-             add_text(x = ~x, y = ~periodo, text =~paste0(brecha,"%"), name = "Brecha", color = I(colores[3]), hoverinfo='skip', showlegend = F) %>% 
-             add_markers(x = ~media.mujeres, y = ~periodo, name = "Mujeres", color = I(colores[1]),
-                         hoverinfo = 'text',
-                         text = ~paste0('</br><b>Mujeres</b>','</br>',var_facet,'</br>$',round(media.mujeres,0))) %>% 
-             add_markers(x = ~media.varones, y = ~periodo, name = "Varones", color = I(colores[2]),
-                         hoverinfo = 'text',
-                         text = ~paste0('</br><b>Varones</b>','</br>',var_facet,'</br>$',round(media.varones,0))) %>% 
-             add_text(#xref='x domain',
-                      #yref='y domain',
-                      x=15000,
-                      y=trimestres[(as.integer(unique(datagraf1$periodo[datagraf1$periodo == periodo_f])) + 1)],
-                      color = I(colores[3]),
-                      text=~paste0('<b>',var_facet,'</b>'), 
-                      showlegend = FALSE, 
-                      hoverinfo='skip'
-                      #showarrow=F,
-                      #row=3, col=1
-             )%>% 
-             add_text(x=5000,
-                      y=trimestres[(as.integer(unique(datagraf1$periodo[datagraf1$periodo == periodo_f])) + 2)],
-                      text="", 
-                      showlegend = FALSE, 
-                      hoverinfo='skip'
-                      
-             )
-           
-           
-           %>% 
-             layout(
-               title = "",
-               xaxis = list(title = str_wrap(nombre,20)),
-               yaxis = list(title = "Período"
-                            ),
-               margin = list(l = 65),
-               showlegend = F,
-               font = list(family = "Times New Roman")
-             )
-           
-        ) %>% 
-        subplot(nrows = length(unique(datagraf1$var_facet)), 
-                shareX = TRUE, shareY = TRUE)
+      fig <- plot_ly(tabla, color = I("gray80"))
+      fig <- fig %>% add_segments(x = ~media.mujeres, xend = ~media.varones, y = ~periodo, yend = ~periodo, alpha = .3, showlegend = FALSE)
+      fig <- fig %>% add_text(x = ~x, y = ~periodo, text =~paste0(brecha,"%"), name = "Brecha", color = I(colores[3]), hoverinfo='skip', showlegend = F) 
+      fig <- fig %>% add_markers(x = ~media.mujeres, y = ~periodo, name = "Mujeres", color = I(colores[1]),
+                                 hoverinfo = 'text',
+                                 text = ~paste0('</br><b>Mujeres</b>','</br>',var_facet,'</br>$',round(media.mujeres,0)))
+      fig <- fig %>% add_markers(x = ~media.varones, y = ~periodo, name = "Varones", color = I(colores[2]),
+                                 hoverinfo = 'text',
+                                 text = ~paste0('</br><b>Varones</b>','</br>',var_facet,'</br>$',round(media.mujeres,0)))
+      
+      fig <- fig %>% layout(
+        title = "",
+        xaxis = list(title = nombre),
+        yaxis = list(title = "Período"),
+        margin = list(l = 65),
+        showlegend = T,
+        font = list(family = "Times New Roman")
+      )
+      
+      fig
       
     }
     
     
     
-    generar_titulo <- function(nombre,facet_var,periodo_i, periodo_f){
-      titulo <- paste0("<b>","<font size='+2'>","Brechas de ", nombre , " por ", facet_var, ". Desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
+    ####
+    
+    
+    
+    generar_titulo <- function(nombre,facet_var, valores,periodo_i, periodo_f){
+      titulo <- paste0('</br>',"<b>","<font size='+2'>","Brechas de ", nombre , " por ", facet_var,".","</font>", '</br>',"Desde ", periodo_i, " hasta ", periodo_f,"</b>")
       titulo
     }
     
+    generar_subtitulo <- function(valores){
+      stitulo <- paste0("<b>","<font size='+1'>",valores,"</font>","</b>")
+      stitulo
+    }
     
-    output$plot <- renderPlotly({
+    
+    observe({
+      x <- input$var_desag_id
       
-      plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
-           
-           
-           var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
-           facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
-           #valores=input$valores_id,
-           nombre =input$ingreso_id,
-           input$id_periodo[1],
-           input$id_periodo[2]) 
+      options = opciones_actualizacion %>%
+        filter(variable %in% x) %>%
+        pull(valores)
+      
+      
+      updateSelectInput(session, 'valores_id',
+                        choices = options,
+                        selected = options[1])
     })
     
     
     
+    
+    observe({
+      
+      if(length(input$valores_id) == 1){
+        output$st1 <- renderText({generar_subtitulo(input$valores_id[1])})
+        output$plot1 <- renderPlotly({
+          
+          plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+               
+               
+               var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+               facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+               valores=input$valores_id[1],
+               nombre =input$ingreso_id,
+               input$id_periodo[1],
+               input$id_periodo[2]) 
+        })
+        
+        output$st2 <- NULL
+        output$plot2 <- NULL
+        
+        output$st3 <- NULL
+        output$plot3 <- NULL
+        
+        output$st4 <- NULL
+        output$plot4 <- NULL
+      }
+      
+    
+    else if(length(input$valores_id) == 2){
+      output$st1 <- renderText({generar_subtitulo(input$valores_id[1])})
+      output$plot1 <- renderPlotly({
+        
+        plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+             
+             
+             var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             valores=input$valores_id[1],
+             nombre =input$ingreso_id,
+             input$id_periodo[1],
+             input$id_periodo[2]) 
+      })
+      
+      output$st2 <- renderText({generar_subtitulo(input$valores_id[2])})
+      output$plot2 <- renderPlotly({
+        
+        plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+             
+             
+             var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             valores=input$valores_id[2],
+             nombre =input$ingreso_id,
+             input$id_periodo[1],
+             input$id_periodo[2]) 
+      })
+      
+      output$st3 <- NULL
+      output$plot3 <- NULL
+      
+      output$st4 <- NULL
+      output$plot4 <- NULL
+    } 
+    
+    else if(length(input$valores_id) == 3){
+      
+      output$st1 <- renderText({generar_subtitulo(input$valores_id[1])})
+      output$plot1 <- renderPlotly({
+        
+        plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+             
+             
+             var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             valores=input$valores_id[1],
+             nombre =input$ingreso_id,
+             input$id_periodo[1],
+             input$id_periodo[2]) 
+      })
+      
+      output$st2 <- renderText({generar_subtitulo(input$valores_id[2])})
+      output$plot2 <- renderPlotly({
+        
+        plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+             
+             
+             var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             valores=input$valores_id[2],
+             nombre =input$ingreso_id,
+             input$id_periodo[1],
+             input$id_periodo[2]) 
+      })
+      
+      output$st3 <- renderText({generar_subtitulo(input$valores_id[3])})
+      output$plot3 <- renderPlotly({
+        
+        plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+             
+             
+             var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             valores=input$valores_id[3],
+             nombre =input$ingreso_id,
+             input$id_periodo[1],
+             input$id_periodo[2]) 
+      })
+      
+      output$st4 <- NULL
+      output$plot4 <- NULL
+    }
+    
+    else if(length(input$valores_id) == 4){
+      
+      output$st1 <- renderText({generar_subtitulo(input$valores_id[1])})
+      output$plot1 <- renderPlotly({
+        
+        plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+             
+             
+             var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             valores=input$valores_id[1],
+             nombre =input$ingreso_id,
+             input$id_periodo[1],
+             input$id_periodo[2]) 
+      })
+      
+      output$st2 <- renderText({generar_subtitulo(input$valores_id[2])})
+      output$plot2 <- renderPlotly({
+        
+        plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+             
+             
+             var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             valores=input$valores_id[2],
+             nombre =input$ingreso_id,
+             input$id_periodo[1],
+             input$id_periodo[2]) 
+      })
+      
+      output$st3 <- renderText({generar_subtitulo(input$valores_id[3])})
+      output$plot3 <- renderPlotly({
+        
+        plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+             
+             
+             var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             valores=input$valores_id[3],
+             nombre =input$ingreso_id,
+             input$id_periodo[1],
+             input$id_periodo[2]) 
+      })
+      
+      output$st4 <- renderText({generar_subtitulo(input$valores_id[4])})
+      output$plot4 <- renderPlotly({
+        
+        plot(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+             
+             
+             var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+             valores=input$valores_id[4],
+             nombre =input$ingreso_id,
+             input$id_periodo[1],
+             input$id_periodo[2]) 
+      })
+    }
+    
+    })
+    
+   
     
     
     output$tabla <- renderTable({
@@ -211,7 +370,7 @@ brechas_desag_server <- function(id) {
                   facet_var=unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
                   
                   nombre_facet = input$var_desag_id,
-                 # valores = input$valores_id,
+                  valores = input$valores_id,
                   input$id_periodo[1],
                   input$id_periodo[2]
       )
@@ -220,22 +379,11 @@ brechas_desag_server <- function(id) {
     output$metadata1 <- renderText({"blabla"})
     output$metadata2 <- renderText({"blabla"})
     
-    output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, input$id_periodo[1],input$id_periodo[2])})
-    output$titulo2 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, input$id_periodo[1],input$id_periodo[2])})
+    output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
+    output$titulo2 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
     
-    #intento actualizar valores
-    observe({
-      x <- input$var_desag_id
-
-      options = opciones_actualizacion %>%
-        filter(variable %in% x) %>%
-        pull(valores)
-
-
-      updateSelectInput(session, 'valores_id',
-                        choices = options,
-                        selected = options)
-    })
+    
+    
     
     
   })
@@ -277,9 +425,24 @@ brechas_desag_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 600),
+                        box(title = "Metadata", width = NULL, textOutput(ns('metadata1')),
                         br(),
-                        box(title = "Metadata", width = NULL, textOutput(ns('metadata1'))
+                        box(width = NULL, htmlOutput(ns('st1'))), 
+                        br(),
+                        plotlyOutput(ns('plot1'), height = 400),
+                        br(),
+                        box(width = NULL, htmlOutput(ns('st2'))), 
+                        br(),
+                        plotlyOutput(ns('plot2'), height = 400),
+                        br(),
+                        box(width = NULL, htmlOutput(ns('st3'))), 
+                        br(),
+                        plotlyOutput(ns('plot3'), height = 400),
+                        br(),
+                        box(width = NULL, htmlOutput(ns('st4'))), 
+                        br(),
+                        plotlyOutput(ns('plot4'), height = 400)
+                        
                         ),
                         
                         
@@ -314,5 +477,84 @@ brechas_desag_ui <- function(id) {
            )
   )
 }
+
+
+
+
+
+#Guardo código anterior por si me arrepiento
+
+
+#plot(tabla_resultados[["brecha_IOP_calif_df"]],"brecha.IOP.calif","CALIFICACION", "Ingreso mensual de la Ocupación Principal","16T2","19T2")
+
+###Versión con los paneles
+
+# plot <- function(base,var, facet_var,
+#                  valores, 
+#                  nombre,periodo_i, periodo_f){
+#   
+#   
+#   datagraf1 <- base %>% 
+#     mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+#                             levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#     mutate(x = (media.mujeres+media.varones)/2) %>%
+#     rename("brecha" = var) %>% 
+#     rename("var_facet" = facet_var)
+#   
+#   
+#   tabla <- datagraf1%>% 
+#     filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
+#     filter(var_facet %in% c(valores))
+#   
+#   
+#   tabla%>%   
+#     
+#     group_by(var_facet) %>% 
+#     do(p=plot_ly(., color = I("gray80")) %>% 
+#          add_segments(x = ~media.mujeres, xend = ~media.varones, y = ~periodo, yend = ~periodo, alpha = .3, showlegend = FALSE)%>% 
+#          add_text(x = ~x, y = ~periodo, text =~paste0(brecha,"%"), name = "Brecha", color = I(colores[3]), hoverinfo='skip', showlegend = F) %>% 
+#          add_markers(x = ~media.mujeres, y = ~periodo, name = "Mujeres", color = I(colores[1]),
+#                      hoverinfo = 'text',
+#                      text = ~paste0('</br><b>Mujeres</b>','</br>',var_facet,'</br>$',round(media.mujeres,0))) %>% 
+#          add_markers(x = ~media.varones, y = ~periodo, name = "Varones", color = I(colores[2]),
+#                      hoverinfo = 'text',
+#                      text = ~paste0('</br><b>Varones</b>','</br>',var_facet,'</br>$',round(media.varones,0))) %>% 
+#          add_text(#xref='x domain',
+#            #yref='y domain',
+#            x=15000,
+#            y=trimestres[(as.integer(unique(datagraf1$periodo[datagraf1$periodo == periodo_f])) + 1)],
+#            color = I(colores[3]),
+#            text=~paste0('<b>',var_facet,'</b>'), 
+#            showlegend = FALSE, 
+#            hoverinfo='skip'
+#            #showarrow=F,
+#            #row=3, col=1
+#          )%>% 
+#          add_text(x=5000,
+#                   y=trimestres[(as.integer(unique(datagraf1$periodo[datagraf1$periodo == periodo_f])) + 2)],
+#                   text="", 
+#                   showlegend = FALSE, 
+#                   hoverinfo='skip'
+#                   
+#          )
+#        
+#        
+#        %>% 
+#          layout(
+#            title = "",
+#            xaxis = list(title = str_wrap(nombre,20)),
+#            yaxis = list(title = "Período"
+#            ),
+#            margin = list(l = 65),
+#            showlegend = F,
+#            font = list(family = "Times New Roman")
+#          )
+#        
+#     ) %>% 
+#     subplot(nrows = length(unique(datagraf1$var_facet)), 
+#             shareX = TRUE, shareY = TRUE)
+#   
+# }
+
 
 
