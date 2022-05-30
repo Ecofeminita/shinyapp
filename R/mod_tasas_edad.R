@@ -1,13 +1,16 @@
-tabla_resultados[[2]]
+#tabla_resultados[[2]]
 
 
 library(plotly)
 library(shinyWidgets)
 library(shinydashboard)
 
+#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
 tasas_edad_server <- function(id) {
   moduleServer(id, function(input, output, session) {
+    
+    
     
     colores = c("#FE1764", "#00BDD6")
     

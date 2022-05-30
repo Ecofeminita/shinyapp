@@ -8,6 +8,7 @@ library(gridExtra)
 library(shinyjs)
 library(shinydashboard)
 
+tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
 
 ui <- fluidPage( 
@@ -19,7 +20,11 @@ ui <- fluidPage(
 
 ##### server #####
 
+
+
 server <- function (input, output,session) {
+    
+    
     
      #render UI 
     output$main_ui <- renderUI({

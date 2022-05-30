@@ -1,5 +1,19 @@
 
 
+
+
+
+library(plotly)
+library(shinyWidgets)
+library(shinydashboard)
+
+
+#armar_tabla(tabla_tipo_insercion, jerarqs[1], trimestres[1], trimestres[4])
+#plot(tabla_tipo_insercion, "Período", jerarqs[1], trimestres[1], trimestres[4])
+
+
+#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
+
 t3_acomodo <- tabla_resultados[[3]] %>% 
   mutate(JERARQUIA = "Trabajadores Asalariados")
 
@@ -16,21 +30,16 @@ tabla_tipo_insercion_asal <- tabla_tipo_insercion %>%
 tabla_tipo_insercion <- bind_rows((tabla_tipo_insercion %>% select(-`Proporción de no Registrados`)),tabla_tipo_insercion_asal) %>%
   filter(JERARQUIA != "Trabajadores Asalariados")
 
-
-colores <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
-
-
-library(plotly)
-library(shinyWidgets)
-library(shinydashboard)
-
-
-#armar_tabla(tabla_tipo_insercion, jerarqs[1], trimestres[1], trimestres[4])
-#plot(tabla_tipo_insercion, "Período", jerarqs[1], trimestres[1], trimestres[4])
-
 tipo_insercion_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
+    
+    
+    
+    colores <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
+    
+    
+    ###funciones
     
     
     armar_tabla <- function(dataframe,

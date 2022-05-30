@@ -3,7 +3,7 @@ library(plotly)
 
 options(scipen = 9999)
 
-
+#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
 #tabla_resultados$brecha_ITI_df
 #tabla_resultados$brecha_IOP_df
@@ -28,6 +28,7 @@ nombres_brechas <- data.frame("tabla" =c("brecha_ITI_df",
 
 brechas_server <- function(id) {
   moduleServer(id, function(input, output, session) {
+    
     
     
     colores <-  c("#FE1764", "#00BDD6", "black")

@@ -1,6 +1,7 @@
 
+#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
-a <- tabla_resultados$ramas_sexo_df
+#a <- tabla_resultados$ramas_sexo_df
 
 
 #colores <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
