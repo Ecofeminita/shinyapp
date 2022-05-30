@@ -30,7 +30,8 @@ main_ui <- {
              
              navbarMenu(title = 'Ingresos',
              brechas_ui('brechas_general'),
-             brechas_desag_ui('brechas_desag')
+             brechas_desag_ui('brechas_desag'),
+             deciles_ui('deciles')
 
              )
              

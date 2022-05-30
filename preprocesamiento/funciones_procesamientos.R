@@ -409,33 +409,67 @@ servicio_domestico_ocupadas <- function(base){
 }
 
 # Función de la composición según sexo de los deciles de ingresos totales individuales (perceptores)
+# deciles_ITI_sexo <- function(base){
+#   
+#   tabla <- base %>% 
+#     select(ANO4, TRIMESTRE, DECINDR, P47T, PONDII, Sexo) %>% 
+#     filter(DECINDR %in% c(1:10)) %>% 
+#     group_by(DECINDR) %>% 
+#     mutate(Pob = sum(PONDII)) %>% 
+#     group_by(ANO4, TRIMESTRE, DECINDR, Sexo) %>%
+#     summarise(Prop = round(sum(PONDII)/unique(Pob)*100, 1))
+#   
+#   return(tabla)
+#   
+# }
+
+
+#distribución de las personas de cada sexo en cada decil
 deciles_ITI_sexo <- function(base){
   
   tabla <- base %>% 
     select(ANO4, TRIMESTRE, DECINDR, P47T, PONDII, Sexo) %>% 
     filter(DECINDR %in% c(1:10)) %>% 
-    group_by(DECINDR) %>% 
-    mutate(Pob = sum(PONDII)) %>% 
-    group_by(ANO4, TRIMESTRE, DECINDR, Sexo) %>%
-    summarise(Prop = round(sum(PONDII)/unique(Pob)*100, 1))
+    group_by(ANO4, TRIMESTRE, Sexo, DECINDR) %>% 
+    summarise(Pob = sum(PONDII)) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo) %>%
+    mutate(Prop = round((Pob/sum(Pob))*100, 1)) %>% 
+    mutate(DECINDR = factor(DECINDR, levels = c("10","9","8","7","6","5","4","3","2","1")))
   
   return(tabla)
   
 }
 
+
 # Función de la composición según sexo de los deciles del ingreso per cápita familiar (total de la población)
+# deciles_IPCF_sexo <- function(base){
+#   
+#   tabla <- base %>% 
+#     select(ANO4, TRIMESTRE, DECCFR, IPCF, PONDIH, Sexo) %>% 
+#     filter(DECCFR %in% c(1:10)) %>% 
+#     group_by(DECCFR) %>% 
+#     mutate(Pob = sum(PONDIH)) %>% 
+#     group_by(ANO4, TRIMESTRE, DECCFR, Sexo) %>%
+#     summarise(Prop = round(sum(PONDIH)/unique(Pob)*100, 1))
+#   
+#   return(tabla)
+#   
+# }
+
+
+#distribución de las personas de cada sexo en cada decil
 deciles_IPCF_sexo <- function(base){
   
   tabla <- base %>% 
     select(ANO4, TRIMESTRE, DECCFR, IPCF, PONDIH, Sexo) %>% 
     filter(DECCFR %in% c(1:10)) %>% 
-    group_by(DECCFR) %>% 
-    mutate(Pob = sum(PONDIH)) %>% 
-    group_by(ANO4, TRIMESTRE, DECCFR, Sexo) %>%
-    summarise(Prop = round(sum(PONDIH)/unique(Pob)*100, 1))
+    group_by(ANO4, TRIMESTRE, Sexo, DECCFR) %>% 
+    summarise(Pob = sum(PONDIH)) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo) %>%
+    mutate(Prop = round((Pob/sum(Pob))*100, 1))%>% 
+    mutate(DECCFR = factor(DECCFR, levels = c("10","9","8","7","6","5","4","3","2","1")))
   
   return(tabla)
   
 }
-
 
