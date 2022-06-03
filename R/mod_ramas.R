@@ -1,7 +1,7 @@
 
 #tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
-#a <- tabla_resultados$ramas_sexo_df
+#tabla_resultados[["ramas_sexo_df"]]
 
 
 #colores <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
@@ -12,8 +12,8 @@ library(shinyWidgets)
 library(shinydashboard)
 
 
-#armar_tabla(tabla_tipo_insercion, jerarqs[1], trimestres[1], trimestres[4])
-#plot(tabla_tipo_insercion, "Período", jerarqs[1], trimestres[1], trimestres[4])
+
+#armar_tabla(tabla_resultados[["ramas_sexo_df"]],c("Enseñanza"),"16T2","19T4")
 
 ramas_server <- function(id) {
   moduleServer(id, function(input, output, session) {
@@ -34,7 +34,7 @@ ramas_server <- function(id) {
         
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
         
-        select(-periodo,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Rama de la ocupación", "Tasa de feminización", "Ingreso mensual promedio", "Ingreso horario")
+        select(-periodo,-trabajadoras_totales,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Rama de la ocupación","Proporción del empleo femenino total", "Tasa de feminización", "Ingreso mensual promedio", "Ingreso horario")
       
       datagraf
     }
@@ -46,7 +46,7 @@ ramas_server <- function(id) {
     }
     
     
-    plot <- function(base,
+    plot_i <- function(base,
                      vary,
                      eje_x,
                      valores_filter,
@@ -63,8 +63,8 @@ ramas_server <- function(id) {
         filter(`Rama de la ocupación` %in% valores_filter)
        
       
-      grafico <- ggplot(datagraf2, aes(x=periodo, y=ingreso, color=`Rama de la ocupación`, size =`Tasa de feminización`
-                                       ,text=paste0('</br><b>',`Rama de la ocupación`,'</b></br>Período: ',periodo, '</br>', vary,': $',ingreso, '</br>Tasa de feminización: ', round(`Tasa de feminización`,1),'%')
+      grafico <- ggplot(datagraf2, aes(x=periodo, y=ingreso, color=`Rama de la ocupación`, size =`Proporción del empleo femenino total`
+                                       ,text=paste0('</br><b>',`Rama de la ocupación`,'</b></br>Período: ',periodo, '</br>', vary,': $',ingreso, '</br>Proporción del empleo femenino total: ', round(`Proporción del empleo femenino total`,1),'%')
                                        
       )) + 
         geom_point(alpha = .5)+
@@ -90,21 +90,78 @@ ramas_server <- function(id) {
     }
     
     
+    
+    plot_f <- function(base,
+                       valores_filter, 
+                       periodo_i, periodo_f){
+      
+      datagraf1 <- base %>% 
+        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        filter(`Rama de la ocupación` %in% valores_filter)
+      
+      tabla <- datagraf1%>% 
+        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
+      
+      
+      grafico <- ggplot(tabla, aes(periodo, `Tasa de feminización`, color = `Rama de la ocupación`, group = `Rama de la ocupación`
+                                   ,text=paste0('</br><b>',`Rama de la ocupación`,'</b></br>Período: ',periodo,
+                                                 '</br>Tasa de feminización: ',`Tasa de feminización`,'%')
+      )) +
+        geom_line(size = 1, alpha = 0.75) +
+        geom_point(size = 1) +
+        theme_minimal() +
+        theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
+              legend.position = "none",
+              panel.background = element_rect(fill = "gray99", color = "gray90"),
+              #plot.background = element_rect(fill="gray99", color = NA),
+              strip.text.y = element_text(angle = 0),
+              panel.grid.minor.y = element_blank()) +
+        #scale_color_manual(values = colores) +
+        labs(#title = titulo,
+          #subtitle = subtitulo,
+          x = "Período",
+          y = paste0("Tasa de feminización"),
+          color = "",
+          #caption = "Fuente: Elaboración propia en base a EPH-INDEC"
+        )+ 
+        scale_y_continuous(labels = function(x) paste0(x, "%")) 
+      
+      
+      
+      grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "Times New Roman"))
+      
+      return(grafico)
+      
+      
+      
+    }
+    
+    
+    
     generar_titulo <- function(periodo_i, periodo_f){
       titulo <- paste0("<b>","<font size='+2'>","Tasa de feminización e ingresos por rama de actividad desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
       titulo
     }
     
     
-    output$plot <- renderPlotly({
+    output$plot_ingreso <- renderPlotly({
       
-      plot(tabla_resultados[["ramas_sexo_df"]],
+      plot_i(tabla_resultados[["ramas_sexo_df"]],
            
            eje_x = "Período",
            vary = input$ingreso_id,
            valores_filter = input$ramas_id,
            input$id_periodo[1],
            input$id_periodo[2]) 
+    })
+    
+    output$plot_feminizacion <- renderPlotly({
+      
+      plot_f(tabla_resultados[["ramas_sexo_df"]],
+             valores_filter=input$ramas_id, 
+             input$id_periodo[1],
+             input$id_periodo[2]) 
     })
     
     
@@ -147,7 +204,7 @@ ramas_ui <- function(id) {
              sidebarPanel(
                selectInput(ns('ramas_id'),label = 'Elegir ramas de actividad',
                            choices = ramas,
-                           selected = ramas[c(2,4,11)],
+                           selected = ramas[c(2,4,9)],
                            multiple = TRUE),
                selectInput(ns('ingreso_id'),label = 'Elegir variable de ingreso',
                            choices = c("Ingreso mensual promedio", "Ingreso horario"),
@@ -164,7 +221,9 @@ ramas_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 600),
+                        plotlyOutput(ns('plot_ingreso'), height = 500),
+                        br(),
+                        plotlyOutput(ns('plot_feminizacion'), height = 500),
                         br(),
                         box(title = "Metadata", width = NULL, textOutput(ns('metadata1'))
                         ),

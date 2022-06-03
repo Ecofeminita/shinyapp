@@ -130,21 +130,30 @@ rama_ocupacion <- function(base){
                                       ".",
                                       PP3E_TOT,
                                       fixed = TRUE))) %>% 
+    filter(!is.na(Rama)) %>% 
     group_by(ANO4, TRIMESTRE,Rama) %>% 
     summarise(tasa_feminizacion = (sum(PONDERA[Sexo == "Mujeres"])/sum(PONDERA))*100,
               ingreso_promedio = round(weighted.mean(P21, PONDIIO/sum(PONDIIO)), 2),
-              ingreso_hor = round(weighted.mean(P21/(PP3E_TOT * 30 / 7), PONDIIO), 2)) %>% 
+              ingreso_hor = round(weighted.mean(P21/(PP3E_TOT * 30 / 7), PONDIIO), 2),
+              trabajadoras_totales = sum(PONDERA[Sexo == "Mujeres"])) %>% 
+    ungroup() %>% 
+    group_by(ANO4, TRIMESTRE) %>% 
+    mutate("Proporción del empleo femenino total" = (trabajadoras_totales/sum(trabajadoras_totales))*100) %>% 
+    
     # filter(Rama %in% c("Servicio domestico", "Ensenanza", "Servicios sociales y de salud", 
     #                    "Industria manufacturera", "Actividades primarias", "Transporte, almacenamiento y comunicaciones",
     #                    "Construccion")) %>% 
-    transmute("Rama de la ocupación" = Rama,
-              "Tasa de feminización" = tasa_feminizacion,
-              "Ingreso mensual promedio" = ingreso_promedio,
-              "Ingreso horario" = ingreso_hor)
+    
+    rename("Rama de la ocupación" = "Rama",
+              "Tasa de feminización" = "tasa_feminizacion",
+              "Ingreso mensual promedio" = "ingreso_promedio",
+              "Ingreso horario" = "ingreso_hor")
   
   return(tabla)
   
 }
+
+
 
 
 # Función de brecha del ingreso total individual (perceptores)

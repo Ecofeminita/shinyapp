@@ -17,6 +17,11 @@ eval(parse('preprocesamiento/funciones_procesamientos.R', encoding="UTF-8"))
 eval(parse('preprocesamiento/genero_tablas.R', encoding="UTF-8"))
 
 
+levels(tabla_resultados[["ramas_sexo_df"]]$"Rama de la ocupación")[levels(tabla_resultados[["ramas_sexo_df"]]$"Rama de la ocupación") == "Ensenanza"] <- "Enseñanza"
+
+
+
+
 saveRDS(tabla_resultados,"www/tabla_resultados.RDS")
 
 #problemas con tildes guardando el .Rdata, alguna idea para solucionarlo?

@@ -14,10 +14,10 @@ library(shinydashboard)
 
 #tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
-t3_acomodo <- tabla_resultados[[3]] %>% 
+t3_acomodo <- tabla_resultados[["tasas_no_registro_df"]] %>% 
   mutate(JERARQUIA = "Trabajadores Asalariados")
 
-tabla_tipo_insercion <- tabla_resultados[[4]] %>% 
+tabla_tipo_insercion <- tabla_resultados[["sexo_segun_jerarquias_df"]] %>% 
   left_join(.,t3_acomodo, by = c("ANO4", "TRIMESTRE","Sexo", "JERARQUIA"))
 
 tabla_tipo_insercion_asal <- tabla_tipo_insercion %>% 

@@ -469,14 +469,13 @@ brechas_desag_ui <- function(id) {
                            multiple = FALSE),
                selectInput(ns('var_desag_id'),label = 'Elegir desagregación:',
                            choices = unique(nombres_brechas_desag$variable_desag_nombre),
-                           selected = NULL,#unique(nombres_brechas_desag$variable_desag_nombre)[1],
+                           selected = NULL,
                            multiple = FALSE),
-               #conditionalPanel(condition = "input.var_desag_id=='Calificación'",
                selectInput(ns('valores_id'),label = 'Elegir valores:',
                            choices = NULL,
                            selected = NULL,
                            multiple = T)
-              # )
+              
                ,
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T2"))
                

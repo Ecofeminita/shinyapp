@@ -102,11 +102,7 @@ tasas_sexo_server <- function(id) {
       return(grafico)
     }
     
-    # generar_titulo <- function(variables, periodo_i, periodo_f){
-    #   nombre_variable <- unique(diccionario_variables$nombre.variable[diccionario_variables$cod.variable ==variables])
-    #   titulo <- paste0(variables ," desde ", periodo_i, " hasta ", periodo_f)
-    # }
-    
+ 
     
     
     output$plot <- renderPlotly({graficos_series(dataframe= "tasas_por_sexo_df",

@@ -1,5 +1,3 @@
-#tabla_resultados[[2]]
-
 
 library(plotly)
 library(shinyWidgets)
