@@ -155,6 +155,10 @@ brechas_ui <- function(id) {
                            choices = nombres_brechas$nombre,
                            selected = nombres_brechas$nombre[1],
                            multiple = FALSE),
+               selectInput(ns('precios_id'),label = 'Valuación:',
+                           choices = c("Precios corrientes", "Precios constantes"),
+                           selected = "Precios corrientes",
+                           multiple = FALSE),
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4"))
                
              ),

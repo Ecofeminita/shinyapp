@@ -17,7 +17,7 @@ eval(parse('preprocesamiento/funciones_procesamientos.R', encoding="UTF-8"))
 eval(parse('preprocesamiento/genero_tablas.R', encoding="UTF-8"))
 
 
-#saveRDS(tabla_resultados,"www/tabla_resultados.RDS")
+saveRDS(tabla_resultados,"www/tabla_resultados.RDS")
 
 #problemas con tildes guardando el .Rdata, alguna idea para solucionarlo?
 

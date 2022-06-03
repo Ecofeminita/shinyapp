@@ -22,11 +22,15 @@ tasas_sexo_server <- function(id) {
       datagraf1 <- tabla_resultados[[dataframe]] %>%                          
         mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
                                 levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-        filter(eval(parse(text=variable)) %in% valores_filter) 
+        filter(eval(parse(text=variable)) %in% valores_filter) %>% 
+        relocate(valor, .after = last_col())
+        
+      
+      names(datagraf1)[length(datagraf1)] <- paste0(valores_filter[1])
       
       datagraf <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
-        select(-periodo,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Indicador" = "indicador", "Sexo", "Valor" = "valor")
+        select(-periodo, -indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Sexo")
       
       datagraf
     }

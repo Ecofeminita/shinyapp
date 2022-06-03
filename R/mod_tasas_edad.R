@@ -27,11 +27,14 @@ tasas_edad_server <- function(id) {
         filter(GRUPO_EDAD %in% grupos) %>% 
         mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
                                 levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-        filter(eval(parse(text=variable)) %in% valores_filter) 
+        filter(eval(parse(text=variable)) %in% valores_filter) %>% 
+        relocate(valor, .after = last_col())
+      
+      names(datagraf1)[length(datagraf1)] <- paste0(valores_filter[1])
       
       datagraf <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
-        select(-periodo,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Indicador" = "indicador", "Grupo edad" = "GRUPO_EDAD", "Sexo", "Valor" = "valor")
+        select(-periodo,-indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Grupo edad" = "GRUPO_EDAD", "Sexo")
       
       datagraf
     }
@@ -141,9 +144,9 @@ tasas_edad_server <- function(id) {
 }
 
 
-tasas <- tabla_resultados[["tasas_por_sexo_edad_df"]]$indicador %>% unique()
+tasas_edad <- tabla_resultados[["tasas_por_sexo_edad_df"]]$indicador %>% unique()
 
-tasas <- tasas[grepl("Tasa",tasas)]
+tasas_edad <- tasas_edad[grepl("Tasa",tasas_edad)]
 
 trimestres <- tabla_resultados[["tasas_por_sexo_edad_df"]] %>% 
   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
@@ -160,8 +163,8 @@ tasas_edad_ui <- function(id) {
            sidebarLayout(
              sidebarPanel(
                selectInput(ns('indicador'),label = 'Elegir indicador',
-                           choices = tasas,
-                           selected = tasas[1],
+                           choices = tasas_edad,
+                           selected = tasas_edad[1],
                            multiple = FALSE),
                selectInput(ns('g_edad'),label = 'Grupo de edad:',
                            choices = grupos_edad,

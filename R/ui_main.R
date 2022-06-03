@@ -9,7 +9,7 @@ library(markdown)
 
 tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
-about_ui <- tabPanel(title = 'about',
+about_ui <- tabPanel(title = 'Inicio',
                      includeMarkdown('README.md'))
 
 
@@ -17,9 +17,10 @@ main_ui <- {
   
   
   
-  navbarPage('titulo',
+  navbarPage('ECOFEMIDATA',
              #sample_plot_ui('ejemplo'),
              about_ui,
+             #tab de inicio (rmd): con ilustración, accesos directos, bienvenida, objetivos, como usar plotly
              
              navbarMenu(title = 'Mercado de Trabajo',
              tasas_sexo_ui('tasas_sexo'),
@@ -33,6 +34,18 @@ main_ui <- {
              brechas_desag_ui('brechas_desag'),
              deciles_ui('deciles')
 
+             ),
+             
+             navbarMenu(title = 'Uso del tiempo'
+                        #remunerado
+                        #no remunerado
+                       
+             ),
+             
+             navbarMenu(title = 'Trabajadoras de servicio doméstico'
+                        #principales indicadores del informe
+                        
+                        
              )
              
              )

@@ -26,7 +26,7 @@ deciles_server <- function(id) {
     
     
     
-    #colores = c("#FE1764", "#00BDD6")
+    colores = c("#FE1764", "#00BDD6")
     
     #armar_tabla(tabla_resultados[["deciles_ITI_sexo_df"]],"DECINDR","16T2","16T3")
     
@@ -38,13 +38,15 @@ deciles_server <- function(id) {
       datagraf1 <- dataframe %>%                        
         mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
                                 levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-        rename("Decil" = tipo_ingreso)
+        rename("Decil" = tipo_ingreso) %>% 
+        filter(Sexo == "Mujeres") %>% 
+        rename("Porcentaje de población femenina del decil" = Prop)
       
       datagraf <- datagraf1%>% 
         
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
         
-        select(-periodo,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Sexo", "Decil", "Porcentaje de la población" = "Prop")
+        select(-periodo, -Pob,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Decil","Porcentaje de población femenina del decil")
       
       datagraf
     }
@@ -58,7 +60,6 @@ deciles_server <- function(id) {
     
     
     plot <- function(base,
-                     eje_x,
                      tipo_ingreso,
                      periodo_i,
                      periodo_f){
@@ -66,32 +67,29 @@ deciles_server <- function(id) {
       datagraf1 <- base %>%         
         mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
                                 levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-        rename("Decil" = tipo_ingreso)
+        rename("Decil" = tipo_ingreso) %>% 
+        filter(Sexo == "Mujeres")
         
       
       datagraf2 <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
       
-      grafico <- ggplot(datagraf2, aes(x=periodo, y=Prop, fill=Decil
-                                       ,text=paste0('</br>',Sexo,'</br><b>Decíl: ',Decil,'</b></br>Población: ',Prop,'%', '</br>Período: ',periodo)
+      grafico <- ggplot(datagraf2, aes(x=periodo, y=Decil, fill=Prop
+                                       ,text=paste0('</br><b>Decíl: ',Decil,'</b></br>Población femenina del decil: ',Prop,'%', '</br>Período: ',periodo)
                                        
       )) + 
-        geom_col(position = "stack")+
-        facet_wrap(~Sexo)+
+        geom_tile()+
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
-              legend.position = "bottom",
+              legend.position = "none",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
-              #plot.background = element_rect(fill="gray99", color = NA),
+             
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
-        scale_fill_viridis_d(option = "B", alpha = .7, end = .7)+
-        #scale_fill_manual(values = colores) +
-        labs(x = eje_x,
-             y = "",
-             fill = "",
-             caption = "Fuente: Elaboración propia en base a EPH-INDEC")+
-        scale_y_continuous(labels = function(x) (paste0(x,"%")))
+        scale_fill_gradient(low=colores[2], high=colores[1]) +
+    
+        labs(x = "Período",
+             y = "Decil")
       
       #grafico
       ggplotly(grafico, tooltip = c("text")) %>%
@@ -100,7 +98,7 @@ deciles_server <- function(id) {
     }
     
     
-    #plot(tabla_resultados[["deciles_ITI_sexo_df"]],"x","DECINDR","16T2","16T3")
+    plot(tabla_resultados[["deciles_ITI_sexo_df"]],"DECINDR","16T2","16T3")
     
     generar_titulo <- function(tipo_ingreso,periodo_i, periodo_f){
       titulo <- paste0("<b>","<font size='+2'>","Distribución de la población según decil de ",tipo_ingreso,". Desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
@@ -109,15 +107,14 @@ deciles_server <- function(id) {
     
     
     output$plot <- renderPlotly({
-      
+
       plot(tabla_resultados[[(nombres_deciles$tabla[nombres_deciles$nombre == input$ingreso_id])]],
-           
-           eje_x = "Período",
+
            tipo_ingreso = nombres_deciles$cod[nombres_deciles$nombre == input$ingreso_id],
            input$id_periodo[1],
-           input$id_periodo[2]) 
+           input$id_periodo[2])
     })
-    
+
     
     
     
@@ -204,3 +201,31 @@ deciles_ui <- function(id) {
            )
   )
 }
+
+
+
+
+
+####guardo el anterior
+
+
+# grafico <- ggplot(datagraf2, aes(x=periodo, y=Prop, fill=Decil
+#                                  ,text=paste0('</br>',Sexo,'</br><b>Decíl: ',Decil,'</b></br>Población: ',Prop,'%', '</br>Período: ',periodo)
+#                                  
+# )) + 
+#   geom_col(position = "stack")+
+#   facet_wrap(~Sexo)+
+#   theme_minimal() +
+#   theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
+#         legend.position = "bottom",
+#         panel.background = element_rect(fill = "gray99", color = "gray90"),
+#         #plot.background = element_rect(fill="gray99", color = NA),
+#         strip.text.y = element_text(angle = 0),
+#         panel.grid.minor.y = element_blank()) +
+#   scale_fill_viridis_d(option = "B", alpha = .7, end = .7)+
+#   #scale_fill_manual(values = colores) +
+#   labs(x = eje_x,
+#        y = "",
+#        fill = "",
+#        caption = "Fuente: Elaboración propia en base a EPH-INDEC")+
+#   scale_y_continuous(labels = function(x) (paste0(x,"%")))

@@ -54,9 +54,9 @@ brechas_desag_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
     
+    colores_b <-  c("#FE1764", "#00BDD6", "black")
     
-    
-    colores <-  c("#FE1764", "#00BDD6", "black")
+    colores_g <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
     
     
     
@@ -106,13 +106,60 @@ brechas_desag_server <- function(id) {
       nombre_variable <- sub(",([^,]*)$", " y\\1", nombre_variable)   
       titulo <- paste0(nombre_variable ," desde ", periodo_i, " hasta ", periodo_f)
     }
-    
-    
    
     
+   plot_general <- function(base,var,facet_var,
+                            valores, 
+                            nombre,
+                            porcentaje,
+                            periodo_i, periodo_f){
+     
+     datagraf1 <- base %>% 
+       mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+                               levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+       rename("brecha" = var) %>% 
+       rename("var_facet" = facet_var)%>% 
+       filter(var_facet %in% c(valores))
+     
+     tabla <- datagraf1%>% 
+       filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
+     
+     
+     grafico <- ggplot(tabla, aes(periodo, brecha, color = var_facet, group = var_facet
+                                     ,text=paste0('</br>',var_facet,'</br>Brecha: ',brecha,'%', '</br>Período: ',periodo)
+     )) +
+       geom_line(size = 1, alpha = 0.75) +
+       geom_point(size = 1) +
+       theme_minimal() +
+       theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
+             legend.position = "bottom",
+             panel.background = element_rect(fill = "gray99", color = "gray90"),
+             #plot.background = element_rect(fill="gray99", color = NA),
+             strip.text.y = element_text(angle = 0),
+             panel.grid.minor.y = element_blank()) +
+       scale_color_manual(values = colores_g) +
+       labs(#title = titulo,
+            #subtitle = subtitulo,
+            x = "Período",
+            y = paste0("Brecha de ",nombre),
+            color = "",
+            #caption = "Fuente: Elaboración propia en base a EPH-INDEC"
+            )
+     
+     
+     if(porcentaje){
+       grafico <- grafico + 
+         scale_y_continuous(labels = function(x) paste0(x, "%"))    
+     }
+     
+     grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "Times New Roman"))
+     
+     return(grafico)
+     
+     
+     
+   }
     
-    
-    #### versión sin los paneles
     
     plot <- function(base,var,facet_var,
                      valores, 
@@ -132,11 +179,11 @@ brechas_desag_server <- function(id) {
       
       fig <- plot_ly(tabla, color = I("gray80"))
       fig <- fig %>% add_segments(x = ~media.mujeres, xend = ~media.varones, y = ~periodo, yend = ~periodo, alpha = .3, showlegend = FALSE)
-      fig <- fig %>% add_text(x = ~x, y = ~periodo, text =~paste0(brecha,"%"), name = "Brecha", color = I(colores[3]), hoverinfo='skip', showlegend = F) 
-      fig <- fig %>% add_markers(x = ~media.mujeres, y = ~periodo, name = "Mujeres", color = I(colores[1]),
+      fig <- fig %>% add_text(x = ~x, y = ~periodo, text =~paste0(brecha,"%"), name = "Brecha", color = I(colores_b[3]), hoverinfo='skip', showlegend = F) 
+      fig <- fig %>% add_markers(x = ~media.mujeres, y = ~periodo, name = "Mujeres", color = I(colores_b[1]),
                                  hoverinfo = 'text',
                                  text = ~paste0('</br><b>Mujeres</b>','</br>',var_facet,'</br>$',round(media.mujeres,0)))
-      fig <- fig %>% add_markers(x = ~media.varones, y = ~periodo, name = "Varones", color = I(colores[2]),
+      fig <- fig %>% add_markers(x = ~media.varones, y = ~periodo, name = "Varones", color = I(colores_b[2]),
                                  hoverinfo = 'text',
                                  text = ~paste0('</br><b>Varones</b>','</br>',var_facet,'</br>$',round(media.mujeres,0)))
       
@@ -155,7 +202,6 @@ brechas_desag_server <- function(id) {
     
     
     
-    ####
     
     
     
@@ -180,11 +226,24 @@ brechas_desag_server <- function(id) {
       
       updateSelectInput(session, 'valores_id',
                         choices = options,
-                        selected = options[1])
+                        selected = options#[1]
+                        )
     })
     
     
-    
+    output$plot_gral <- renderPlotly({
+      
+      plot_general(base = tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+           
+           
+           var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+           facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+           valores=input$valores_id,
+           nombre =input$ingreso_id,
+           porcentaje = T, #para constantes!
+           input$id_periodo[1],
+           input$id_periodo[2]) 
+    })
     
     observe({
       
@@ -379,6 +438,7 @@ brechas_desag_server <- function(id) {
     output$metadata1 <- renderText({"blabla"})
     output$metadata2 <- renderText({"blabla"})
     
+    output$titulo0 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
     output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
     
@@ -403,6 +463,10 @@ brechas_desag_ui <- function(id) {
                            choices = unique(nombres_brechas_desag$nombre),
                            selected = unique(nombres_brechas_desag$nombre)[1],
                            multiple = FALSE),
+               selectInput(ns('precios_id'),label = 'Valuación:',
+                           choices = c("Precios corrientes", "Precios constantes"),
+                           selected = "Precios corrientes",
+                           multiple = FALSE),
                selectInput(ns('var_desag_id'),label = 'Elegir desagregación:',
                            choices = unique(nombres_brechas_desag$variable_desag_nombre),
                            selected = NULL,#unique(nombres_brechas_desag$variable_desag_nombre)[1],
@@ -419,7 +483,21 @@ brechas_desag_ui <- function(id) {
              ),
              mainPanel( tabsetPanel(
                
-               tabPanel("Gráfico",
+               tabPanel("Gráfico-Comparación",
+                        value = "g_br_des_gral",
+                        
+                        br(),
+                        box(width = NULL, htmlOutput(ns('titulo0'))), 
+                        br(),
+                        box(width = NULL, plotlyOutput(ns('plot_gral'), height = 500),
+                            
+                        ),
+                        
+                        
+               ),
+               
+               
+               tabPanel("Gráfico-Desagregado",
                         value = "g_br_des",
                         
                         br(),
@@ -479,82 +557,6 @@ brechas_desag_ui <- function(id) {
 }
 
 
-
-
-
-#Guardo código anterior por si me arrepiento
-
-
-#plot(tabla_resultados[["brecha_IOP_calif_df"]],"brecha.IOP.calif","CALIFICACION", "Ingreso mensual de la Ocupación Principal","16T2","19T2")
-
-###Versión con los paneles
-
-# plot <- function(base,var, facet_var,
-#                  valores, 
-#                  nombre,periodo_i, periodo_f){
-#   
-#   
-#   datagraf1 <- base %>% 
-#     mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-#                             levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-#     mutate(x = (media.mujeres+media.varones)/2) %>%
-#     rename("brecha" = var) %>% 
-#     rename("var_facet" = facet_var)
-#   
-#   
-#   tabla <- datagraf1%>% 
-#     filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
-#     filter(var_facet %in% c(valores))
-#   
-#   
-#   tabla%>%   
-#     
-#     group_by(var_facet) %>% 
-#     do(p=plot_ly(., color = I("gray80")) %>% 
-#          add_segments(x = ~media.mujeres, xend = ~media.varones, y = ~periodo, yend = ~periodo, alpha = .3, showlegend = FALSE)%>% 
-#          add_text(x = ~x, y = ~periodo, text =~paste0(brecha,"%"), name = "Brecha", color = I(colores[3]), hoverinfo='skip', showlegend = F) %>% 
-#          add_markers(x = ~media.mujeres, y = ~periodo, name = "Mujeres", color = I(colores[1]),
-#                      hoverinfo = 'text',
-#                      text = ~paste0('</br><b>Mujeres</b>','</br>',var_facet,'</br>$',round(media.mujeres,0))) %>% 
-#          add_markers(x = ~media.varones, y = ~periodo, name = "Varones", color = I(colores[2]),
-#                      hoverinfo = 'text',
-#                      text = ~paste0('</br><b>Varones</b>','</br>',var_facet,'</br>$',round(media.varones,0))) %>% 
-#          add_text(#xref='x domain',
-#            #yref='y domain',
-#            x=15000,
-#            y=trimestres[(as.integer(unique(datagraf1$periodo[datagraf1$periodo == periodo_f])) + 1)],
-#            color = I(colores[3]),
-#            text=~paste0('<b>',var_facet,'</b>'), 
-#            showlegend = FALSE, 
-#            hoverinfo='skip'
-#            #showarrow=F,
-#            #row=3, col=1
-#          )%>% 
-#          add_text(x=5000,
-#                   y=trimestres[(as.integer(unique(datagraf1$periodo[datagraf1$periodo == periodo_f])) + 2)],
-#                   text="", 
-#                   showlegend = FALSE, 
-#                   hoverinfo='skip'
-#                   
-#          )
-#        
-#        
-#        %>% 
-#          layout(
-#            title = "",
-#            xaxis = list(title = str_wrap(nombre,20)),
-#            yaxis = list(title = "Período"
-#            ),
-#            margin = list(l = 65),
-#            showlegend = F,
-#            font = list(family = "Times New Roman")
-#          )
-#        
-#     ) %>% 
-#     subplot(nrows = length(unique(datagraf1$var_facet)), 
-#             shareX = TRUE, shareY = TRUE)
-#   
-# }
 
 
 
