@@ -68,7 +68,8 @@ brechas_desag_server <- function(id) {
                             nombre_facet,
                             valores,
                             periodo_i,
-                            periodo_f
+                            periodo_f,
+                            valuacion
     ){
       
       datagraf1 <- dataframe %>% 
@@ -89,15 +90,30 @@ brechas_desag_server <- function(id) {
         
         rename("Año" = "ANO4", 
                "Trimestre" = "TRIMESTRE", 
-               "Mujeres (Ingreso medio)"="media.mujeres",
-               "Varones (Ingreso medio)"="media.varones", 
-               "Brecha" = "brecha")
+               "Brecha (%)" = "brecha",
+               "Mujeres (Ingreso medio - precios corrientes)"="media.mujeres",
+               "Varones (Ingreso medio - precios corrientes)"="media.varones", 
+               "Mujeres (Ingreso medio - precios constantes)"="cte_media.mujeres",
+               "Varones (Ingreso medio - precios constantes)"="cte_media.varones")
       
       str_nombre <- paste0(nombre_facet)
       
       colnames(datagraf)[3] <- str_nombre
       
-      datagraf
+      if(valuacion =="Precios corrientes"){
+        
+        datagraff <- datagraf %>% 
+          select(-c("Varones (Ingreso medio - precios constantes)","Mujeres (Ingreso medio - precios constantes)"))
+        
+        return(datagraff)
+        
+      } else if(valuacion =="Precios constantes (4to trimestre 2019)"){
+        
+        datagraff <- datagraf %>% 
+          select(-c("Mujeres (Ingreso medio - precios corrientes)","Varones (Ingreso medio - precios corrientes)"))
+        
+        return(datagraff)
+      }
       
     }
     
@@ -163,12 +179,15 @@ brechas_desag_server <- function(id) {
     
     plot <- function(base,var,facet_var,
                      valores, 
-                     nombre,periodo_i, periodo_f){
+                     nombre,periodo_i, periodo_f,
+                     valuacion){
       
       datagraf1 <- base %>% 
         mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
                                 levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
         mutate(x = (media.mujeres+media.varones)/2) %>% 
+        mutate(cte_x = (cte_media.mujeres+cte_media.varones)/2) %>% 
+        mutate(z = media.varones-media.mujeres) %>% 
         rename("brecha" = var) %>% 
         rename("var_facet" = facet_var)%>% 
         filter(var_facet %in% c(valores))
@@ -176,27 +195,56 @@ brechas_desag_server <- function(id) {
       tabla <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
       
+      if(valuacion =="Precios corrientes"){
+        
+        fig <- plot_ly(tabla, color = I("gray80"))
+        fig <- fig %>% add_segments(x = ~media.mujeres, xend = ~media.varones, y = ~periodo, yend = ~periodo, alpha = .3, showlegend = FALSE)
+        fig <- fig %>% add_text(x = ~x, y = ~periodo, text =~paste0("$",round(z,2)), name = "Brecha", color = I(colores_b[3]), hoverinfo='skip', showlegend = F) 
+        fig <- fig %>% add_markers(x = ~media.mujeres, y = ~periodo, name = "Mujeres", color = I(colores_b[1]),
+                                   hoverinfo = 'text',
+                                   text = ~paste0('</br><b>Mujeres</b>','</br>',var_facet,'</br>$',round(media.mujeres,0)))
+        fig <- fig %>% add_markers(x = ~media.varones, y = ~periodo, name = "Varones", color = I(colores_b[2]),
+                                   hoverinfo = 'text',
+                                   text = ~paste0('</br><b>Varones</b>','</br>',var_facet,'</br>$',round(media.varones,0)))
+        
+        fig <- fig %>% layout(
+          title = "",
+          xaxis = list(title = nombre),
+          yaxis = list(title = "Período"),
+          margin = list(l = 65),
+          showlegend = T,
+          font = list(family = "Times New Roman")
+        )
+        
+        return(fig)
+        
+      } else if(valuacion =="Precios constantes (4to trimestre 2019)"){
+        
+        
+        fig <- plot_ly(tabla, color = I("gray80"))
+        fig <- fig %>% add_segments(x = ~cte_media.mujeres, xend = ~cte_media.varones, y = ~periodo, yend = ~periodo, alpha = .3, showlegend = FALSE)
+        fig <- fig %>% add_text(x = ~cte_x, y = ~periodo, text =~paste0(brecha,"%"), name = "Brecha", color = I(colores_b[3]), hoverinfo='skip', showlegend = F) 
+        fig <- fig %>% add_markers(x = ~cte_media.mujeres, y = ~periodo, name = "Mujeres", color = I(colores_b[1]),
+                                   hoverinfo = 'text',
+                                   text = ~paste0('</br><b>Mujeres</b>','</br>',var_facet,'</br>$',round(cte_media.mujeres,0)))
+        fig <- fig %>% add_markers(x = ~cte_media.varones, y = ~periodo, name = "Varones", color = I(colores_b[2]),
+                                   hoverinfo = 'text',
+                                   text = ~paste0('</br><b>Varones</b>','</br>',var_facet,'</br>$',round(cte_media.varones,0)))
+        
+        fig <- fig %>% layout(
+          title = "",
+          xaxis = list(title = nombre),
+          yaxis = list(title = "Período"),
+          margin = list(l = 65),
+          showlegend = T,
+          font = list(family = "Times New Roman")
+        )
+        
+        return(fig)
+      }
       
-      fig <- plot_ly(tabla, color = I("gray80"))
-      fig <- fig %>% add_segments(x = ~media.mujeres, xend = ~media.varones, y = ~periodo, yend = ~periodo, alpha = .3, showlegend = FALSE)
-      fig <- fig %>% add_text(x = ~x, y = ~periodo, text =~paste0(brecha,"%"), name = "Brecha", color = I(colores_b[3]), hoverinfo='skip', showlegend = F) 
-      fig <- fig %>% add_markers(x = ~media.mujeres, y = ~periodo, name = "Mujeres", color = I(colores_b[1]),
-                                 hoverinfo = 'text',
-                                 text = ~paste0('</br><b>Mujeres</b>','</br>',var_facet,'</br>$',round(media.mujeres,0)))
-      fig <- fig %>% add_markers(x = ~media.varones, y = ~periodo, name = "Varones", color = I(colores_b[2]),
-                                 hoverinfo = 'text',
-                                 text = ~paste0('</br><b>Varones</b>','</br>',var_facet,'</br>$',round(media.mujeres,0)))
       
-      fig <- fig %>% layout(
-        title = "",
-        xaxis = list(title = nombre),
-        yaxis = list(title = "Período"),
-        margin = list(l = 65),
-        showlegend = T,
-        font = list(family = "Times New Roman")
-      )
       
-      fig
       
     }
     
@@ -257,9 +305,10 @@ brechas_desag_server <- function(id) {
                var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
                facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
                valores=input$valores_id[1],
-               nombre =input$ingreso_id,
+               nombre =paste0(input$ingreso_id," - ",input$precios_id),
                input$id_periodo[1],
-               input$id_periodo[2]) 
+               input$id_periodo[2],
+               input$precios_id) 
         })
         
         output$st2 <- NULL
@@ -283,9 +332,10 @@ brechas_desag_server <- function(id) {
              var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              valores=input$valores_id[1],
-             nombre =input$ingreso_id,
+             nombre =paste0(input$ingreso_id," - ",input$precios_id),
              input$id_periodo[1],
-             input$id_periodo[2]) 
+             input$id_periodo[2],
+             input$precios_id) 
       })
       
       output$st2 <- renderText({generar_subtitulo(input$valores_id[2])})
@@ -297,9 +347,10 @@ brechas_desag_server <- function(id) {
              var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              valores=input$valores_id[2],
-             nombre =input$ingreso_id,
+             nombre =paste0(input$ingreso_id," - ",input$precios_id),
              input$id_periodo[1],
-             input$id_periodo[2]) 
+             input$id_periodo[2],
+             input$precios_id) 
       })
       
       output$st3 <- NULL
@@ -320,9 +371,10 @@ brechas_desag_server <- function(id) {
              var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              valores=input$valores_id[1],
-             nombre =input$ingreso_id,
+             nombre =paste0(input$ingreso_id," - ",input$precios_id),
              input$id_periodo[1],
-             input$id_periodo[2]) 
+             input$id_periodo[2],
+             input$precios_id) 
       })
       
       output$st2 <- renderText({generar_subtitulo(input$valores_id[2])})
@@ -334,9 +386,10 @@ brechas_desag_server <- function(id) {
              var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              valores=input$valores_id[2],
-             nombre =input$ingreso_id,
+             nombre =paste0(input$ingreso_id," - ",input$precios_id),
              input$id_periodo[1],
-             input$id_periodo[2]) 
+             input$id_periodo[2],
+             input$precios_id) 
       })
       
       output$st3 <- renderText({generar_subtitulo(input$valores_id[3])})
@@ -348,9 +401,10 @@ brechas_desag_server <- function(id) {
              var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              valores=input$valores_id[3],
-             nombre =input$ingreso_id,
+             nombre =paste0(input$ingreso_id," - ",input$precios_id),
              input$id_periodo[1],
-             input$id_periodo[2]) 
+             input$id_periodo[2],
+             input$precios_id) 
       })
       
       output$st4 <- NULL
@@ -368,9 +422,10 @@ brechas_desag_server <- function(id) {
              var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              valores=input$valores_id[1],
-             nombre =input$ingreso_id,
+             nombre =paste0(input$ingreso_id," - ",input$precios_id),
              input$id_periodo[1],
-             input$id_periodo[2]) 
+             input$id_periodo[2],
+             input$precios_id) 
       })
       
       output$st2 <- renderText({generar_subtitulo(input$valores_id[2])})
@@ -382,9 +437,10 @@ brechas_desag_server <- function(id) {
              var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              valores=input$valores_id[2],
-             nombre =input$ingreso_id,
+             nombre =paste0(input$ingreso_id," - ",input$precios_id),
              input$id_periodo[1],
-             input$id_periodo[2]) 
+             input$id_periodo[2],
+             input$precios_id) 
       })
       
       output$st3 <- renderText({generar_subtitulo(input$valores_id[3])})
@@ -396,9 +452,10 @@ brechas_desag_server <- function(id) {
              var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              valores=input$valores_id[3],
-             nombre =input$ingreso_id,
+             nombre =paste0(input$ingreso_id," - ",input$precios_id),
              input$id_periodo[1],
-             input$id_periodo[2]) 
+             input$id_periodo[2],
+             input$precios_id) 
       })
       
       output$st4 <- renderText({generar_subtitulo(input$valores_id[4])})
@@ -410,9 +467,10 @@ brechas_desag_server <- function(id) {
              var = unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id & nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              facet_var =unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
              valores=input$valores_id[4],
-             nombre =input$ingreso_id,
+             nombre =paste0(input$ingreso_id," - ",input$precios_id),
              input$id_periodo[1],
-             input$id_periodo[2]) 
+             input$id_periodo[2],
+             input$precios_id) 
       })
     }
     
@@ -431,7 +489,8 @@ brechas_desag_server <- function(id) {
                   nombre_facet = input$var_desag_id,
                   valores = input$valores_id,
                   input$id_periodo[1],
-                  input$id_periodo[2]
+                  input$id_periodo[2],
+                  input$precios_id
       )
     })
     
@@ -464,7 +523,7 @@ brechas_desag_ui <- function(id) {
                            selected = unique(nombres_brechas_desag$nombre)[1],
                            multiple = FALSE),
                selectInput(ns('precios_id'),label = 'Valuación:',
-                           choices = c("Precios corrientes", "Precios constantes"),
+                           choices = c("Precios corrientes", "Precios constantes (4to trimestre 2019)"),
                            selected = "Precios corrientes",
                            multiple = FALSE),
                selectInput(ns('var_desag_id'),label = 'Elegir desagregación:',

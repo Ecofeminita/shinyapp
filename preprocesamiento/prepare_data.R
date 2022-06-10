@@ -15,6 +15,7 @@ library(spatstat)
 eval(parse('preprocesamiento/levantar_EPH.R', encoding="UTF-8"))
 eval(parse('preprocesamiento/funciones_procesamientos.R', encoding="UTF-8"))
 eval(parse('preprocesamiento/genero_tablas.R', encoding="UTF-8"))
+eval(parse('preprocesamiento/genero_series_constantes.R', encoding="UTF-8"))
 
 
 levels(tabla_resultados[["ramas_sexo_df"]]$"Rama de la ocupación")[levels(tabla_resultados[["ramas_sexo_df"]]$"Rama de la ocupación") == "Ensenanza"] <- "Enseñanza"
