@@ -66,7 +66,7 @@ brechas_server <- function(id) {
         
         return(datagraff)
         
-      } else if(valuacion =="Precios constantes (4to trimestre 2019)"){
+      } else if(valuacion ==paste0("Precios constantes (",nombre_trimestre_base,")")){
         
         datagraff <- datagraf %>% 
           select(-c("Mujeres (Ingreso medio - precios corrientes)","Varones (Ingreso medio - precios corrientes)"))
@@ -173,7 +173,7 @@ brechas_server <- function(id) {
                        input$id_periodo[1],
                        input$id_periodo[2]) 
         
-      } else if(input$precios_id == "Precios constantes (4to trimestre 2019)"){
+      } else if(input$precios_id == paste0("Precios constantes (",nombre_trimestre_base,")")){
         
         plot_constante(base = tabla_resultados[[(nombres_brechas$tabla[nombres_brechas$nombre == input$ingreso_id])]],
                        
@@ -207,6 +207,20 @@ brechas_server <- function(id) {
     output$titulo1 <- renderText({generar_titulo(input$ingreso_id, input$id_periodo[1],input$id_periodo[2],input$precios_id)})
     output$titulo2 <- renderText({generar_titulo(input$ingreso_id, input$id_periodo[1],input$id_periodo[2],input$precios_id)})
     
+    output$downloadTable <- downloadHandler(
+      
+      filename = function(){paste('Brecha_',input$ingreso_id,'.xlsx',sep='')},
+      content = function(file){
+        
+        write.xlsx(armar_tabla(tabla_resultados[[(nombres_brechas$tabla[nombres_brechas$nombre == input$ingreso_id])]],
+                               brecha =nombres_brechas$cod[nombres_brechas$nombre == input$ingreso_id],
+                               input$id_periodo[1],
+                               input$id_periodo[2],
+                               input$precios_id
+        ), 
+                   file)    }
+    )
+    
   })
 }
 
@@ -223,6 +237,8 @@ trimestres <- trimestres$periodo
 brechas_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Brechas de ingresos - general',
+           
+           titlePanel('Brechas de ingresos - general'),
            sidebarLayout(
              sidebarPanel(
                selectInput(ns('ingreso_id'),label = 'Elegir tipo de ingreso',
@@ -230,7 +246,7 @@ brechas_ui <- function(id) {
                            selected = nombres_brechas$nombre[1],
                            multiple = FALSE),
                selectInput(ns('precios_id'),label = 'Valuación:',
-                           choices = c("Precios corrientes", "Precios constantes (4to trimestre 2019)"),
+                           choices = c("Precios corrientes", paste0("Precios constantes (",nombre_trimestre_base,")")),
                            selected = "Precios corrientes",
                            multiple = FALSE),
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4"))
@@ -263,7 +279,10 @@ brechas_ui <- function(id) {
                                  column(9, 
                                         box(tableOutput(ns('tabla')))),
                                  column(3,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2')))
+                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
+                                        br(),
+                                        box(width = NULL,
+                                            downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         
                                         
                                  ))

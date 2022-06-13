@@ -372,6 +372,51 @@ brecha_IOP_hr_nivel_educ <- function(base){
   
 }
 
+#Función de horas trabajadas por calificación y nivel educativo
+
+
+OP_hr_calif <- function(base){
+  
+  tabla <- base %>% 
+    filter(ESTADO == 1,
+           CALIFICACION!="0",
+           PP3E_TOT > 0,
+           PP3E_TOT != 999) %>% 
+    mutate(PP3F_TOT = as.double(PP3F_TOT),           
+           PP3F_TOT = case_when(PP3F_TOT == 999 ~ 0, # Cambio los NAs en las horas de ocup sec para que sumen 0
+                                TRUE ~ PP3F_TOT),
+           hs.total.ocup = PP3E_TOT + PP3F_TOT) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, CALIFICACION) %>% 
+    summarise(Media.hs.ocup.princ = round(weighted.mean(PP3E_TOT, PONDERA), 2),
+              Media.hs.total.ocup = round(weighted.mean(hs.total.ocup, PONDERA), 2))
+  
+  return(tabla)
+  
+}
+
+OP_hr_nivel_educ <- function(base){
+  
+  tabla <- base %>% 
+    filter(ESTADO == 1,
+           !is.na(NIVEL_EDUCATIVO),
+           PP3E_TOT > 0,
+           PP3E_TOT != 999) %>% 
+    mutate(PP3F_TOT = as.double(PP3F_TOT),           
+           PP3F_TOT = case_when(PP3F_TOT == 999 ~ 0, # Cambio los NAs en las horas de ocup sec para que sumen 0
+                                TRUE ~ PP3F_TOT),
+           hs.total.ocup = PP3E_TOT + PP3F_TOT) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, NIVEL_EDUCATIVO) %>% 
+    summarise(Media.hs.ocup.princ = round(weighted.mean(PP3E_TOT, PONDERA), 2),
+              Media.hs.total.ocup = round(weighted.mean(hs.total.ocup, PONDERA), 2))
+  
+  return(tabla)
+  
+}
+
+
+
+
+
 # Función de proporción de cada sexo entre las personas que realizan las tareas domésticas del hogar
 tareas_domesticas_sexo <- function(base, base_hogar){
   

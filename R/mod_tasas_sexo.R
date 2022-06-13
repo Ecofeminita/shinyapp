@@ -133,6 +133,19 @@ tasas_sexo_server <- function(id) {
     output$titulo2 <- renderText({generar_titulo(input$indicador,
                                                  input$id_periodo[1],input$id_periodo[2])})
     
+    output$downloadTable <- downloadHandler(
+      
+      filename = function(){paste(input$indicador,'.xlsx',sep='')},
+      content = function(file){
+        
+        write.xlsx(armar_tabla(dataframe= "tasas_por_sexo_df",
+                               variable = "indicador", 
+                               valores_filter = input$indicador,
+                               input$id_periodo[1],input$id_periodo[2]
+        ), 
+                   file)    }
+    )
+    
   })
 }
 
@@ -151,6 +164,7 @@ trimestres <- trimestres$periodo
 tasas_sexo_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Tasas básicas',
+           titlePanel('Tasas básicas'),
            sidebarLayout(
              sidebarPanel(
                selectInput(ns('indicador'),label = 'Elegir indicador',
@@ -187,7 +201,10 @@ tasas_sexo_ui <- function(id) {
                                  column(9, 
                                         box(tableOutput(ns('tabla')))),
                                  column(3,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2')))
+                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
+                                        br(),
+                                        box(width = NULL,
+                                            downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         
                                         
                                  ))

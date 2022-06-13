@@ -107,7 +107,7 @@ brechas_desag_server <- function(id) {
         
         return(datagraff)
         
-      } else if(valuacion =="Precios constantes (4to trimestre 2019)"){
+      } else if(valuacion ==paste0("Precios constantes (",nombre_trimestre_base,")")){
         
         datagraff <- datagraf %>% 
           select(-c("Mujeres (Ingreso medio - precios corrientes)","Varones (Ingreso medio - precios corrientes)"))
@@ -218,7 +218,7 @@ brechas_desag_server <- function(id) {
         
         return(fig)
         
-      } else if(valuacion =="Precios constantes (4to trimestre 2019)"){
+      } else if(valuacion ==paste0("Precios constantes (",nombre_trimestre_base,")")){
         
         
         fig <- plot_ly(tabla, color = I("gray80"))
@@ -497,11 +497,32 @@ brechas_desag_server <- function(id) {
     output$metadata1 <- renderText({"blabla"})
     output$metadata2 <- renderText({"blabla"})
     
+    output$interpretacion_horas <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, estudiemos el <b>Uso del tiempo</b> de cada segmento de la población.</font>")})
+    
     output$titulo0 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
     output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
     
-    
+    output$downloadTable <- downloadHandler(
+      
+      filename = function(){paste('Brecha_',input$ingreso_id,'.xlsx',sep='')},
+      content = function(file){
+        
+        write.xlsx(armar_tabla(tabla_resultados[[(nombres_brechas_desag$tabla[nombres_brechas_desag$nombre == input$ingreso_id&nombres_brechas_desag$variable_desag_nombre == input$var_desag_id])]],
+                               
+                               brecha =unique(nombres_brechas_desag$cod[nombres_brechas_desag$nombre == input$ingreso_id &nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+                               
+                               facet_var=unique(nombres_brechas_desag$variable_desag[nombres_brechas_desag$variable_desag_nombre == input$var_desag_id]),
+                               
+                               nombre_facet = input$var_desag_id,
+                               valores = input$valores_id,
+                               input$id_periodo[1],
+                               input$id_periodo[2],
+                               input$precios_id
+        )
+      , 
+                   file)    }
+    )
     
     
     
@@ -516,6 +537,8 @@ brechas_desag_server <- function(id) {
 brechas_desag_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Brechas de ingresos - desagregado',
+           
+           titlePanel('Brechas de ingresos - desagregado'),
            sidebarLayout(
              sidebarPanel(
                selectInput(ns('ingreso_id'),label = 'Elegir tipo de ingreso:',
@@ -523,7 +546,7 @@ brechas_desag_ui <- function(id) {
                            selected = unique(nombres_brechas_desag$nombre)[1],
                            multiple = FALSE),
                selectInput(ns('precios_id'),label = 'Valuación:',
-                           choices = c("Precios corrientes", "Precios constantes (4to trimestre 2019)"),
+                           choices = c("Precios corrientes", paste0("Precios constantes (",nombre_trimestre_base,")")),
                            selected = "Precios corrientes",
                            multiple = FALSE),
                selectInput(ns('var_desag_id'),label = 'Elegir desagregación:',
@@ -536,7 +559,7 @@ brechas_desag_ui <- function(id) {
                            multiple = T)
               
                ,
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T2"))
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4"))
                
              ),
              mainPanel( tabsetPanel(
@@ -550,6 +573,10 @@ brechas_desag_ui <- function(id) {
                         box(width = NULL, plotlyOutput(ns('plot_gral'), height = 500),
                             
                         ),
+                        br(),
+                        br(),
+                        box(width = NULL, htmlOutput(ns('interpretacion_horas'))),
+                        br()
                         
                         
                ),
@@ -561,7 +588,7 @@ brechas_desag_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        box(title = "Metadata", width = NULL, textOutput(ns('metadata1')),
+                        box(title = "Metadata", width = NULL, textOutput(ns('metadata1'))),
                         br(),
                         box(width = NULL, htmlOutput(ns('st1'))), 
                         br(),
@@ -579,7 +606,7 @@ brechas_desag_ui <- function(id) {
                         br(),
                         plotlyOutput(ns('plot4'), height = 400)
                         
-                        ),
+                        
                         
                         
                ),
@@ -595,7 +622,10 @@ brechas_desag_ui <- function(id) {
                                  column(9, 
                                         box(tableOutput(ns('tabla')))),
                                  column(3,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2')))
+                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
+                                        br(),
+                                        box(width = NULL,
+                                            downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         
                                         
                                  ))

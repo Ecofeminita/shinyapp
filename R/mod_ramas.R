@@ -182,6 +182,19 @@ ramas_server <- function(id) {
     output$titulo1 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
     
+    output$downloadTable <- downloadHandler(
+      
+      filename = function(){paste('Ramas_actividad.xlsx',sep='')},
+      content = function(file){
+        
+        write.xlsx(armar_tabla(tabla_resultados[["ramas_sexo_df"]],
+                               valores_filter = input$ramas_id,
+                               input$id_periodo[1],
+                               input$id_periodo[2]
+        ), 
+                   file)    }
+    )
+    
   })
 }
 
@@ -200,6 +213,8 @@ trimestres <- trimestres$periodo
 ramas_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Ramas de la ocupación',
+           
+           titlePanel('Ramas de la ocupación'),
            sidebarLayout(
              sidebarPanel(
                selectInput(ns('ramas_id'),label = 'Elegir ramas de actividad',
@@ -242,7 +257,10 @@ ramas_ui <- function(id) {
                                  column(9, 
                                         box(tableOutput(ns('tabla')))),
                                  column(3,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2')))
+                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
+                                        br(),
+                                        box(width = NULL,
+                                            downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         
                                         
                                  ))

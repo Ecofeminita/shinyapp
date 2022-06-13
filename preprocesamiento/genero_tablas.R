@@ -30,6 +30,12 @@ creador_tablas <- function(base#,
   brecha_IOP_hr_df               <- brecha_IOP_hr(base)
   brecha_IOP_hr_calif_df         <- brecha_IOP_hr_calif(base)
   brecha_IOP_hr_nivel_educ_df    <- brecha_IOP_hr_nivel_educ(base)
+  
+  OP_hr_calif_df         <- OP_hr_calif(base)
+  OP_hr_nivel_educ_df    <- OP_hr_nivel_educ(base)
+  
+  
+  
   # if (tareas_domesticas) {
   #   tareas_domesticas_sexo_df  <- tareas_domesticas_sexo(base, base_hogar)
   # }else{
@@ -59,6 +65,9 @@ creador_tablas <- function(base#,
                 "brecha_IOP_hr_df" = brecha_IOP_hr_df,
                 "brecha_IOP_hr_calif_df" = brecha_IOP_hr_calif_df,
                 "brecha_IOP_hr_nivel_educ_df" = brecha_IOP_hr_nivel_educ_df,
+                "OP_hr_calif_df" = OP_hr_calif_df,
+                "OP_hr_nivel_educ_df" = OP_hr_nivel_educ_df,
+                
                 # "tareas_domesticas_sexo_df" = tareas_domesticas_sexo_df,
                 "servicio_domestico_sexo_df" = servicio_domestico_sexo_df,
                 "servicio_domestico_ocupadas_df" = servicio_domestico_ocupadas_df,

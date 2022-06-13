@@ -144,6 +144,19 @@ tipo_insercion_server <- function(id) {
     output$titulo1 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
     
+    output$downloadTable <- downloadHandler(
+      
+      filename = function(){paste('Insercion_Laboral.xlsx',sep='')},
+      content = function(file){
+        
+        write.xlsx(armar_tabla(tabla_tipo_insercion,
+                               valores_filter = input$jerarqs_id,
+                               input$id_periodo[1],
+                               input$id_periodo[2]
+        ), 
+                   file)    }
+    )
+    
   })
 }
 
@@ -162,6 +175,8 @@ trimestres <- trimestres$periodo
 tipo_insercion_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Tipo de inserción laboral',
+           
+           titlePanel('Tipo de inserción laboral'),
            sidebarLayout(
              sidebarPanel(
                selectInput(ns('jerarqs_id'),label = 'Elegir tipo de inserción laboral',
@@ -198,7 +213,10 @@ tipo_insercion_ui <- function(id) {
                                  column(7, 
                                         box(tableOutput(ns('tabla')))),
                                  column(5,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2')))
+                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
+                                        br(),
+                                        box(width = NULL,
+                                            downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         
                                         
                                  ))

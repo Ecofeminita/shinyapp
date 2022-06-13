@@ -132,6 +132,19 @@ deciles_server <- function(id) {
     output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$ingreso_id,input$id_periodo[1],input$id_periodo[2])})
     
+    output$downloadTable <- downloadHandler(
+      
+      filename = function(){paste('Decil',input$ingreso_id,'.xlsx',sep='')},
+      content = function(file){
+        
+        write.xlsx(armar_tabla(tabla_resultados[[(nombres_deciles$tabla[nombres_deciles$nombre == input$ingreso_id])]],
+                               tipo_ingreso =  nombres_deciles$cod[nombres_deciles$nombre == input$ingreso_id],
+                               input$id_periodo[1],
+                               input$id_periodo[2]
+        ), 
+                   file)    }
+    )
+    
   })
 }
 
@@ -147,13 +160,15 @@ trimestres <- tabla_resultados[["deciles_ITI_sexo_df"]] %>% ungroup() %>%
 deciles_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Deciles de ingreso',
+           
+           titlePanel('Deciles de ingreso'),
            sidebarLayout(
              sidebarPanel(
                selectInput(ns('ingreso_id'),label = 'Elegir tipo de ingreso',
                            choices = ingresos,
                            selected = ingresos[2],
                            multiple = F),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","17T4"))
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4"))
                
              ),
              mainPanel( tabsetPanel(
@@ -183,7 +198,10 @@ deciles_ui <- function(id) {
                                  column(7, 
                                         box(tableOutput(ns('tabla')))),
                                  column(5,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2')))
+                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
+                                        br(),
+                                        box(width = NULL,
+                                            downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         
                                         
                                  ))

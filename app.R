@@ -42,6 +42,8 @@ server <- function (input, output,session) {
     brechas_server('brechas_general')
     brechas_desag_server('brechas_desag')
     deciles_server('deciles')
+    
+    horas_remunerado_server('horas_remuneradas')
 
 }
 

@@ -13,3 +13,10 @@ tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
 
 
+library(readxl)
+library(openxlsx)
+
+
+ipc_series_ctes <- read_excel("preprocesamiento/fuentes/ipc_series_ctes.xlsx")
+
+nombre_trimestre_base <- unique(ipc_series_ctes$nombre_trim_base[!is.na(ipc_series_ctes$nombre_trim_base)])
