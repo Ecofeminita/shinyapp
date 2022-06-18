@@ -150,16 +150,16 @@ tasas_sexo_server <- function(id) {
 }
 
 
-tasas <- tabla_resultados[["tasas_por_sexo_df"]]$indicador %>% unique()
-
-tasas <- tasas[grepl("Tasa",tasas)]
-
-trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% 
-  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-  select(periodo) %>% unique()
-
-trimestres <- trimestres$periodo
+# tasas <- tabla_resultados[["tasas_por_sexo_df"]]$indicador %>% unique()
+# 
+# tasas <- tasas[grepl("Tasa",tasas)]
+# 
+# trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% 
+#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   select(periodo) %>% unique()
+# 
+# trimestres <- trimestres$periodo
 
 tasas_sexo_ui <- function(id) {
   ns <- NS(id)

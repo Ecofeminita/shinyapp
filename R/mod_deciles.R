@@ -10,15 +10,15 @@ library(shinydashboard)
 #tabla_resultados$deciles_IPCF_sexo_df
 #tabla_resultados$deciles_ITI_sexo_df
 
-nombres_deciles <- data.frame("tabla" =c("deciles_IPCF_sexo_df",
-                                         "deciles_ITI_sexo_df"),
-                              
-                              "cod" =c("DECCFR",
-                                       "DECINDR"),
-                              
-                              "nombre"= c("Ingreso per cápita Familiar",
-                                          "Ingreso Total Individual"
-                              ))
+# nombres_deciles <- data.frame("tabla" =c("deciles_IPCF_sexo_df",
+#                                          "deciles_ITI_sexo_df"),
+#                               
+#                               "cod" =c("DECCFR",
+#                                        "DECINDR"),
+#                               
+#                               "nombre"= c("Ingreso per cápita Familiar",
+#                                           "Ingreso Total Individual"
+#                               ))
 
 deciles_server <- function(id) {
   moduleServer(id, function(input, output, session) {
@@ -149,13 +149,13 @@ deciles_server <- function(id) {
 }
 
 
-ingresos <- nombres_deciles %>% pull(nombre)
-
-
-trimestres <- tabla_resultados[["deciles_ITI_sexo_df"]] %>% ungroup() %>% 
-  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-  pull(periodo) 
+# ingresos <- nombres_deciles %>% pull(nombre)
+# 
+# 
+# trimestres <- tabla_resultados[["deciles_ITI_sexo_df"]] %>% ungroup() %>% 
+#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   pull(periodo) 
 
 deciles_ui <- function(id) {
   ns <- NS(id)

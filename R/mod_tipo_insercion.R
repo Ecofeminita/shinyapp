@@ -14,21 +14,21 @@ library(shinydashboard)
 
 #tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
-t3_acomodo <- tabla_resultados[["tasas_no_registro_df"]] %>% 
-  mutate(JERARQUIA = "Trabajadores Asalariados")
-
-tabla_tipo_insercion <- tabla_resultados[["sexo_segun_jerarquias_df"]] %>% 
-  left_join(.,t3_acomodo, by = c("ANO4", "TRIMESTRE","Sexo", "JERARQUIA"))
-
-tabla_tipo_insercion_asal <- tabla_tipo_insercion %>% 
-  filter(JERARQUIA == "Trabajadores Asalariados") %>% 
-  mutate("Trabajadores Asalariados No Registrados" = round(tasa*(`Proporción de no Registrados`)/100,1),
-         "Trabajadores Asalariados Registrados" = round(tasa*(100-`Proporción de no Registrados`)/100,1)) %>% 
-  select(-`Proporción de no Registrados`,-"JERARQUIA",-tasa) %>% 
-  gather(., key ="JERARQUIA", value = "tasa",-Sexo,-ANO4,-TRIMESTRE)
-
-tabla_tipo_insercion <- bind_rows((tabla_tipo_insercion %>% select(-`Proporción de no Registrados`)),tabla_tipo_insercion_asal) %>%
-  filter(JERARQUIA != "Trabajadores Asalariados")
+# t3_acomodo <- tabla_resultados[["tasas_no_registro_df"]] %>% 
+#   mutate(JERARQUIA = "Trabajadores Asalariados")
+# 
+# tabla_tipo_insercion <- tabla_resultados[["sexo_segun_jerarquias_df"]] %>% 
+#   left_join(.,t3_acomodo, by = c("ANO4", "TRIMESTRE","Sexo", "JERARQUIA"))
+# 
+# tabla_tipo_insercion_asal <- tabla_tipo_insercion %>% 
+#   filter(JERARQUIA == "Trabajadores Asalariados") %>% 
+#   mutate("Trabajadores Asalariados No Registrados" = round(tasa*(`Proporción de no Registrados`)/100,1),
+#          "Trabajadores Asalariados Registrados" = round(tasa*(100-`Proporción de no Registrados`)/100,1)) %>% 
+#   select(-`Proporción de no Registrados`,-"JERARQUIA",-tasa) %>% 
+#   gather(., key ="JERARQUIA", value = "tasa",-Sexo,-ANO4,-TRIMESTRE)
+# 
+# tabla_tipo_insercion <- bind_rows((tabla_tipo_insercion %>% select(-`Proporción de no Registrados`)),tabla_tipo_insercion_asal) %>%
+#   filter(JERARQUIA != "Trabajadores Asalariados")
 
 tipo_insercion_server <- function(id) {
   moduleServer(id, function(input, output, session) {
@@ -161,16 +161,16 @@ tipo_insercion_server <- function(id) {
 }
 
 
-jerarqs <- tabla_tipo_insercion %>% ungroup() %>%  select(JERARQUIA) %>% unique()
-
-jerarqs <- jerarqs$JERARQUIA
-
-trimestres <- tabla_tipo_insercion %>% ungroup() %>% 
-  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-  select(periodo) %>% unique()
-
-trimestres <- trimestres$periodo
+# jerarqs <- tabla_tipo_insercion %>% ungroup() %>%  select(JERARQUIA) %>% unique()
+# 
+# jerarqs <- jerarqs$JERARQUIA
+# 
+# trimestres <- tabla_tipo_insercion %>% ungroup() %>% 
+#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   select(periodo) %>% unique()
+# 
+# trimestres <- trimestres$periodo
 
 tipo_insercion_ui <- function(id) {
   ns <- NS(id)

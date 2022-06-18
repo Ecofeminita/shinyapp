@@ -10,21 +10,21 @@ options(scipen = 9999)
 #tabla_resultados$brecha_IOP_no_reg_df
 #tabla_resultados$brecha_IOP_hr_df
 
-#respetar orden!!!!!
-nombres_brechas <- data.frame("tabla" =c("brecha_ITI_df",
-                                         "brecha_IOP_df",
-                                         "brecha_IOP_hr_df",
-                                         "brecha_IOP_no_reg_df"),
-                              
-                              "cod" =c("brecha.ITI",
-                                       "brecha.IOP",
-                                       "brecha.IOP.hr",
-                                       "brecha.IOP.nr"),
-                              
-                              "nombre"= c("Ingreso Total Individual",
-                                          "Ingreso mensual de la Ocupación Principal",
-                                          "Ingreso horario de la Ocupación Principal",
-                                          "Ingreso de la Ocupación Principal - Asalariadas/os sin desc. jubil"))
+# #respetar orden!!!!!
+# nombres_brechas <- data.frame("tabla" =c("brecha_ITI_df",
+#                                          "brecha_IOP_df",
+#                                          "brecha_IOP_hr_df",
+#                                          "brecha_IOP_no_reg_df"),
+#                               
+#                               "cod" =c("brecha.ITI",
+#                                        "brecha.IOP",
+#                                        "brecha.IOP.hr",
+#                                        "brecha.IOP.nr"),
+#                               
+#                               "nombre"= c("Ingreso Total Individual",
+#                                           "Ingreso mensual de la Ocupación Principal",
+#                                           "Ingreso horario de la Ocupación Principal",
+#                                           "Ingreso de la Ocupación Principal - Asalariadas/os sin desc. jubil"))
 
 brechas_server <- function(id) {
   moduleServer(id, function(input, output, session) {
@@ -227,12 +227,12 @@ brechas_server <- function(id) {
 
 
 
-trimestres <- tabla_resultados[[(nombres_brechas$tabla[1])]] %>% ungroup() %>% 
-  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-  select(periodo) %>% unique()
-
-trimestres <- trimestres$periodo
+# trimestres <- tabla_resultados[[(nombres_brechas$tabla[1])]] %>% ungroup() %>% 
+#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   select(periodo) %>% unique()
+# 
+# trimestres <- trimestres$periodo
 
 brechas_ui <- function(id) {
   ns <- NS(id)

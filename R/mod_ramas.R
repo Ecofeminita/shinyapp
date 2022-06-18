@@ -199,16 +199,16 @@ ramas_server <- function(id) {
 }
 
 
-ramas <- tabla_resultados[["ramas_sexo_df"]] %>% ungroup() %>%  select(`Rama de la ocupación`) %>% unique() %>% drop_na()
-
-ramas <- ramas$`Rama de la ocupación`
-
-trimestres <- tabla_resultados[["ramas_sexo_df"]] %>% ungroup() %>% 
-  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-  select(periodo) %>% unique()
-
-trimestres <- trimestres$periodo
+# ramas <- tabla_resultados[["ramas_sexo_df"]] %>% ungroup() %>%  select(`Rama de la ocupación`) %>% unique() %>% drop_na()
+# 
+# ramas <- ramas$`Rama de la ocupación`
+# 
+# trimestres <- tabla_resultados[["ramas_sexo_df"]] %>% ungroup() %>% 
+#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   select(periodo) %>% unique()
+# 
+# trimestres <- trimestres$periodo
 
 ramas_ui <- function(id) {
   ns <- NS(id)

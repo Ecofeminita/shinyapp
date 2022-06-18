@@ -10,43 +10,43 @@ options(scipen = 9999)
 # tabla_resultados$brecha_IOP_nivel_educ_df
 # tabla_resultados$brecha_IOP_hr_nivel_educ_df
 
-#respetar orden!!!!!
-nombres_brechas_desag <- data.frame("tabla" =c("brecha_IOP_calif_df",
-                                         "brecha_IOP_hr_calif_df",
-                                         "brecha_IOP_nivel_educ_df",
-                                         "brecha_IOP_hr_nivel_educ_df"),
-                              
-                              "cod" =c("brecha.IOP.calif",
-                                       "brecha.IOP.hr.calif",
-                                       "brecha.IOP.nivel.educ",
-                                       "brecha.IOP.hr.nivel.educ"),
-                              
-                              "nombre"= c("Ingreso mensual de la Ocupación Principal",
-                                          "Ingreso horario de la Ocupación Principal",
-                                          "Ingreso mensual de la Ocupación Principal",
-                                          "Ingreso horario de la Ocupación Principal"),
-                              
-                              "variable_desag" = c("CALIFICACION", "CALIFICACION", "NIVEL_EDUCATIVO","NIVEL_EDUCATIVO"),
-                              "variable_desag_nombre" = c("Calificación", "Calificación", "Nivel educativo","Nivel educativo"))
-
-
-v1 <- as.character(unique(tabla_resultados[["brecha_IOP_calif_df"]]$CALIFICACION))
-v2 <- as.character(unique(tabla_resultados[["brecha_IOP_nivel_educ_df"]]$NIVEL_EDUCATIVO))
-
-
-opciones_actualizacion<- data.frame("Calificación" = v1,"Nivel educativo" = v2, "id" = c(1,2,3,4)
-               ) %>% 
-  pivot_longer(!id,names_to = "variable", values_to = "valores")
-
-opciones_actualizacion$variable[opciones_actualizacion$variable =="Nivel.educativo"] <- "Nivel educativo"
-
-
-trimestres <- tabla_resultados[[(nombres_brechas_desag$tabla[1])]] %>% #ungroup() %>% 
-  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-  select(periodo) %>% unique()
-
-trimestres <- trimestres$periodo
+# #respetar orden!!!!!
+# nombres_brechas_desag <- data.frame("tabla" =c("brecha_IOP_calif_df",
+#                                          "brecha_IOP_hr_calif_df",
+#                                          "brecha_IOP_nivel_educ_df",
+#                                          "brecha_IOP_hr_nivel_educ_df"),
+#                               
+#                               "cod" =c("brecha.IOP.calif",
+#                                        "brecha.IOP.hr.calif",
+#                                        "brecha.IOP.nivel.educ",
+#                                        "brecha.IOP.hr.nivel.educ"),
+#                               
+#                               "nombre"= c("Ingreso mensual de la Ocupación Principal",
+#                                           "Ingreso horario de la Ocupación Principal",
+#                                           "Ingreso mensual de la Ocupación Principal",
+#                                           "Ingreso horario de la Ocupación Principal"),
+#                               
+#                               "variable_desag" = c("CALIFICACION", "CALIFICACION", "NIVEL_EDUCATIVO","NIVEL_EDUCATIVO"),
+#                               "variable_desag_nombre" = c("Calificación", "Calificación", "Nivel educativo","Nivel educativo"))
+# 
+# 
+# v1 <- as.character(unique(tabla_resultados[["brecha_IOP_calif_df"]]$CALIFICACION))
+# v2 <- as.character(unique(tabla_resultados[["brecha_IOP_nivel_educ_df"]]$NIVEL_EDUCATIVO))
+# 
+# 
+# opciones_actualizacion<- data.frame("Calificación" = v1,"Nivel educativo" = v2, "id" = c(1,2,3,4)
+#                ) %>% 
+#   pivot_longer(!id,names_to = "variable", values_to = "valores")
+# 
+# opciones_actualizacion$variable[opciones_actualizacion$variable =="Nivel.educativo"] <- "Nivel educativo"
+# 
+# 
+# trimestres <- tabla_resultados[[(nombres_brechas_desag$tabla[1])]] %>% #ungroup() %>% 
+#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   select(periodo) %>% unique()
+# 
+# trimestres <- trimestres$periodo
 
 
 

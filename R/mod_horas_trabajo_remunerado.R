@@ -4,25 +4,27 @@ library(shinydashboard)
 
 #tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
-tabla_resultados$OP_hr_calif_df
-tabla_resultados$OP_hr_nivel_educ_df
-tabla_resultados$horas_semanales_df
-
-vector_horas <- c("Ocupación principal","Totales -todas las ocupaciones-")
+# tabla_resultados$OP_hr_calif_df
+# tabla_resultados$OP_hr_nivel_educ_df
+# tabla_resultados$horas_semanales_df
 
 
-#respetar orden!!!!!
-nombres_horas_remuneradas <- data.frame("tabla" =c("OP_hr_calif_df",
-                                               "OP_hr_nivel_educ_df"),
-                                        
-                                        "variable_desag" = c("CALIFICACION", "NIVEL_EDUCATIVO"),
-                                        "variable_desag_nombre" = c("Calificación", "Nivel educativo"),
-                                    
-                                    "cod" =c("Media.hs.ocup.princ",
-                                             "Media.hs.total.ocup"),
-                                    
-                                    "nombre"= c(vector_horas[1],
-                                                vector_horas[2]))
+
+# vector_horas <- c("Ocupación principal","Totales -todas las ocupaciones-")
+# 
+# 
+# #respetar orden!!!!!
+# nombres_horas_remuneradas <- data.frame("tabla" =c("OP_hr_calif_df",
+#                                                "OP_hr_nivel_educ_df"),
+#                                         
+#                                         "variable_desag" = c("CALIFICACION", "NIVEL_EDUCATIVO"),
+#                                         "variable_desag_nombre" = c("Calificación", "Nivel educativo"),
+#                                     
+#                                     "cod" =c("Media.hs.ocup.princ",
+#                                              "Media.hs.total.ocup"),
+#                                     
+#                                     "nombre"= c(vector_horas[1],
+#                                                 vector_horas[2]))
 
 
 
@@ -230,12 +232,12 @@ horas_remunerado_server <- function(id) {
 }
 
 
-trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% 
-  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-  select(periodo) %>% unique()
-
-trimestres <- trimestres$periodo
+# trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% 
+#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   select(periodo) %>% unique()
+# 
+# trimestres <- trimestres$periodo
 
 
 

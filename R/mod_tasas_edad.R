@@ -156,18 +156,18 @@ tasas_edad_server <- function(id) {
 }
 
 
-tasas_edad <- tabla_resultados[["tasas_por_sexo_edad_df"]]$indicador %>% unique()
-
-tasas_edad <- tasas_edad[grepl("Tasa",tasas_edad)]
-
-trimestres <- tabla_resultados[["tasas_por_sexo_edad_df"]] %>% 
-  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-  select(periodo) %>% unique()
-
-trimestres <- trimestres$periodo
-
-grupos_edad <- (tabla_resultados[["tasas_por_sexo_edad_df"]] %>% drop_na())$GRUPO_EDAD %>% unique() 
+# tasas_edad <- tabla_resultados[["tasas_por_sexo_edad_df"]]$indicador %>% unique()
+# 
+# tasas_edad <- tasas_edad[grepl("Tasa",tasas_edad)]
+# 
+# trimestres <- tabla_resultados[["tasas_por_sexo_edad_df"]] %>% 
+#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   select(periodo) %>% unique()
+# 
+# trimestres <- trimestres$periodo
+# 
+# grupos_edad <- (tabla_resultados[["tasas_por_sexo_edad_df"]] %>% drop_na())$GRUPO_EDAD %>% unique() 
 
 tasas_edad_ui <- function(id) {
   ns <- NS(id)
