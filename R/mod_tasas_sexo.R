@@ -125,8 +125,7 @@ tasas_sexo_server <- function(id) {
                   )
     })
     
-    output$metadata1 <- renderText({"blabla"})
-    output$metadata2 <- renderText({"blabla"})
+    output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$indicador]})
     
     output$titulo1 <- renderText({generar_titulo(input$indicador,
                                                  input$id_periodo[1],input$id_periodo[2])})
@@ -171,7 +170,12 @@ tasas_sexo_ui <- function(id) {
                            choices = tasas,
                            selected = tasas[1],
                            multiple = FALSE),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4"))
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               
+               br(), 
+               hr(), 
+               h4("Metadata"), 
+               h5(textOutput(ns('metadata')))
             
              ),
              mainPanel( tabsetPanel(
@@ -182,10 +186,7 @@ tasas_sexo_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 500),
-                        br(),
-                        box(title = "Metadata", width = NULL, textOutput(ns('metadata1'))
-                            ),
+                        plotlyOutput(ns('plot'), height = 500)
                        
                         
                ),
@@ -201,8 +202,6 @@ tasas_sexo_ui <- function(id) {
                                  column(9, 
                                         box(tableOutput(ns('tabla')))),
                                  column(3,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
-                                        br(),
                                         box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         
