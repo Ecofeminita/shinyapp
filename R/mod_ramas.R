@@ -176,8 +176,8 @@ ramas_server <- function(id) {
       )
     })
     
-    output$metadata1 <- renderText({"blabla"})
-    output$metadata2 <- renderText({"blabla"})
+    output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Ramas de la ocupación")]})
+    output$metadata_femi <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Tasa de feminización")]})
     
     output$titulo1 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
@@ -225,7 +225,14 @@ ramas_ui <- function(id) {
                            choices = c("Ingreso mensual promedio", "Ingreso horario"),
                            selected = "Ingreso mensual promedio",
                            multiple = FALSE),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4"))
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               
+               br(), 
+               hr(), 
+               h4("Metadata"), 
+               h5(textOutput(ns('metadata'))), 
+               hr(),
+               h5(textOutput(ns('metadata_femi')))
                
              ),
              mainPanel( tabsetPanel(
@@ -238,10 +245,7 @@ ramas_ui <- function(id) {
                         br(),
                         plotlyOutput(ns('plot_ingreso'), height = 500),
                         br(),
-                        plotlyOutput(ns('plot_feminizacion'), height = 500),
-                        br(),
-                        box(title = "Metadata", width = NULL, textOutput(ns('metadata1'))
-                        ),
+                        plotlyOutput(ns('plot_feminizacion'), height = 500)
                         
                         
                ),
@@ -256,9 +260,7 @@ ramas_ui <- function(id) {
                           column(12,
                                  column(9, 
                                         box(tableOutput(ns('tabla')))),
-                                 column(3,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
-                                        br(),
+                                 column(3,   
                                         box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         

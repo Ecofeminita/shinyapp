@@ -84,7 +84,7 @@ brechas_desag_server <- function(id) {
       datagraf <- datagraf1%>% 
         
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
-        select(-periodo) %>% 
+        select(-periodo,-nombre_trim_base) %>% 
       
         filter(var_filtro %in% c(valores)) %>% 
         
@@ -494,8 +494,8 @@ brechas_desag_server <- function(id) {
       )
     })
     
-    output$metadata1 <- renderText({"blabla"})
-    output$metadata2 <- renderText({"blabla"})
+    output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("B-",input$ingreso_id)]})
+    output$metadata_desag <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$var_desag_id]})
     
     output$interpretacion_horas <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, estudiemos el <b>Uso del tiempo</b> de cada segmento de la población.</font>")})
     
@@ -559,7 +559,14 @@ brechas_desag_ui <- function(id) {
                            multiple = T)
               
                ,
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4"))
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               
+               br(), 
+               hr(), 
+               h4("Metadata"), 
+               h5(textOutput(ns('metadata'))), 
+               hr(),
+               h5(textOutput(ns('metadata_desag')))
                
              ),
              mainPanel( tabsetPanel(
@@ -588,8 +595,7 @@ brechas_desag_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        box(title = "Metadata", width = NULL, textOutput(ns('metadata1'))),
-                        br(),
+                       
                         box(width = NULL, htmlOutput(ns('st1'))), 
                         br(),
                         plotlyOutput(ns('plot1'), height = 400),
@@ -622,8 +628,6 @@ brechas_desag_ui <- function(id) {
                                  column(9, 
                                         box(tableOutput(ns('tabla')))),
                                  column(3,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
-                                        br(),
                                         box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         

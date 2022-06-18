@@ -126,8 +126,7 @@ deciles_server <- function(id) {
       )
     })
     
-    output$metadata1 <- renderText({"blabla"})
-    output$metadata2 <- renderText({"blabla"})
+    output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0(input$ingreso_id)]})
     
     output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$ingreso_id,input$id_periodo[1],input$id_periodo[2])})
@@ -168,7 +167,12 @@ deciles_ui <- function(id) {
                            choices = ingresos,
                            selected = ingresos[2],
                            multiple = F),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4"))
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               
+               br(), 
+               hr(), 
+               h4("Metadata"), 
+               h5(textOutput(ns('metadata')))
                
              ),
              mainPanel( tabsetPanel(
@@ -179,10 +183,7 @@ deciles_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 600),
-                        br(),
-                        box(title = "Metadata", width = NULL, textOutput(ns('metadata1'))
-                        ),
+                        plotlyOutput(ns('plot'), height = 600)
                         
                         
                ),
@@ -198,9 +199,7 @@ deciles_ui <- function(id) {
                                  column(7, 
                                         box(tableOutput(ns('tabla')))),
                                  column(5,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
-                                        br(),
-                                        box(width = NULL,
+                                       box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         
                                         

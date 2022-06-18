@@ -130,8 +130,8 @@ tasas_edad_server <- function(id) {
       )
     })
     
-    output$metadata1 <- renderText({"blabla"})
-    output$metadata2 <- renderText({"blabla"})
+    output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$indicador]})
+    output$metadata_edad <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Desagregación edad")]})
     
     output$titulo1 <- renderText({generar_titulo(input$indicador,
                                                  input$id_periodo[1],input$id_periodo[2])})
@@ -184,7 +184,14 @@ tasas_edad_ui <- function(id) {
                            choices = grupos_edad,
                            selected = grupos_edad[1],
                            multiple = TRUE),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4"))
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               
+               br(), 
+               hr(), 
+               h4("Metadata"), 
+               h5(textOutput(ns('metadata'))), 
+               hr(),
+               h5(textOutput(ns('metadata_edad')))
                
              ),
              mainPanel( tabsetPanel(
@@ -195,10 +202,7 @@ tasas_edad_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 800),
-                        br(),
-                        box(title = "Metadata", width = NULL, textOutput(ns('metadata1'))
-                        ),
+                        plotlyOutput(ns('plot'), height = 800)
                         
                         
                ),
@@ -214,8 +218,6 @@ tasas_edad_ui <- function(id) {
                                  column(9, 
                                         box(tableOutput(ns('tabla')))),
                                  column(3,          
-                                        box(title = "Metadata", width = NULL, textOutput(ns('metadata2'))),
-                                        br(),
                                         box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         
