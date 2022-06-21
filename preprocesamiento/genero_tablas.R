@@ -43,6 +43,7 @@ creador_tablas <- function(base#,
   # }
   servicio_domestico_sexo_df     <- servicio_domestico_sexo(base)
   servicio_domestico_ocupadas_df <- servicio_domestico_ocupadas(base)
+  derechos_servicio_domestico_df <- derechos_servicio_domestico(base)
   deciles_ITI_sexo_df            <- deciles_ITI_sexo(base)
   deciles_IPCF_sexo_df           <- deciles_IPCF_sexo(base)
   
@@ -71,6 +72,7 @@ creador_tablas <- function(base#,
                 # "tareas_domesticas_sexo_df" = tareas_domesticas_sexo_df,
                 "servicio_domestico_sexo_df" = servicio_domestico_sexo_df,
                 "servicio_domestico_ocupadas_df" = servicio_domestico_ocupadas_df,
+                "derechos_servicio_domestico_df" = derechos_servicio_domestico_df,
                 "deciles_ITI_sexo_df" = deciles_ITI_sexo_df,
                 "deciles_IPCF_sexo_df" = deciles_IPCF_sexo_df
                 

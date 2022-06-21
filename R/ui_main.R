@@ -43,8 +43,10 @@ main_ui <- {
                        
              ),
              
-             navbarMenu(title = 'Trabajadoras de servicio doméstico'
+             navbarMenu(title = 'Trabajadoras de servicio doméstico',
                         #principales indicadores del informe
+                        serv_dom_ocupadas_ui('s_d_ocup'),
+                        serv_dom_derechos_ui('s_d_derechos')
                         
                         
              )

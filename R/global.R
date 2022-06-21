@@ -162,5 +162,7 @@ nombres_horas_remuneradas <- data.frame("tabla" =c("OP_hr_calif_df",
                                                     vector_horas[2]))
 
 
+####Derechos laborales de las trabajadoras de servicio doméstico##############
 
+derechos <- unique(tabla_resultados$derechos_servicio_domestico_df$indicador) 
 

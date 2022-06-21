@@ -462,6 +462,27 @@ servicio_domestico_ocupadas <- function(base){
   
 }
 
+
+derechos_servicio_domestico <- function(base){
+  
+  tabla <- base %>% 
+    filter(ESTADO == 1, #Trabajadoras domésticas del servicio doméstico
+           Sexo == "Mujeres",
+           PP04B1 == 1) %>% 
+    dplyr::group_by(ANO4, TRIMESTRE) %>% 
+    summarise("No tiene descuento jubilatorio" = (sum(PONDERA[PP07H==2])/sum(PONDERA[PP07H%in%c(1,2)]))*100,
+              "No tiene vacaciones pagas" = (sum(PONDERA[PP07G1 == 2])/sum(PONDERA[PP07G1%in%c(1,2)]))*100,
+              "No tiene aguinaldo" = (sum(PONDERA[PP07G2 == 2])/sum(PONDERA[PP07G2%in%c(1,2)]))*100,
+              "No tiene días pagos por enfermedad" = (sum(PONDERA[PP07G3 == 2])/sum(PONDERA[PP07G3%in%c(1,2)]))*100,
+              "No tiene obra social" = (sum(PONDERA[PP07G4 == 2])/sum(PONDERA[PP07G4%in%c(1,2)]))*100
+              ) %>% 
+    dplyr::ungroup() %>% 
+    gather(., key = "indicador", value = "valor", -ANO4, -TRIMESTRE)
+  
+  return(tabla)
+  
+}
+
 # Función de la composición según sexo de los deciles de ingresos totales individuales (perceptores)
 deciles_ITI_sexo <- function(base){
 
