@@ -186,8 +186,8 @@ tipo_insercion_ui <- function(id) {
                
                br(), 
                hr(), 
-               h4("Metadata"), 
-               h5(textOutput(ns('metadata')))
+               h4("Sobre el indicador"), 
+               h5(htmlOutput(ns('metadata')))
                
              ),
              mainPanel( tabsetPanel(
@@ -196,9 +196,11 @@ tipo_insercion_ui <- function(id) {
                         value = "g_tip_ins",
                         
                         br(),
+                        br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 500),
+                        br(),
+                        plotlyOutput(ns('plot'), height = 600),
                         
                         
                         

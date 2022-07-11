@@ -79,7 +79,7 @@ serv_dom_derechos_server <- function(id) {
       
       if(porcentaje){
         grafico <- grafico + 
-          scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(60,80))    # Para que se peque el valor y el signo de %
+          scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(0,100))    # Para que se peque el valor y el signo de %
       }
       
       grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "Times New Roman"))
@@ -107,7 +107,7 @@ serv_dom_derechos_server <- function(id) {
       
     })
     
-    output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$indicador]})
+    output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador %in% input$indicador]})
     
     output$titulo1 <- renderText({generar_titulo(input$indicador,
                                                  input$id_periodo[1],input$id_periodo[2])})
@@ -147,8 +147,8 @@ serv_dom_derechos_ui <- function(id) {
                
                br(), 
                hr(), 
-               h4("Metadata"), 
-               h5(textOutput(ns('metadata')))
+               h4("Sobre el indicador"), 
+               h5(htmlOutput(ns('metadata')))
                
              ),
              mainPanel( tabsetPanel(
@@ -159,7 +159,7 @@ serv_dom_derechos_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 500)
+                        plotlyOutput(ns('plot'), height = 550)
                         
                         
                ),

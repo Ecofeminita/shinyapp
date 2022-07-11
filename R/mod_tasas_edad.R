@@ -132,6 +132,7 @@ tasas_edad_server <- function(id) {
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$indicador]})
     output$metadata_edad <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Desagregación edad")]})
+    output$metadata_pea <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Población Económicamente Activa")]})
     
     output$titulo1 <- renderText({generar_titulo(input$indicador,
                                                  input$id_periodo[1],input$id_periodo[2])})
@@ -188,10 +189,12 @@ tasas_edad_ui <- function(id) {
                
                br(), 
                hr(), 
-               h4("Metadata"), 
+               h4("Sobre el indicador"), 
                h5(textOutput(ns('metadata'))), 
                hr(),
-               h5(textOutput(ns('metadata_edad')))
+               h5(textOutput(ns('metadata_edad'))), 
+               hr(),
+               h5(textOutput(ns('metadata_pea')))
                
              ),
              mainPanel( tabsetPanel(

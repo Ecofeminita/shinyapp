@@ -126,6 +126,7 @@ tasas_sexo_server <- function(id) {
     })
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$indicador]})
+    output$metadata_pea <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Población Económicamente Activa")]})
     
     output$titulo1 <- renderText({generar_titulo(input$indicador,
                                                  input$id_periodo[1],input$id_periodo[2])})
@@ -174,8 +175,10 @@ tasas_sexo_ui <- function(id) {
                
                br(), 
                hr(), 
-               h4("Metadata"), 
-               h5(textOutput(ns('metadata')))
+               h4("Sobre el indicador"), 
+               h5(textOutput(ns('metadata'))), 
+               hr(),
+               h5(textOutput(ns('metadata_pea')))
             
              ),
              mainPanel( tabsetPanel(

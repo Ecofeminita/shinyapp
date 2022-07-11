@@ -132,7 +132,7 @@ serv_dom_ocupadas_ui <- function(id) {
                
                br(), 
                hr(), 
-               h4("Metadata"), 
+               h4("Sobre el indicador"), 
                h5(textOutput(ns('metadata')))
                
              ),

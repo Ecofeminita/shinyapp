@@ -229,7 +229,7 @@ ramas_ui <- function(id) {
                
                br(), 
                hr(), 
-               h4("Metadata"), 
+               h4("Sobre el indicador"), 
                h5(textOutput(ns('metadata'))), 
                hr(),
                h5(textOutput(ns('metadata_femi')))
