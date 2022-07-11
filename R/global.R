@@ -15,9 +15,15 @@ library(openxlsx)
 
 tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
+
+# trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% ungroup() %>% 
+#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
+#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   select(periodo) %>% unique() %>% pull(periodo)
+
 trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% ungroup() %>% 
-  mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                          levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+  mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                          levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
   select(periodo) %>% unique() %>% pull(periodo)
 
 tabla_metadata <- read_excel("www/metadata.xlsx") %>% select(indicador, metadata)

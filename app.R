@@ -46,6 +46,7 @@ server <- function (input, output,session) {
     horas_remunerado_server('horas_remuneradas')
     
     serv_dom_ocupadas_server('s_d_ocup')
+    serv_dom_ing_server('s_d_ing')
     serv_dom_derechos_server('s_d_derechos')
 
 }

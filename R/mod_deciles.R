@@ -36,8 +36,8 @@ deciles_server <- function(id) {
                             periodo_f
     ){
       datagraf1 <- dataframe %>%                        
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         rename("Decil" = tipo_ingreso) %>% 
         filter(Sexo == "Mujeres") %>% 
         rename("Porcentaje de población femenina del decil" = Prop)
@@ -65,8 +65,8 @@ deciles_server <- function(id) {
                      periodo_f){
       
       datagraf1 <- base %>%         
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         rename("Decil" = tipo_ingreso) %>% 
         filter(Sexo == "Mujeres")
         
@@ -98,7 +98,7 @@ deciles_server <- function(id) {
     }
     
     
-    plot(tabla_resultados[["deciles_ITI_sexo_df"]],"DECINDR","16T2","16T3")
+    #plot(tabla_resultados[["deciles_ITI_sexo_df"]],"DECINDR","16T2","16T3")
     
     generar_titulo <- function(tipo_ingreso,periodo_i, periodo_f){
       titulo <- paste0("<b>","<font size='+2'>","Distribución de la población según decil de ",tipo_ingreso,". Desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
@@ -152,8 +152,8 @@ deciles_server <- function(id) {
 # 
 # 
 # trimestres <- tabla_resultados[["deciles_ITI_sexo_df"]] %>% ungroup() %>% 
-#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
 #   pull(periodo) 
 
 deciles_ui <- function(id) {
@@ -167,7 +167,7 @@ deciles_ui <- function(id) {
                            choices = ingresos,
                            selected = ingresos[2],
                            multiple = F),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
                hr(), 

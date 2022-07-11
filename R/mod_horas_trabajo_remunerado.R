@@ -59,8 +59,8 @@ horas_remunerado_server <- function(id) {
       
       datagraf1 <- dataframe %>% 
         
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         rename("horas" = horas_var,
                "var_filtro" = facet_var) 
       
@@ -110,16 +110,16 @@ horas_remunerado_server <- function(id) {
       
       
       t_union1 <- tabla_resultados[["horas_semanales_df"]]%>% 
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         mutate(var_facet = "General")%>% 
         rename("valor" = var) %>% 
         mutate(Grupo = paste0(var_facet,"-",Sexo)) %>% 
         mutate(resaltar = "Si")
       
       t_union2 <- tabla_resultados[[base]]%>% 
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         rename("var_facet" = facet_var)%>% 
         rename("valor" = var) %>% 
         filter(var_facet %in% c(valores)) %>% 
@@ -232,8 +232,8 @@ horas_remunerado_server <- function(id) {
 
 
 # trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% 
-#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
 #   select(periodo) %>% unique()
 # 
 # trimestres <- trimestres$periodo
@@ -260,7 +260,7 @@ horas_remunerado_ui <- function(id) {
                            multiple = T)
                
                ,
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
                hr(), 

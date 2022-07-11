@@ -49,8 +49,8 @@ tipo_insercion_server <- function(id) {
     ){
       datagraf1 <- dataframe %>% 
         filter(JERARQUIA %in% valores_filter) %>%                          
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) 
       
       datagraf <- datagraf1%>% 
         
@@ -74,8 +74,8 @@ tipo_insercion_server <- function(id) {
                      periodo_f){
       
       datagraf1 <- base %>%         
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         
         mutate(JERARQUIA = factor(JERARQUIA, levels = c("Jefes","Dirección","Cuentapropia","Trabajadores Asalariados Registrados","Trabajadores Asalariados No Registrados"))) 
       
@@ -165,8 +165,8 @@ tipo_insercion_server <- function(id) {
 # jerarqs <- jerarqs$JERARQUIA
 # 
 # trimestres <- tabla_tipo_insercion %>% ungroup() %>% 
-#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
 #   select(periodo) %>% unique()
 # 
 # trimestres <- trimestres$periodo
@@ -182,7 +182,7 @@ tipo_insercion_ui <- function(id) {
                            choices = jerarqs,
                            selected = jerarqs[1:2],
                            multiple = TRUE),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
                hr(), 

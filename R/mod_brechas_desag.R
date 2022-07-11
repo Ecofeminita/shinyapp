@@ -42,8 +42,8 @@ options(scipen = 9999)
 # 
 # 
 # trimestres <- tabla_resultados[[(nombres_brechas_desag$tabla[1])]] %>% #ungroup() %>% 
-#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
 #   select(periodo) %>% unique()
 # 
 # trimestres <- trimestres$periodo
@@ -74,8 +74,8 @@ brechas_desag_server <- function(id) {
       
       datagraf1 <- dataframe %>% 
         
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         rename("brecha" = brecha,
                "var_filtro" = facet_var) 
       
@@ -131,8 +131,8 @@ brechas_desag_server <- function(id) {
                             periodo_i, periodo_f){
      
      datagraf1 <- base %>% 
-       mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                               levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+       mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                               levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
        rename("brecha" = var) %>% 
        rename("var_facet" = facet_var)%>% 
        filter(var_facet %in% c(valores))
@@ -165,7 +165,7 @@ brechas_desag_server <- function(id) {
      
      if(porcentaje){
        grafico <- grafico + 
-         scale_y_continuous(labels = function(x) paste0(x, "%"))    
+         scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(0,60))    
      }
      
      grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "Times New Roman"))
@@ -183,8 +183,8 @@ brechas_desag_server <- function(id) {
                      valuacion){
       
       datagraf1 <- base %>% 
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         mutate(x = (media.mujeres+media.varones)/2) %>% 
         mutate(cte_x = (cte_media.mujeres+cte_media.varones)/2) %>% 
         mutate(z = media.varones-media.mujeres) %>% 
@@ -559,7 +559,7 @@ brechas_desag_ui <- function(id) {
                            multiple = T)
               
                ,
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
                hr(), 

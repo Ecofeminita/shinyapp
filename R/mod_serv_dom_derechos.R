@@ -21,8 +21,8 @@ serv_dom_derechos_server <- function(id) {
                             periodo_f
     ){
       datagraf1 <- tabla_resultados[[dataframe]] %>%                          
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         filter(indicador %in% valores_filter) %>% 
         relocate(valor, .after = last_col())
       
@@ -38,7 +38,7 @@ serv_dom_derechos_server <- function(id) {
     generar_titulo <- function(variables, periodo_i, periodo_f){
       nombre_variable <-  paste0(variables, collapse = ", ")
       nombre_variable <- sub(",([^,]*)$", " y\\1", nombre_variable)   
-      titulo <- paste0("<b>","<font size='+2'></br>Trabajadoras del servicio doméstico que: ",nombre_variable ," desde ", periodo_i, " hasta ", periodo_f, ". </font> </br><font size='+1'> Mujeres que se dedican al servicio doméstico.","</b>","</font>")
+      titulo <- paste0("<b>","<font size='+2'></br>Trabajadoras de Casas Particulares que: ",nombre_variable ," desde ", periodo_i, " hasta ", periodo_f, ". </font> </br><font size='+1'> Trabajadoras de Casas Particulares.","</b>","</font>")
     }
     
     graficos_series <- function(dataframe, 
@@ -50,8 +50,8 @@ serv_dom_derechos_server <- function(id) {
     ){
       
       datagraf1 <- tabla_resultados[[dataframe]] %>%                           # Daraframe para 2016-19
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         # Periodo como factor y con formato 
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         # Periodo como factor y con formato 
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) 
       
       datagraf <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
@@ -136,14 +136,14 @@ serv_dom_derechos_server <- function(id) {
 serv_dom_derechos_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Derechos laborales',
-           titlePanel('Derechos laborales de las trabajadoras de servicio doméstico'),
+           titlePanel('Derechos laborales de las trabajadoras de Casas Particulares'),
            sidebarLayout(
              sidebarPanel(
                selectInput(ns('indicador'),label = 'Elegir derecho laboral vulnerado:',
                            choices = derechos,
                            selected = derechos[1],
                            multiple = T),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
                hr(), 

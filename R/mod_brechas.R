@@ -43,8 +43,8 @@ brechas_server <- function(id) {
     ){
       datagraf1 <- dataframe %>% 
                                   
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         rename("brecha" = brecha)
       
       datagraf <- datagraf1%>% 
@@ -89,8 +89,8 @@ brechas_server <- function(id) {
     plot_constante <- function(base,var,nombre,periodo_i, periodo_f){
       
       datagraf1 <- base %>% 
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         mutate(x = (cte_media.mujeres+cte_media.varones)/2) %>% 
         rename("brecha" = var)
       
@@ -124,8 +124,8 @@ brechas_server <- function(id) {
     plot_corriente <- function(base,nombre,periodo_i, periodo_f){
       
       datagraf1 <- base %>% 
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         mutate(x = (media.mujeres+media.varones)/2) %>% 
         mutate(var = media.varones-media.mujeres) %>% 
         rename("brecha" = var)
@@ -229,8 +229,8 @@ brechas_server <- function(id) {
 
 
 # trimestres <- tabla_resultados[[(nombres_brechas$tabla[1])]] %>% ungroup() %>% 
-#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
 #   select(periodo) %>% unique()
 # 
 # trimestres <- trimestres$periodo
@@ -250,7 +250,7 @@ brechas_ui <- function(id) {
                            choices = c("Precios corrientes", paste0("Precios constantes (",nombre_trimestre_base,")")),
                            selected = "Precios corrientes",
                            multiple = FALSE),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
                hr(), 

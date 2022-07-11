@@ -19,8 +19,8 @@ serv_dom_ocupadas_server <- function(id) {
                             periodo_f
     ){
       datagraf1 <- tabla_resultados[[dataframe]] %>%                          
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         filter(servicio.domestico == "Sí")
       
       
@@ -45,8 +45,8 @@ serv_dom_ocupadas_server <- function(id) {
     ){
       
       datagraf1 <- tabla_resultados[[dataframe]] %>%                           # Daraframe para 2016-19
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         # Periodo como factor y con formato 
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE))))  %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         # Periodo como factor y con formato 
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4))))  %>% 
         filter(servicio.domestico == "Sí")
       
       datagraf <- datagraf1%>% 
@@ -128,12 +128,12 @@ serv_dom_ocupadas_ui <- function(id) {
                #             choices = tasas,
                #             selected = tasas[1],
                #             multiple = FALSE),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
                hr(), 
                h4("Sobre el indicador"), 
-               h5(textOutput(ns('metadata')))
+               h5(htmlOutput(ns('metadata')))
                
              ),
              mainPanel( tabsetPanel(

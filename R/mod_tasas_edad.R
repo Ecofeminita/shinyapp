@@ -23,8 +23,8 @@ tasas_edad_server <- function(id) {
       datagraf1 <- tabla_resultados[[dataframe]] %>%  
         filter(!is.na(GRUPO_EDAD)) %>% 
         filter(GRUPO_EDAD %in% grupos) %>% 
-        mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         filter(eval(parse(text=variable)) %in% valores_filter) %>% 
         relocate(valor, .after = last_col())
       
@@ -63,8 +63,8 @@ tasas_edad_server <- function(id) {
                                  TRUE ~ "2016-2019"),
                grp = paste0(Sexo, dummy),                                           # Grupos por Sexo y Período (4 grupos)
                # periodo = as.yearqtr(paste0(ANO4,".",TRIMESTRE), format="%Y.%q")), # Para trabajar con formato fecha 
-               periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         # Periodo como factor y con formato 
-                                levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) 
+               periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         # Periodo como factor y con formato 
+                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) 
       
       datagraf <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
@@ -162,8 +162,8 @@ tasas_edad_server <- function(id) {
 # tasas_edad <- tasas_edad[grepl("Tasa",tasas_edad)]
 # 
 # trimestres <- tabla_resultados[["tasas_por_sexo_edad_df"]] %>% 
-#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
+#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
 #   select(periodo) %>% unique()
 # 
 # trimestres <- trimestres$periodo
@@ -185,7 +185,7 @@ tasas_edad_ui <- function(id) {
                            choices = grupos_edad,
                            selected = grupos_edad[1],
                            multiple = TRUE),
-               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = c("16T2","19T4")),
+               sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
                hr(), 

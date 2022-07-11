@@ -13,12 +13,11 @@ library(shinydashboard)
 
 
 
-#armar_tabla(tabla_resultados[["ramas_sexo_df"]],c("Enseñanza"),"16T2","19T4")
 
-ramas_server <- function(id) {
+serv_dom_ing_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
-   
+    
     
     armar_tabla <- function(dataframe,
                             valores_filter,
@@ -47,11 +46,11 @@ ramas_server <- function(id) {
     
     
     plot_i <- function(base,
-                     vary,
-                     eje_x,
-                     valores_filter,
-                     periodo_i,
-                     periodo_f){
+                       vary,
+                       eje_x,
+                       valores_filter,
+                       periodo_i,
+                       periodo_f){
       
       datagraf1 <- base %>%         
         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
@@ -61,7 +60,7 @@ ramas_server <- function(id) {
       datagraf2 <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
         filter(`Rama de la ocupación` %in% valores_filter)
-       
+      
       
       grafico <- ggplot(datagraf2, aes(x=periodo, y=ingreso, color=`Rama de la ocupación`, size =`Proporción del empleo femenino total`
                                        ,text=paste0('</br><b>',`Rama de la ocupación`,'</b></br>Período: ',periodo, '</br>', vary,': $',ingreso, '</br>Proporción del empleo femenino total: ', round(`Proporción del empleo femenino total`,1),'%')
@@ -106,7 +105,7 @@ ramas_server <- function(id) {
       
       grafico <- ggplot(tabla, aes(periodo, `Tasa de feminización`, color = `Rama de la ocupación`, group = `Rama de la ocupación`
                                    ,text=paste0('</br><b>',`Rama de la ocupación`,'</b></br>Período: ',periodo,
-                                                 '</br>Tasa de feminización: ',`Tasa de feminización`,'%')
+                                                '</br>Tasa de feminización: ',`Tasa de feminización`,'%')
       )) +
         geom_line(size = 1, alpha = 0.75) +
         geom_point(size = 1) +
@@ -140,7 +139,7 @@ ramas_server <- function(id) {
     
     
     generar_titulo <- function(periodo_i, periodo_f){
-      titulo <- paste0("<b>","<font size='+2'>","Tasa de feminización e ingresos por rama de actividad desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
+      titulo <- paste0("<b>","<font size='+2'>","Tasa de feminización e ingresos de las trabajadoras de Casas Particulares desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
       titulo
     }
     
@@ -148,18 +147,18 @@ ramas_server <- function(id) {
     output$plot_ingreso <- renderPlotly({
       
       plot_i(tabla_resultados[["ramas_sexo_df"]],
-           
-           eje_x = "Período",
-           vary = input$ingreso_id,
-           valores_filter = input$ramas_id,
-           input$id_periodo[1],
-           input$id_periodo[2]) 
+             
+             eje_x = "Período",
+             vary = input$ingreso_id,
+             valores_filter = "Servicio domestico",
+             input$id_periodo[1],
+             input$id_periodo[2]) 
     })
     
     output$plot_feminizacion <- renderPlotly({
       
       plot_f(tabla_resultados[["ramas_sexo_df"]],
-             valores_filter=input$ramas_id, 
+             valores_filter="Servicio domestico", 
              input$id_periodo[1],
              input$id_periodo[2]) 
     })
@@ -170,7 +169,7 @@ ramas_server <- function(id) {
     
     output$tabla <- renderTable({
       armar_tabla(tabla_resultados[["ramas_sexo_df"]],
-                  valores_filter = input$ramas_id,
+                  valores_filter = "Servicio domestico",
                   input$id_periodo[1],
                   input$id_periodo[2]
       )
@@ -184,15 +183,15 @@ ramas_server <- function(id) {
     
     output$downloadTable <- downloadHandler(
       
-      filename = function(){paste('Ramas_actividad.xlsx',sep='')},
+      filename = function(){paste('Serv_dom_ingresos.xlsx',sep='')},
       content = function(file){
         
         write.xlsx(armar_tabla(tabla_resultados[["ramas_sexo_df"]],
-                               valores_filter = input$ramas_id,
+                               valores_filter = "Servicio domestico",
                                input$id_periodo[1],
                                input$id_periodo[2]
         ), 
-                   file)    }
+        file)    }
     )
     
   })
@@ -210,17 +209,14 @@ ramas_server <- function(id) {
 # 
 # trimestres <- trimestres$periodo
 
-ramas_ui <- function(id) {
+serv_dom_ing_ui <- function(id) {
   ns <- NS(id)
-  tabPanel(title = 'Ramas de la actividad',
+  tabPanel(title = 'Ingresos y tasa de feminización',
            
-           titlePanel('Ramas de la actividad'),
+           titlePanel('Ingresos de las trabajadoras de Casas Particulares'),
            sidebarLayout(
              sidebarPanel(
-               selectInput(ns('ramas_id'),label = 'Elegir ramas de actividad',
-                           choices = ramas,
-                           selected = ramas[c(2,4,9)],
-                           multiple = TRUE),
+               
                selectInput(ns('ingreso_id'),label = 'Elegir variable de ingreso',
                            choices = c("Ingreso mensual promedio", "Ingreso horario"),
                            selected = "Ingreso mensual promedio",
@@ -238,7 +234,7 @@ ramas_ui <- function(id) {
              mainPanel( tabsetPanel(
                
                tabPanel("Gráfico",
-                        value = "g_ramas",
+                        value = "g_s_d_ing",
                         
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
@@ -251,7 +247,7 @@ ramas_ui <- function(id) {
                ),
                
                tabPanel("Tabla",
-                        value = "t_ramas",
+                        value = "t_s_d_ing",
                         
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo2'))), 
