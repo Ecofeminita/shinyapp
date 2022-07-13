@@ -181,6 +181,8 @@ serv_dom_ing_server <- function(id) {
     output$titulo1 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
     
+    output$interpretacion_ingreso <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, recomendamos compararlos con aquellos correspondientes a otras <b>Ramas de la actividad</b>.</font>")})
+    
     output$downloadTable <- downloadHandler(
       
       filename = function(){paste('Serv_dom_ingresos.xlsx',sep='')},
@@ -240,6 +242,10 @@ serv_dom_ing_ui <- function(id) {
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
                         plotlyOutput(ns('plot_ingreso'), height = 500),
+                        br(),
+                        br(),
+                        box(width = NULL, htmlOutput(ns('interpretacion_ingreso'))),
+                        br(),
                         br(),
                         plotlyOutput(ns('plot_feminizacion'), height = 500)
                         

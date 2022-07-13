@@ -27,3 +27,8 @@ for (df in dfs_pesos) {
 }
 
 
+tabla_resultados[["ramas_sexo_df"]] <- tabla_resultados[["ramas_sexo_df"]]%>% 
+  left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE")) %>% 
+  mutate(`Ingreso mensual promedio (constante)` = `Ingreso mensual promedio`*inflador,
+         `Ingreso horario (constante)` = `Ingreso horario`*inflador) %>% 
+  select(-c("IPC_base_100", "inflador"))

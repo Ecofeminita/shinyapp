@@ -6,9 +6,6 @@ library(spatstat)
 #GUARDA: REINICIAR
 # Todo el preprocesamiento de datos que querramos hacer offline. 
 
-# source('preprocesamiento/levantar_EPH.R')
-# source('preprocesamiento/funciones_procesamientos.R')
-# source('preprocesamiento/genero_tablas.R')
 
 #problemas con tildes, usar en vez: 
 
@@ -25,8 +22,5 @@ levels(tabla_resultados[["ramas_sexo_df"]]$"Rama de la ocupación")[levels(tabla
 
 saveRDS(tabla_resultados,"www/tabla_resultados.RDS")
 
-#problemas con tildes guardando el .Rdata, alguna idea para solucionarlo?
-
-#save.image('data.Rdata')
 
 
