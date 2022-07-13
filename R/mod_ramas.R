@@ -256,7 +256,7 @@ ramas_ui <- function(id) {
              sidebarPanel(
                selectInput(ns('ramas_id'),label = 'Elegir ramas de actividad',
                            choices = ramas,
-                           selected = ramas[c(2,4,9)],
+                           selected = ramas[c(2,4,9,11)],
                            multiple = TRUE),
                selectInput(ns('ingreso_id'),label = 'Elegir variable de ingreso',
                            choices = c("Ingreso mensual promedio", "Ingreso horario"),
@@ -264,7 +264,7 @@ ramas_ui <- function(id) {
                            multiple = FALSE),
                selectInput(ns('precios_id'),label = 'Valuación:',
                            choices = c("Precios corrientes", paste0("Precios constantes (",nombre_trimestre_base,")")),
-                           selected = "Precios corrientes",
+                           selected = paste0("Precios constantes (",nombre_trimestre_base,")"),
                            multiple = FALSE),
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                

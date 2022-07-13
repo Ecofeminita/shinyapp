@@ -22,7 +22,8 @@ serv_dom_ing_server <- function(id) {
     armar_tabla <- function(dataframe,
                             valores_filter,
                             periodo_i,
-                            periodo_f
+                            periodo_f,
+                            valuacion
     ){
       datagraf1 <- dataframe %>% 
         filter(`Rama de la ocupación` %in% valores_filter) %>%                          
@@ -33,16 +34,32 @@ serv_dom_ing_server <- function(id) {
         
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
         
-        select(-periodo,-trabajadoras_totales,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Rama de la ocupación","Proporción del empleo femenino total", "Tasa de feminización", "Ingreso mensual promedio", "Ingreso horario")
+        select(-periodo,-trabajadoras_totales,-nombre_trim_base,"Año" = "ANO4",
+               "Trimestre" = "TRIMESTRE", 
+               "Rama de la ocupación",
+               "Proporción del empleo femenino total", 
+               "Tasa de feminización", 
+               "Ingreso mensual promedio (precios corrientes)"="Ingreso mensual promedio",
+               "Ingreso horario (precios corrientes)"="Ingreso horario",
+               "Ingreso mensual promedio (precios constantes)" = "Ingreso mensual promedio (constante)",
+               "Ingreso horario (precios constantes)" = "Ingreso horario (constante)"  )
       
-      datagraf
+      if(valuacion =="Precios corrientes"){
+        
+        datagraff <- datagraf %>% 
+          select(-c( "Ingreso mensual promedio (precios constantes)","Ingreso horario (precios constantes)"))
+        
+        return(datagraff)
+        
+      } else if(valuacion ==paste0("Precios constantes (",nombre_trimestre_base,")")){
+        
+        datagraff <- datagraf %>% 
+          select(-c("Ingreso mensual promedio (precios corrientes)","Ingreso horario (precios corrientes)"))
+      }
+      
+      return(datagraff)
     }
-    
-    generar_titulo <- function(variables, periodo_i, periodo_f){
-      nombre_variable <-  paste0(variables, collapse = ", ")
-      nombre_variable <- sub(",([^,]*)$", " y\\1", nombre_variable)   
-      titulo <- paste0(nombre_variable ," desde ", periodo_i, " hasta ", periodo_f)
-    }
+ 
     
     
     plot_i <- function(base,
@@ -50,7 +67,17 @@ serv_dom_ing_server <- function(id) {
                        eje_x,
                        valores_filter,
                        periodo_i,
-                       periodo_f){
+                       periodo_f,
+                       valuacion){
+      
+      if(valuacion =="Precios corrientes"){
+        
+        vary <- vary
+        
+      } else if(valuacion ==paste0("Precios constantes (",nombre_trimestre_base,")")){
+        
+        vary <- paste0(vary, " (constante)")
+      }
       
       datagraf1 <- base %>%         
         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
@@ -63,7 +90,7 @@ serv_dom_ing_server <- function(id) {
       
       
       grafico <- ggplot(datagraf2, aes(x=periodo, y=ingreso, color=`Rama de la ocupación`, size =`Proporción del empleo femenino total`
-                                       ,text=paste0('</br><b>',`Rama de la ocupación`,'</b></br>Período: ',periodo, '</br>', vary,': $',ingreso, '</br>Proporción del empleo femenino total: ', round(`Proporción del empleo femenino total`,1),'%')
+                                       ,text=paste0('</br><b>',`Rama de la ocupación`,'</b></br>Período: ',periodo, '</br>', vary,': $',round(ingreso,2), '</br>Proporción del empleo femenino total: ', round(`Proporción del empleo femenino total`,1),'%')
                                        
       )) + 
         geom_point(alpha = .5)+
@@ -138,8 +165,9 @@ serv_dom_ing_server <- function(id) {
     
     
     
-    generar_titulo <- function(periodo_i, periodo_f){
-      titulo <- paste0("<b>","<font size='+2'>","Tasa de feminización e ingresos de las trabajadoras de Casas Particulares desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
+    generar_titulo <- function(periodo_i, periodo_f,valuacion){
+      titulo <- paste0("</br><b>","<font size='+2'>","Tasa de feminización e ingresos de las trabajadoras de Casas Particulares. </font>","<font size='+1'>","</br> Desde ", periodo_i, " hasta ", periodo_f,". ","</font>","</br>", valuacion,"</b>")
+      
       titulo
     }
     
@@ -152,8 +180,11 @@ serv_dom_ing_server <- function(id) {
              vary = input$ingreso_id,
              valores_filter = "Servicio domestico",
              input$id_periodo[1],
-             input$id_periodo[2]) 
+             input$id_periodo[2],
+             input$precios_id) 
     })
+    
+    
     
     output$plot_feminizacion <- renderPlotly({
       
@@ -171,15 +202,18 @@ serv_dom_ing_server <- function(id) {
       armar_tabla(tabla_resultados[["ramas_sexo_df"]],
                   valores_filter = "Servicio domestico",
                   input$id_periodo[1],
-                  input$id_periodo[2]
+                  input$id_periodo[2],
+                  input$precios_id
       )
     })
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Ramas de la ocupación")]})
     output$metadata_femi <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Tasa de feminización")]})
     
-    output$titulo1 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
-    output$titulo2 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
+    output$titulo1 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2],
+                                                 input$precios_id)})
+    output$titulo2 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2],
+                                                 input$precios_id)})
     
     output$interpretacion_ingreso <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, recomendamos compararlos con aquellos correspondientes a otras <b>Ramas de la actividad</b>.</font>")})
     
@@ -191,7 +225,8 @@ serv_dom_ing_server <- function(id) {
         write.xlsx(armar_tabla(tabla_resultados[["ramas_sexo_df"]],
                                valores_filter = "Servicio domestico",
                                input$id_periodo[1],
-                               input$id_periodo[2]
+                               input$id_periodo[2],
+                               input$precios_id
         ), 
         file)    }
     )
@@ -223,6 +258,12 @@ serv_dom_ing_ui <- function(id) {
                            choices = c("Ingreso mensual promedio", "Ingreso horario"),
                            selected = "Ingreso mensual promedio",
                            multiple = FALSE),
+               
+               selectInput(ns('precios_id'),label = 'Valuación:',
+                           choices = c("Precios corrientes", paste0("Precios constantes (",nombre_trimestre_base,")")),
+                           selected = paste0("Precios constantes (",nombre_trimestre_base,")"),
+                           multiple = FALSE),
+               
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
@@ -260,9 +301,9 @@ serv_dom_ing_ui <- function(id) {
                         br(),
                         fluidRow(
                           column(12,
-                                 column(9, 
+                                 column(10, 
                                         box(tableOutput(ns('tabla')))),
-                                 column(3,   
+                                 column(2,   
                                         box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         
