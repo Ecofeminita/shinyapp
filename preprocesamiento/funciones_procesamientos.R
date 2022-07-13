@@ -51,7 +51,8 @@ tasas_por_sexo_edad <- function(base){
               'Tasa de Empleo'                     = round(Ocupados/Poblacion*100, 1),
               'Tasa de Desocupación'               = round(Desocupados/PEA*100, 1),
               'Tasa de Subocupación'               = round(Subocupados/PEA*100, 1)) %>% 
-    gather(indicador, valor, 5:ncol(.))
+    gather(indicador, valor, 5:ncol(.)) %>% 
+    filter(!is.na(GRUPO_EDAD))
   
   return(tabla)
   

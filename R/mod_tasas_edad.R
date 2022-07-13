@@ -10,7 +10,7 @@ tasas_edad_server <- function(id) {
     
     
     
-    colores = c("#FE1764", "#00BDD6")
+    colores = c("#FE1764", "#00BDD6", "#FE5764", "#49BDD6")
     
     
     armar_tabla <- function(dataframe,
@@ -61,7 +61,7 @@ tasas_edad_server <- function(id) {
         filter(GRUPO_EDAD %in% grupos) %>% 
         mutate(dummy = case_when(ANO4 %in% c(2004:2006) ~ "2004-2006",              # Identifico periodos
                                  TRUE ~ "2016-2019"),
-               grp = paste0(Sexo, dummy),                                           # Grupos por Sexo y Período (4 grupos)
+               grp = paste0(GRUPO_EDAD,Sexo, dummy),                                           # Grupos por Sexo y Período (4 grupos)
                # periodo = as.yearqtr(paste0(ANO4,".",TRIMESTRE), format="%Y.%q")), # Para trabajar con formato fecha 
                periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         # Periodo como factor y con formato 
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) 
@@ -75,14 +75,14 @@ tasas_edad_server <- function(id) {
           filter(eval(parse(text=variable)) %in% valores_filter)
       }                                                  
       
-      grafico <- ggplot(datagraf, aes(periodo, valor, color = Sexo, group = grp
-                                      ,text=paste0('</br>',Sexo,'</br>Tasa: ',valor,'%', '</br>Período: ',periodo)
+      grafico <- ggplot(datagraf, aes(periodo, valor, color = grp, group = grp, shape=GRUPO_EDAD
+                                      ,text=paste0('</br><b>',Sexo,'</br>',GRUPO_EDAD,'</b></br>Tasa: ',valor,'%', '</br>Período: ',periodo)
       )) +
         geom_line(size = 1, alpha = 0.75) +
         geom_point(size = 1) +
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
-              legend.position = "bottom",
+              legend.position = "none",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
               #plot.background = element_rect(fill="gray99", color = NA),
               strip.text.y = element_text(angle = 0),
@@ -93,8 +93,8 @@ tasas_edad_server <- function(id) {
              x = eje_x,
              y = eje_y,
              color = "",
-             caption = "Fuente: Elaboración propia en base a EPH-INDEC")+
-        facet_wrap(~GRUPO_EDAD, nrow = 2)
+             caption = "Fuente: Elaboración propia en base a EPH-INDEC")#+
+        #facet_wrap(~GRUPO_EDAD, nrow = 2)
       
       if(porcentaje){
         grafico <- grafico + 
@@ -106,7 +106,18 @@ tasas_edad_server <- function(id) {
       return(grafico)
     }
     
-    
+    # graficos_series(dataframe= "tasas_por_sexo_edad_df",
+    #                 filtro = TRUE, 
+    #                 variable = "indicador", 
+    #                 valores_filter = "Tasa de Actividad",
+    #                 eje_x = "Período",
+    #                 eje_y = "",
+    #                 titulo = "",#input$indicador, 
+    #                 subtitulo = "Población de 14 años y más. Por sexo y período. Total 31 aglomerados urbanos.",
+    #                 periodo_i = "2°T 2016",
+    #                 periodo_f = "2°T 2018",
+    #                 grupos = c("de 14 a 29 años" ,"de 30 a 64 años")
+    #)
     
     output$plot <- renderPlotly({graficos_series(dataframe= "tasas_por_sexo_edad_df",
                                                  filtro = TRUE, 
@@ -192,9 +203,9 @@ tasas_edad_ui <- function(id) {
                h4("Sobre el indicador"), 
                h5(textOutput(ns('metadata'))), 
                hr(),
-               h5(textOutput(ns('metadata_edad'))), 
+               h5(textOutput(ns('metadata_pea'))),
                hr(),
-               h5(textOutput(ns('metadata_pea')))
+               h5(textOutput(ns('metadata_edad')))
                
              ),
              mainPanel( tabsetPanel(

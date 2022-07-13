@@ -69,6 +69,9 @@ tasas <- tabla_resultados[["tasas_por_sexo_df"]]$indicador %>% unique()
 
 tasas <- tasas[grepl("Tasa",tasas)]
 
+
+
+
 ####Tasas sexo edad##############
 
 tasas_edad <- tabla_resultados[["tasas_por_sexo_edad_df"]]$indicador %>% unique()

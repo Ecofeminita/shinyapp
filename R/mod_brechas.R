@@ -204,6 +204,7 @@ brechas_server <- function(id) {
     })
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("B-",input$ingreso_id)]})
+    output$metadata_ingresos <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Valuación")]})
     
     output$titulo1 <- renderText({generar_titulo(input$ingreso_id, input$id_periodo[1],input$id_periodo[2],input$precios_id)})
     output$titulo2 <- renderText({generar_titulo(input$ingreso_id, input$id_periodo[1],input$id_periodo[2],input$precios_id)})
@@ -248,14 +249,16 @@ brechas_ui <- function(id) {
                            multiple = FALSE),
                selectInput(ns('precios_id'),label = 'Valuación:',
                            choices = c("Precios corrientes", paste0("Precios constantes (",nombre_trimestre_base,")")),
-                           selected = "Precios corrientes",
+                           selected = paste0("Precios constantes (",nombre_trimestre_base,")"),
                            multiple = FALSE),
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
                hr(), 
                h4("Sobre el indicador"), 
-               h5(textOutput(ns('metadata')))
+               h5(textOutput(ns('metadata'))), 
+               hr(),
+               h5(textOutput(ns('metadata_ingresos')))
                
              ),
              mainPanel( tabsetPanel(

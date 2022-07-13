@@ -496,6 +496,7 @@ brechas_desag_server <- function(id) {
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("B-",input$ingreso_id)]})
     output$metadata_desag <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$var_desag_id]})
+    output$metadata_ingresos <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Valuación")]})
     
     output$interpretacion_horas <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, estudiemos el <b>Uso del tiempo</b> de cada segmento de la población.</font>")})
     
@@ -547,7 +548,7 @@ brechas_desag_ui <- function(id) {
                            multiple = FALSE),
                selectInput(ns('precios_id'),label = 'Valuación:',
                            choices = c("Precios corrientes", paste0("Precios constantes (",nombre_trimestre_base,")")),
-                           selected = "Precios corrientes",
+                           selected = paste0("Precios constantes (",nombre_trimestre_base,")"),
                            multiple = FALSE),
                selectInput(ns('var_desag_id'),label = 'Elegir desagregación:',
                            choices = unique(nombres_brechas_desag$variable_desag_nombre),
@@ -566,7 +567,9 @@ brechas_desag_ui <- function(id) {
                h4("Sobre el indicador"), 
                h5(textOutput(ns('metadata'))), 
                hr(),
-               h5(textOutput(ns('metadata_desag')))
+               h5(textOutput(ns('metadata_desag'))), 
+               hr(),
+               h5(textOutput(ns('metadata_ingresos')))
                
              ),
              mainPanel( tabsetPanel(

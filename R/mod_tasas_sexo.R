@@ -22,18 +22,33 @@ tasas_sexo_server <- function(id) {
       datagraf1 <- tabla_resultados[[dataframe]] %>%                          
         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-        filter(eval(parse(text=variable)) %in% valores_filter) %>% 
-        relocate(valor, .after = last_col())
+        filter(eval(parse(text=variable)) %in% valores_filter) #%>% 
+        #relocate(valor, .after = last_col())
         
       
-      names(datagraf1)[length(datagraf1)] <- paste0(valores_filter[1])
+      #names(datagraf1)[length(datagraf1)] <- paste0(valores_filter[1])
       
       datagraf <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
-        select(-periodo, -indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Sexo")
+        #select(-periodo, -indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Sexo")
+      select(-periodo, -indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", 
+             "Mujeres", "Varones", 
+             "Brecha (%)") %>% 
+        relocate("Mujeres", "Varones", "Brecha (%)", .after = last_col())
+     
+      
+      
+      names(datagraf)[length(datagraf)-2] <- paste0(valores_filter[1], " - ", names(datagraf)[length(datagraf)-2])
+      names(datagraf)[length(datagraf)-1] <- paste0(valores_filter[1], " - ", names(datagraf)[length(datagraf)-1])
       
       datagraf
     }
+    
+    # armar_tabla("tabla_brechas_tasas",
+    #             variable = "indicador", 
+    #             valores_filter = c("Tasa de Actividad"),
+    #             "2°T 2016",
+    #             "3°T 2016")
     
     generar_titulo <- function(variables, periodo_i, periodo_f){
       nombre_variable <-  paste0(variables, collapse = ", ")
@@ -118,7 +133,7 @@ tasas_sexo_server <- function(id) {
                                                  )})
     
     output$tabla <- renderTable({
-      armar_tabla(dataframe= "tasas_por_sexo_df",
+      armar_tabla(dataframe= "tabla_brechas_tasas",
                   variable = "indicador", 
                   valores_filter = input$indicador,
                   input$id_periodo[1],input$id_periodo[2]
@@ -138,7 +153,7 @@ tasas_sexo_server <- function(id) {
       filename = function(){paste(input$indicador,'.xlsx',sep='')},
       content = function(file){
         
-        write.xlsx(armar_tabla(dataframe= "tasas_por_sexo_df",
+        write.xlsx(armar_tabla(dataframe= "tabla_brechas_tasas",
                                variable = "indicador", 
                                valores_filter = input$indicador,
                                input$id_periodo[1],input$id_periodo[2]

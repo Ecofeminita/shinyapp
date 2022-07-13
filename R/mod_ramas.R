@@ -212,6 +212,7 @@ ramas_server <- function(id) {
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Ramas de la ocupación")]})
     output$metadata_femi <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Tasa de feminización")]})
+    output$metadata_ingresos <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Valuación")]})
     
     output$titulo1 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2],
                                                  input$precios_id)})
@@ -273,7 +274,9 @@ ramas_ui <- function(id) {
                h4("Sobre el indicador"), 
                h5(textOutput(ns('metadata'))), 
                hr(),
-               h5(textOutput(ns('metadata_femi')))
+               h5(textOutput(ns('metadata_femi'))), 
+               hr(),
+               h5(textOutput(ns('metadata_ingresos')))
                
              ),
              mainPanel( tabsetPanel(
