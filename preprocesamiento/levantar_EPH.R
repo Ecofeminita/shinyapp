@@ -78,3 +78,11 @@ bases <- limpieza_individuos(bases)
 #   }
 #   return(base)
 # }
+
+
+base_hogar <- get_microdata(year = 2016:2019, 
+                                     trimester = 1:4,
+                                     type =  'hogar',
+                                     destfile = 'preprocesamiento/fuentes/bases_eph_hogar.rds')
+
+base_hogar <- base_hogar %>% unnest(cols = c(microdata)) %>% select(-wave)

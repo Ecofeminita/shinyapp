@@ -44,6 +44,8 @@ server <- function (input, output,session) {
     deciles_server('deciles')
     
     horas_remunerado_server('horas_remuneradas')
+    horas_no_remunerado_server('horas_no_rem')
+    
     
     serv_dom_ocupadas_server('s_d_ocup')
     serv_dom_ing_server('s_d_ing')

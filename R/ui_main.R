@@ -38,8 +38,9 @@ main_ui <- {
              
              navbarMenu(title = 'Uso del tiempo',
                         #remunerado
-                        horas_remunerado_ui('horas_remuneradas')
+                        horas_remunerado_ui('horas_remuneradas'),
                         #no remunerado
+                        horas_no_remunerado_ui('horas_no_rem')
                        
              ),
              

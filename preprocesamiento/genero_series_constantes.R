@@ -32,3 +32,7 @@ tabla_resultados[["ramas_sexo_df"]] <- tabla_resultados[["ramas_sexo_df"]]%>%
   mutate(`Ingreso mensual promedio (constante)` = `Ingreso mensual promedio`*inflador,
          `Ingreso horario (constante)` = `Ingreso horario`*inflador) %>% 
   select(-c("IPC_base_100", "inflador"))
+
+
+rm(ipc_series_ctes)
+rm(tabla_inflada)

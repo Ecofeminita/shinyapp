@@ -44,6 +44,8 @@ nombre_trimestre_base <- unique(ipc_series_ctes$nombre_trim_base[!is.na(ipc_seri
 ####Tipo de inserción##############
 
 t3_acomodo <- tabla_resultados[["tasas_no_registro_df"]] %>% 
+  rename("Proporción de no Registrados" = "valor") %>% 
+  select(-indicador) %>% 
   mutate(JERARQUIA = "Trabajadores Asalariados")
 
 tabla_tipo_insercion <- tabla_resultados[["sexo_segun_jerarquias_df"]] %>% 

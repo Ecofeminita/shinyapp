@@ -3,12 +3,12 @@ library(httr)
 library(stringr)
 
 
-#Armo las tablas (dejo todo comentado menos una para probar)
+
 
 # Función que crea las tablas
-creador_tablas <- function(base#, 
-                           #base_hogar,
-                           #tareas_domesticas=TRUE
+creador_tablas <- function(base, 
+                           base_hogar,
+                           tareas_domesticas=TRUE
                            ){
   
   tasas_por_sexo_df              <- tasas_por_sexo(base)
@@ -36,11 +36,11 @@ creador_tablas <- function(base#,
   
   
   
-  # if (tareas_domesticas) {
-  #   tareas_domesticas_sexo_df  <- tareas_domesticas_sexo(base, base_hogar)
-  # }else{
-  #   tareas_domesticas_sexo_df  <- tibble()
-  # }
+  if (tareas_domesticas) {
+    tareas_domesticas_sexo_df  <- tareas_domesticas_sexo(base, base_hogar)
+  }else{
+    tareas_domesticas_sexo_df  <- tibble()
+  }
   servicio_domestico_sexo_df     <- servicio_domestico_sexo(base)
   servicio_domestico_ocupadas_df <- servicio_domestico_ocupadas(base)
   derechos_servicio_domestico_df <- derechos_servicio_domestico(base)
@@ -69,7 +69,7 @@ creador_tablas <- function(base#,
                 "OP_hr_calif_df" = OP_hr_calif_df,
                 "OP_hr_nivel_educ_df" = OP_hr_nivel_educ_df,
                 
-                # "tareas_domesticas_sexo_df" = tareas_domesticas_sexo_df,
+                 "tareas_domesticas_sexo_df" = tareas_domesticas_sexo_df,
                 "servicio_domestico_sexo_df" = servicio_domestico_sexo_df,
                 "servicio_domestico_ocupadas_df" = servicio_domestico_ocupadas_df,
                 "derechos_servicio_domestico_df" = derechos_servicio_domestico_df,
@@ -83,11 +83,11 @@ creador_tablas <- function(base#,
 }
 
 
-tabla_resultados <- creador_tablas(bases)
+tabla_resultados <- creador_tablas(bases,base_hogar)
 
 #Al final borro la base cruda y las funciones que ya usé
 
 rm(list=names(Filter(is.function, mget(ls(all=T)))))
-rm(bases)
+rm(bases,base_hogar)
 
 
