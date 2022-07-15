@@ -5,17 +5,35 @@ library(janitor)
 
 #Poner acá nuestra limpieza general de eph (cambios de tipo de variable, nombres, etc)
 
+nombres_filtro_personas <- read_excel("preprocesamiento/nombres_filtro.xlsx", 
+                             col_names = FALSE) %>% 
+  pull("...1")
+
+
 
 #Levanto bases
 
 bases <- get_microdata(year = 2016:2019, 
                        trimester = 1:4,
                        type =  'individual',
+                       vars = nombres_filtro_personas,
                        destfile = 'preprocesamiento/fuentes/bases_eph.rds')
 
+basesb <- get_microdata(year = 2020:2021, 
+                       trimester = 1:4,
+                       type =  'individual',
+                       vars = nombres_filtro_personas,
+                       destfile = 'preprocesamiento/fuentes/bases_eph_b.rds')
 
-bases <- bases %>% unnest(cols = c(microdata)) %>% select(-wave)
 
+bases <- bases %>% unnest(cols = c(microdata)) %>% select(-wave) 
+basesb <- basesb %>% unnest(cols = c(microdata)) %>% select(-wave)
+
+bases <- bases %>% select(nombres_filtro_personas)
+basesb <- basesb %>% select(nombres_filtro_personas)
+
+bases <- bind_rows(bases,basesb)
+rm(basesb)
 # Función de limpieza de la base individual
 limpieza_individuos <- function(base){
   
@@ -80,9 +98,32 @@ bases <- limpieza_individuos(bases)
 # }
 
 
-base_hogar <- get_microdata(year = 2016:2019, 
-                                     trimester = 1:4,
-                                     type =  'hogar',
-                                     destfile = 'preprocesamiento/fuentes/bases_eph_hogar.rds')
+nombres_filtro_hogares <- read_excel("preprocesamiento/nombres_filtro.xlsx", 
+                             sheet = "hogares", col_names = FALSE)%>% 
+  pull("...1")
 
-base_hogar <- base_hogar %>% unnest(cols = c(microdata)) %>% select(-wave)
+
+bases_hogar <- get_microdata(year = 2016:2019, 
+                       trimester = 1:4,
+                       type =  'hogar',
+                       vars = nombres_filtro_hogares,
+                       destfile = 'preprocesamiento/fuentes/bases_eph_hogar.rds')
+
+basesb_hogar <- get_microdata(year = 2020:2021, 
+                        trimester = 1:4,
+                        type =  'hogar',
+                        vars = nombres_filtro_hogares,
+                        destfile = 'preprocesamiento/fuentes/bases_eph_hogar_b.rds')
+
+
+bases_hogar <- bases_hogar %>% unnest(cols = c(microdata)) %>% select(-wave) 
+basesb_hogar <- basesb_hogar %>% unnest(cols = c(microdata)) %>% select(-wave)
+
+bases_hogar <- bases_hogar %>% select(nombres_filtro_hogares)
+basesb_hogar <- basesb_hogar %>% select(nombres_filtro_hogares)
+
+base_hogar <- bind_rows(bases_hogar,basesb_hogar)
+
+rm(basesb_hogar)
+
+rm(bases_hogar)
