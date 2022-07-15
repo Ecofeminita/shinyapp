@@ -228,7 +228,7 @@ tasas_edad_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 800)
+                        plotlyOutput(ns('plot'), height = 800)%>% withSpinner(type = 5, color ="#e5616e")
                         
                         
                ),

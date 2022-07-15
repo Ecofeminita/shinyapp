@@ -594,7 +594,7 @@ brechas_desag_ui <- function(id) {
                         ),
                         br(),
                         br(),
-                        box(width = NULL, plotlyOutput(ns('plot_gral'), height = 500),
+                        box(width = NULL, plotlyOutput(ns('plot_gral'), height = 500)%>% withSpinner(type = 5, color ="#e5616e"),
                             
                         )
                         
@@ -613,19 +613,19 @@ brechas_desag_ui <- function(id) {
                        
                         box(width = NULL, htmlOutput(ns('st1'))), 
                         br(),
-                        plotlyOutput(ns('plot1'), height = 400),
+                        plotlyOutput(ns('plot1'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
                         br(),
                         box(width = NULL, htmlOutput(ns('st2'))), 
                         br(),
-                        plotlyOutput(ns('plot2'), height = 400),
+                        plotlyOutput(ns('plot2'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
                         br(),
                         box(width = NULL, htmlOutput(ns('st3'))), 
                         br(),
-                        plotlyOutput(ns('plot3'), height = 400),
+                        plotlyOutput(ns('plot3'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
                         br(),
                         box(width = NULL, htmlOutput(ns('st4'))), 
                         br(),
-                        plotlyOutput(ns('plot4'), height = 400)
+                        plotlyOutput(ns('plot4'), height = 400)%>% withSpinner(type = 5, color ="#e5616e")
                         
                         
                         

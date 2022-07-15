@@ -287,9 +287,9 @@ ramas_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot_ingreso'), height = 500),
+                        plotlyOutput(ns('plot_ingreso'), height = 500)%>% withSpinner(type = 5, color ="#e5616e"),
                         br(),
-                        plotlyOutput(ns('plot_feminizacion'), height = 500)
+                        plotlyOutput(ns('plot_feminizacion'), height = 500)%>% withSpinner(type = 5, color ="#e5616e")
                         
                         
                ),

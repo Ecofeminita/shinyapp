@@ -200,7 +200,7 @@ tipo_insercion_ui <- function(id) {
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
                         br(),
-                        plotlyOutput(ns('plot'), height = 600),
+                        plotlyOutput(ns('plot'), height = 600)%>% withSpinner(type = 5, color ="#e5616e"),
                         
                         
                         

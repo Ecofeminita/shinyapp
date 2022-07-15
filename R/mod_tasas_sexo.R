@@ -214,7 +214,7 @@ tasas_sexo_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 500)
+                        plotlyOutput(ns('plot'), height = 500)%>% withSpinner(type = 5, color ="#e5616e")
                        
                         
                ),

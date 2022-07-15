@@ -302,11 +302,11 @@ serv_dom_ing_ui <- function(id) {
                         
                         br(),
                         br(),
-                        plotlyOutput(ns('plot_ingreso'), height = 500),
+                        plotlyOutput(ns('plot_ingreso'), height = 500)%>% withSpinner(type = 5, color ="#e5616e"),
                         br(),
                         br(),
                         
-                        plotlyOutput(ns('plot_feminizacion'), height = 500)
+                        plotlyOutput(ns('plot_feminizacion'), height = 500)%>% withSpinner(type = 5, color ="#e5616e")
                         
                         
                ),

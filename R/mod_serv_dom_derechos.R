@@ -159,7 +159,7 @@ serv_dom_derechos_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 550)
+                        plotlyOutput(ns('plot'), height = 550)%>% withSpinner(type = 5, color ="#e5616e")
                         
                         
                ),
