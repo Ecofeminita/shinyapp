@@ -34,7 +34,7 @@ serv_dom_ing_server <- function(id) {
         
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
         
-        select(-periodo,-trabajadoras_totales,-nombre_trim_base,"Año" = "ANO4",
+        select(-periodo,-trabajadoras_totales,"Año" = "ANO4",
                "Trimestre" = "TRIMESTRE", 
                "Rama de la ocupación",
                "Proporción del empleo femenino total", 

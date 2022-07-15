@@ -84,7 +84,8 @@ brechas_desag_server <- function(id) {
       datagraf <- datagraf1%>% 
         
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
-        select(-periodo,-nombre_trim_base) %>% 
+        select(-periodo#,-nombre_trim_base
+               ) %>% 
       
         filter(var_filtro %in% c(valores)) %>% 
         
@@ -247,9 +248,6 @@ brechas_desag_server <- function(id) {
       
       
     }
-    
-    
-    
     
     
     

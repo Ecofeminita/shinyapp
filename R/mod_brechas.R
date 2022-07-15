@@ -52,7 +52,7 @@ brechas_server <- function(id) {
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
         
         select(-periodo,
-               -nombre_trim_base,
+               #-nombre_trim_base,
                "Año" = "ANO4", 
                "Trimestre" = "TRIMESTRE", 
                "Brecha (%)" = "brecha", 

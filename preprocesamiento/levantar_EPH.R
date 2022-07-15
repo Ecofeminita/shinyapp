@@ -23,7 +23,8 @@ basesb <- get_microdata(year = 2020:2021,
                        trimester = 1:4,
                        type =  'individual',
                        vars = nombres_filtro_personas,
-                       destfile = 'preprocesamiento/fuentes/bases_eph_b.rds')
+                       destfile = 'preprocesamiento/fuentes/bases_eph_b.rds'
+                       )
 
 
 bases <- bases %>% unnest(cols = c(microdata)) %>% select(-wave) 
@@ -31,6 +32,8 @@ basesb <- basesb %>% unnest(cols = c(microdata)) %>% select(-wave)
 
 bases <- bases %>% select(nombres_filtro_personas)
 basesb <- basesb %>% select(nombres_filtro_personas)
+
+
 
 bases <- bind_rows(bases,basesb)
 rm(basesb)

@@ -6,6 +6,8 @@ library(readxl)
 library(foreign)
 library(spatstat)
 
+ipc_series_ctes <- read_excel("preprocesamiento/fuentes/ipc_series_ctes.xlsx")
+
 # Función de tasas por sexo (14 años y más)
 tasas_por_sexo <- function(base){
   
@@ -141,22 +143,45 @@ rama_ocupacion <- function(base){
               trabajadoras_totales = sum(PONDERA[Sexo == "Mujeres"])) %>% 
     ungroup() %>% 
     group_by(ANO4, TRIMESTRE) %>% 
-    mutate("Proporción del empleo femenino total" = (trabajadoras_totales/sum(trabajadoras_totales))*100) %>% 
-    
-    # filter(Rama %in% c("Servicio domestico", "Ensenanza", "Servicios sociales y de salud", 
-    #                    "Industria manufacturera", "Actividades primarias", "Transporte, almacenamiento y comunicaciones",
-    #                    "Construccion")) %>% 
-    
+    mutate("Proporción del empleo femenino total" = (trabajadoras_totales/sum(trabajadoras_totales))*100)
+  
+  tabla_reg <- organize_caes(base) %>% 
+    mutate(Rama = caes_eph_label) %>% 
+    filter(ESTADO == 1,
+           PP3E_TOT > 0, # Horas trabajadas positivas
+           PP3E_TOT != 999,
+           P21 > 0,
+           PONDIIO > 0) %>%  # Ingresos positivos
+    mutate(PP3E_TOT = as.numeric(gsub(",", #cambio "." por "comas"," en los decimales para poder operar
+                                      ".",
+                                      PP3E_TOT,
+                                      fixed = TRUE))) %>% 
+    filter(!is.na(Rama)) %>% 
+    group_by(ANO4, TRIMESTRE,Rama,REGION) %>% 
+    summarise(ingreso_promedio = round(weighted.mean(P21, PONDIIO/sum(PONDIIO)), 2),
+              ingreso_hor = round(weighted.mean(P21/(PP3E_TOT * 30 / 7), PONDIIO), 2)) %>% 
+    ungroup() %>% 
+    left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE", "REGION")) %>% 
+    mutate(cte_ingreso_promedio = ingreso_promedio*inflador,
+           cte_ingreso_hor = ingreso_hor*inflador) %>% 
+    group_by(ANO4, TRIMESTRE,Rama) %>% 
+    summarise(cte_ingreso_promedio = mean(cte_ingreso_promedio),
+              cte_ingreso_hor = mean(cte_ingreso_hor))
+  
+  tabla <- tabla %>% 
+    left_join(.,tabla_reg, by = c("ANO4","TRIMESTRE","Rama")) %>% 
     rename("Rama de la ocupación" = "Rama",
-              "Tasa de feminización" = "tasa_feminizacion",
-              "Ingreso mensual promedio" = "ingreso_promedio",
-              "Ingreso horario" = "ingreso_hor")
+           "Tasa de feminización" = "tasa_feminizacion",
+           "Ingreso mensual promedio" = "ingreso_promedio",
+           "Ingreso horario" = "ingreso_hor",
+           "Ingreso mensual promedio (constante)" ="cte_ingreso_promedio",
+           "Ingreso horario (constante)" = "cte_ingreso_hor")
+  
+  
   
   return(tabla)
   
 }
-
-
 
 
 # Función de brecha del ingreso total individual (perceptores)
@@ -165,14 +190,30 @@ brecha_ITI <- function(base){
   tabla <- base %>% 
     filter(P47T > 0) %>% 
     group_by(ANO4, TRIMESTRE, Sexo) %>% 
-    summarise(Media.ITI = round(weighted.mean(P47T, PONDII), 2)) %>% ##############
+    summarise(Media.ITI = round(weighted.mean(P47T, PONDII), 2)) %>% 
   spread(., Sexo, Media.ITI) %>% 
     mutate(brecha.ITI = round(((Varones-Mujeres)/Varones)*100, 1)) %>% 
     select(ANO4, TRIMESTRE, media.mujeres = Mujeres, media.varones = Varones, brecha.ITI)
   
+  tabla_reg <- base %>% 
+    filter(P47T > 0) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, REGION) %>% 
+    summarise(Media.ITI = round(weighted.mean(P47T, PONDII), 2)) %>% 
+    left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE", "REGION")) %>% 
+    mutate(cte_Media.ITI = Media.ITI*inflador) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo) %>%
+    summarise(Media.ITI = mean(cte_Media.ITI, na.rm = T)) %>% 
+    spread(., Sexo, Media.ITI) %>% 
+    select(ANO4, TRIMESTRE, cte_media.mujeres = Mujeres, cte_media.varones = Varones)
+  
+  tabla <- tabla %>% 
+    left_join(.,tabla_reg, by = c("ANO4","TRIMESTRE"))
+  
   return(tabla)
   
 }
+
+
 
 # Función de brecha del ingreso de la ocupación principal (ocupades)
 brecha_IOP <- function(base){
@@ -184,6 +225,21 @@ brecha_IOP <- function(base){
     spread(., Sexo, Media.IOP) %>% 
     mutate(brecha.IOP = round(((Varones-Mujeres)/Varones)*100, 1)) %>% 
     select(ANO4, TRIMESTRE, media.mujeres = Mujeres, media.varones = Varones, brecha.IOP)
+  
+  tabla_reg <- base %>% 
+    filter(ESTADO == 1) %>%
+    group_by(ANO4, TRIMESTRE, Sexo, REGION) %>% 
+    summarise(Media.ITI = round(weighted.mean(P21, PONDIIO), 2)) %>% 
+    left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE", "REGION")) %>% 
+    mutate(cte_Media.ITI = Media.ITI*inflador) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo) %>%
+    summarise(Media.ITI = mean(cte_Media.ITI, na.rm = T)) %>% 
+    spread(., Sexo, Media.ITI) %>% 
+    select(ANO4, TRIMESTRE, cte_media.mujeres = Mujeres, cte_media.varones = Varones)
+  
+  tabla <- tabla %>% 
+    left_join(.,tabla_reg, by = c("ANO4","TRIMESTRE"))
+  
   
   return(tabla)  
   
@@ -201,6 +257,22 @@ brecha_IOP_no_reg <- function(base){
     spread(., Sexo, Media.IOP.nr) %>% 
     mutate(brecha.IOP.nr = round(((Varones-Mujeres)/Varones)*100, 1)) %>% 
     select(ANO4, TRIMESTRE, media.mujeres = Mujeres, media.varones = Varones, brecha.IOP.nr)
+  
+  tabla_reg <- base %>% 
+    filter(ESTADO == 1 &      # Ocupades
+             CAT_OCUP == 3 &  # Asalariades
+             PP07H == 2) %>%  # No registrades
+    group_by(ANO4, TRIMESTRE, Sexo, REGION) %>% 
+    summarise(Media.ITI = round(weighted.mean(P21, PONDIIO), 2)) %>% 
+    left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE", "REGION")) %>% 
+    mutate(cte_Media.ITI = Media.ITI*inflador) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo) %>%
+    summarise(Media.ITI = mean(cte_Media.ITI, na.rm = T)) %>% 
+    spread(., Sexo, Media.ITI) %>% 
+    select(ANO4, TRIMESTRE, cte_media.mujeres = Mujeres, cte_media.varones = Varones)
+  
+  tabla <- tabla %>% 
+    left_join(.,tabla_reg, by = c("ANO4","TRIMESTRE"))
   
   return(tabla)  
   
@@ -248,6 +320,22 @@ brecha_IOP_calif <- function(base){
     mutate(brecha.IOP.calif = round(((Varones-Mujeres)/Varones)*100, 1)) %>% 
     select(ANO4, TRIMESTRE, CALIFICACION, media.mujeres = Mujeres, media.varones = Varones, brecha.IOP.calif)
   
+  
+  tabla_reg <- base %>% 
+    filter(CALIFICACION!="0", # Calificacion valida
+           ESTADO == 1) %>%   # Ocupades
+    group_by(ANO4, TRIMESTRE, Sexo, REGION, CALIFICACION) %>% 
+    summarise(Media.ITI = round(weighted.mean(P21, PONDIIO), 2)) %>% 
+    left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE", "REGION")) %>% 
+    mutate(cte_Media.ITI = Media.ITI*inflador) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, CALIFICACION) %>%
+    summarise(Media.ITI = mean(cte_Media.ITI, na.rm = T)) %>% 
+    spread(., Sexo, Media.ITI) %>% 
+    select(ANO4, TRIMESTRE, cte_media.mujeres = Mujeres, cte_media.varones = Varones,CALIFICACION)
+  
+  tabla <- tabla %>% 
+    left_join(.,tabla_reg, by = c("ANO4","TRIMESTRE","CALIFICACION"))
+  
   return(tabla)  
   
 }
@@ -294,6 +382,21 @@ brecha_IOP_nivel_educ <- function(base){
     mutate(brecha.IOP.nivel.educ = round(((Varones-Mujeres)/Varones)*100, 1)) %>% 
     select(ANO4, TRIMESTRE, NIVEL_EDUCATIVO, media.mujeres = Mujeres, media.varones = Varones, brecha.IOP.nivel.educ)
   
+  tabla_reg <- base %>% 
+    filter(ESTADO == 1,                 # Ocupades
+           !is.na(NIVEL_EDUCATIVO)) %>% # Nivel educativo valido
+    group_by(ANO4, TRIMESTRE, Sexo, REGION, NIVEL_EDUCATIVO) %>% 
+    summarise(Media.ITI = round(weighted.mean(P21, PONDIIO), 2)) %>% 
+    left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE", "REGION")) %>% 
+    mutate(cte_Media.ITI = Media.ITI*inflador) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, NIVEL_EDUCATIVO) %>%
+    summarise(Media.ITI = mean(cte_Media.ITI, na.rm = T)) %>% 
+    spread(., Sexo, Media.ITI) %>% 
+    select(ANO4, TRIMESTRE, cte_media.mujeres = Mujeres, cte_media.varones = Varones,NIVEL_EDUCATIVO)
+  
+  tabla <- tabla %>% 
+    left_join(.,tabla_reg, by = c("ANO4","TRIMESTRE","NIVEL_EDUCATIVO"))
+  
   return(tabla)  
   
 }
@@ -331,6 +434,23 @@ brecha_IOP_hr <- function(base){
     mutate(brecha.IOP.hr = round(((Varones-Mujeres)/Varones)*100, 1)) %>% 
     select(ANO4, TRIMESTRE, media.mujeres = Mujeres, media.varones = Varones, brecha.IOP.hr)
   
+  tabla_reg <- base %>% 
+    filter(ESTADO == 1,
+           PP3E_TOT > 0,
+           PP3E_TOT != 999) %>% 
+    mutate(IOP_hr = round(P21/(PP3E_TOT * 30 / 7), 2)) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, REGION) %>% 
+    summarise(Media.ITI = round(weighted.mean(IOP_hr, PONDIIO), 2)) %>% 
+    left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE", "REGION")) %>% 
+    mutate(cte_Media.ITI = Media.ITI*inflador) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo) %>%
+    summarise(Media.ITI = mean(cte_Media.ITI, na.rm = T)) %>% 
+    spread(., Sexo, Media.ITI) %>% 
+    select(ANO4, TRIMESTRE, cte_media.mujeres = Mujeres, cte_media.varones = Varones)
+  
+  tabla <- tabla %>% 
+    left_join(.,tabla_reg, by = c("ANO4","TRIMESTRE"))
+  
   return(tabla)  
   
 }
@@ -351,6 +471,24 @@ brecha_IOP_hr_calif <- function(base){
     mutate(brecha.IOP.hr.calif = round(((Varones-Mujeres)/Varones)*100, 1)) %>% 
     select(ANO4, TRIMESTRE, CALIFICACION, media.mujeres = Mujeres, media.varones = Varones, brecha.IOP.hr.calif)
   
+  tabla_reg <- base %>% 
+    filter(ESTADO == 1,
+           CALIFICACION!="0",
+           PP3E_TOT > 0,
+           PP3E_TOT != 999) %>% 
+    mutate(IOP_hr = round(P21/(PP3E_TOT * 30 / 7), 2)) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, REGION, CALIFICACION) %>% 
+    summarise(Media.ITI = round(weighted.mean(IOP_hr, PONDIIO), 2)) %>% 
+    left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE", "REGION")) %>% 
+    mutate(cte_Media.ITI = Media.ITI*inflador) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, CALIFICACION) %>%
+    summarise(Media.ITI = mean(cte_Media.ITI, na.rm = T)) %>% 
+    spread(., Sexo, Media.ITI) %>% 
+    select(ANO4, TRIMESTRE, cte_media.mujeres = Mujeres, cte_media.varones = Varones,CALIFICACION)
+  
+  tabla <- tabla %>% 
+    left_join(.,tabla_reg, by = c("ANO4","TRIMESTRE","CALIFICACION"))
+  
   return(tabla)
   
 }
@@ -370,6 +508,24 @@ brecha_IOP_hr_nivel_educ <- function(base){
     spread(., Sexo, Media.IOP.hr.nivel.educ) %>% 
     mutate(brecha.IOP.hr.nivel.educ = round(((Varones-Mujeres)/Varones)*100, 1)) %>% 
     select(ANO4, TRIMESTRE, NIVEL_EDUCATIVO, media.mujeres = Mujeres, media.varones = Varones, brecha.IOP.hr.nivel.educ)
+  
+  tabla_reg <- base %>% 
+    filter(ESTADO == 1,
+           !is.na(NIVEL_EDUCATIVO),
+           PP3E_TOT > 0,
+           PP3E_TOT != 999) %>% 
+    mutate(IOP_hr = round(P21/(PP3E_TOT * 30 / 7), 2)) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, REGION, NIVEL_EDUCATIVO) %>% 
+    summarise(Media.ITI = round(weighted.mean(IOP_hr, PONDIIO), 2)) %>% 
+    left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE", "REGION")) %>% 
+    mutate(cte_Media.ITI = Media.ITI*inflador) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, NIVEL_EDUCATIVO) %>%
+    summarise(Media.ITI = mean(cte_Media.ITI, na.rm = T)) %>% 
+    spread(., Sexo, Media.ITI) %>% 
+    select(ANO4, TRIMESTRE, cte_media.mujeres = Mujeres, cte_media.varones = Varones,NIVEL_EDUCATIVO)
+  
+  tabla <- tabla %>% 
+    left_join(.,tabla_reg, by = c("ANO4","TRIMESTRE","NIVEL_EDUCATIVO"))
   
   return(tabla)
   

@@ -19,7 +19,7 @@ class(tt)
 filtro <- sapply(nombres, grepl, tt)
 
 
-nombres_filtrar <- c(nombres[filtro],"PP04B_COD")
+nombres_filtrar <- c(nombres[filtro],"PP04B_COD", "REGION")
 
 
 

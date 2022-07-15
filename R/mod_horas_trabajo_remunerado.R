@@ -2,34 +2,6 @@ library(plotly)
 library(shinyWidgets)
 library(shinydashboard)
 
-#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
-
-# tabla_resultados$OP_hr_calif_df
-# tabla_resultados$OP_hr_nivel_educ_df
-# tabla_resultados$horas_semanales_df
-
-
-
-# vector_horas <- c("Ocupación principal","Totales -todas las ocupaciones-")
-# 
-# 
-# #respetar orden!!!!!
-# nombres_horas_remuneradas <- data.frame("tabla" =c("OP_hr_calif_df",
-#                                                "OP_hr_nivel_educ_df"),
-#                                         
-#                                         "variable_desag" = c("CALIFICACION", "NIVEL_EDUCATIVO"),
-#                                         "variable_desag_nombre" = c("Calificación", "Nivel educativo"),
-#                                     
-#                                     "cod" =c("Media.hs.ocup.princ",
-#                                              "Media.hs.total.ocup"),
-#                                     
-#                                     "nombre"= c(vector_horas[1],
-#                                                 vector_horas[2]))
-
-
-
-
-
 
 horas_remunerado_server <- function(id) {
   moduleServer(id, function(input, output, session) {
@@ -38,15 +10,6 @@ horas_remunerado_server <- function(id) {
     
     colores = c("#FE1764", "#00BDD6")
     
-    # veo <- armar_tabla(tabla_resultados[["OP_hr_calif_df"]],
-    #             "Media.hs.total.ocup",
-    #             "CALIFICACION",
-    #             "Calificación",
-    #             c("Profesionales"),
-    #             "16T3",
-    #             "16T4"
-    #   
-    # )
     
     armar_tabla <- function(dataframe,
                             horas_var,
@@ -96,9 +59,6 @@ horas_remunerado_server <- function(id) {
       titulo
     }
     
-    
-    # grafico("OP_hr_calif_df","Media.hs.ocup.princ","CALIFICACION","Profesionales", vector_horas[1],
-    #                       "16T3","17T2")
     
     grafico <- function(base,var,
                                       facet_var,

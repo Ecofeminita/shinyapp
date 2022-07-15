@@ -1,4 +1,4 @@
-
+#En principio no uso más este código, porque hago el cálculo por región
 library(readxl)
 
 
