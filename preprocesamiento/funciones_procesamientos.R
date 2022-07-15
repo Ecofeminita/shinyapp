@@ -491,6 +491,7 @@ deciles_ITI_sexo <- function(base){
 
   tabla <- base %>%
     select(ANO4, TRIMESTRE, DECINDR, P47T, PONDII, Sexo) %>%
+    mutate(DECINDR = as.numeric(DECINDR)) %>% 
     filter(DECINDR %in% c(1:10)) %>%
     group_by(ANO4, TRIMESTRE,DECINDR, Sexo) %>%
     summarise(Pob = sum(PONDII)) %>%
@@ -501,6 +502,8 @@ deciles_ITI_sexo <- function(base){
   return(tabla)
 
 }
+
+
 
 
 #distribución de las personas de cada sexo en cada decil
@@ -525,6 +528,7 @@ deciles_IPCF_sexo <- function(base){
   
   tabla <- base %>%
     select(ANO4, TRIMESTRE, DECCFR, IPCF, PONDIH, Sexo) %>%
+    mutate(DECCFR = as.numeric(DECCFR)) %>% 
     filter(DECCFR %in% c(1:10)) %>%
     group_by(ANO4, TRIMESTRE,DECCFR, Sexo) %>%
     summarise(Pob = sum(PONDIH)) %>%
