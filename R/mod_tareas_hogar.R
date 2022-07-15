@@ -3,7 +3,7 @@
 library(plotly)
 library(shinyWidgets)
 library(shinydashboard)
-
+library(lubridate)
 
 horas_no_remunerado_server <- function(id) {
   moduleServer(id, function(input, output, session) {
@@ -98,7 +98,22 @@ horas_no_remunerado_server <- function(id) {
     
     
     
-    
+    proyeccion <- function(){
+      df <- tabla_resultados$tareas_domesticas_sexo_df %>%
+        mutate(date = paste(ANO4,TRIMESTRE, sep = '-'),
+               date = yq(date))
+        # filter(Sexo=='Mujeres')
+      
+      df %>% 
+        ggplot(aes(x=date,y=proporcion, color = Sexo)) + 
+        geom_point() + 
+        geom_hline(yintercept = 50)+
+        scale_x_date(limits = c(yq('2016-2'),yq('2045-1')),date_breaks = '5 years')+
+        stat_smooth(method="lm",fullrange=TRUE)+
+        theme_minimal()
+      
+      
+    }
 
     
     output$plot <- renderPlotly({grafico(base = tabla_resultados$tareas_domesticas_sexo_df,
