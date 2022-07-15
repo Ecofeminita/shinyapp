@@ -499,6 +499,7 @@ brechas_desag_server <- function(id) {
     output$metadata_ingresos <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Valuación")]})
     
     output$interpretacion_horas <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, estudiemos el <b>Uso del tiempo</b> de cada segmento de la población.</font>")})
+    output$interpretacion_horas_1 <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, estudiemos el <b>Uso del tiempo</b> de cada segmento de la población.</font>")})
     
     output$titulo0 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
     output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
@@ -580,13 +581,26 @@ brechas_desag_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo0'))), 
                         br(),
-                        box(width = NULL, plotlyOutput(ns('plot_gral'), height = 500),
-                            
+                       
+                        
+                        tags$div( style="display: inline-flex;",  id = "div_1",
+                                  tags$p('Para interpretar estos resultados, estudiemos el '), 
+                                  HTML('&nbsp;'),
+                                  tags$a(" Uso del tiempo", 
+                                         id = "bd_1",
+                                         onclick="fakeClick('Trabajo no remunerado')"#,
+                                         
+                                  ),
+                                  HTML('&nbsp;'),
+                                  tags$p(' de cada segmento de la población')
                         ),
                         br(),
                         br(),
-                        box(width = NULL, htmlOutput(ns('interpretacion_horas'))),
-                        br()
+                        box(width = NULL, plotlyOutput(ns('plot_gral'), height = 500),
+                            
+                        )
+                        
+                        
                         
                         
                ),
@@ -626,6 +640,25 @@ brechas_desag_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo2'))), 
                         br(),
+                       
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = "div_2",
+                                  tags$p('Para interpretar estos resultados, estudiemos el '), 
+                                  HTML('&nbsp;'),
+                                  tags$a(" Uso del tiempo", 
+                                         id = "bd_2",
+                                         onclick="fakeClick('Trabajo no remunerado')"#,
+                                         
+                                  ),
+                                  HTML('&nbsp;'),
+                                  tags$p(' de cada segmento de la población')
+                        ),
+                        
+                        
+                        
+                        br(),
+                        
                         fluidRow(
                           column(12,
                                  column(9, 

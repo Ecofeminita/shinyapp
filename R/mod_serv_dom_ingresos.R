@@ -216,7 +216,8 @@ serv_dom_ing_server <- function(id) {
     output$titulo2 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2],
                                                  input$precios_id)})
     
-    output$interpretacion_ingreso <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, recomendamos compararlos con aquellos correspondientes a otras <b>Ramas de la actividad</b>.</font>")})
+    output$interpretacion_ingreso <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, recomendamos compararlos con aquellos correspondientes a otras ")})
+    output$interpretacion_ingreso_1 <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, recomendamos compararlos con aquellos correspondientes a otras <b>Ramas de la actividad</b>.</font>")})
     
     output$downloadTable <- downloadHandler(
       
@@ -285,12 +286,26 @@ serv_dom_ing_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
+                       
+                       
+                        tags$div( style="display: inline-flex;",  id = "div_1",
+                          tags$p('Para interpretar estos resultados, recomendamos compararlos con aquellos correspondientes a otras '), 
+                          HTML('&nbsp;'),
+                          tags$a(" Ramas de la actividad", id = "sdi_1",
+                                 
+                                
+                                 onclick="fakeClick('Ramas de la actividad')"#,
+                                 
+                          ),
+                        ),
+                        
+                        
+                        br(),
+                        br(),
                         plotlyOutput(ns('plot_ingreso'), height = 500),
                         br(),
                         br(),
-                        box(width = NULL, htmlOutput(ns('interpretacion_ingreso'))),
-                        br(),
-                        br(),
+                        
                         plotlyOutput(ns('plot_feminizacion'), height = 500)
                         
                         
@@ -301,6 +316,18 @@ serv_dom_ing_ui <- function(id) {
                         
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo2'))), 
+                        br(),
+                        
+                        tags$div( style="display: inline-flex;",  id = "div_2",
+                                  tags$p('Para interpretar estos resultados, recomendamos compararlos con aquellos correspondientes a otras '), 
+                                  HTML('&nbsp;'),
+                                  tags$a(" Ramas de la actividad", id = "sdi_2",
+                                         
+                                         
+                                         onclick="fakeClick('Ramas de la actividad')"#,
+                                         
+                                  ),
+                        ),
                         br(),
                         fluidRow(
                           column(12,

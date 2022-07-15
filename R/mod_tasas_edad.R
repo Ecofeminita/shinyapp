@@ -143,7 +143,19 @@ tasas_edad_server <- function(id) {
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$indicador]})
     output$metadata_edad <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Desagregación edad")]})
-    output$metadata_pea <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Población Económicamente Activa")]})
+    
+    
+    output$metadata_pea <- renderText({
+
+      if(grepl("económicamente activa",
+               tabla_metadata$metadata[tabla_metadata$indicador == input$indicador])
+      ){
+        tabla_metadata$metadata[tabla_metadata$indicador == paste0("Población Económicamente Activa")]
+      }else{
+        paste0("")
+      }
+      
+     })
     
     output$titulo1 <- renderText({generar_titulo(input$indicador,
                                                  input$id_periodo[1],input$id_periodo[2])})

@@ -64,12 +64,14 @@ tasas_no_registro <- function(base){
   tabla <- base %>% 
     filter(ESTADO==1,       # Ocupades
            CAT_OCUP==3) %>% # Asalariades
+    filter(!is.na(PP07H)) %>% 
     group_by(ANO4, TRIMESTRE, Sexo) %>% 
     summarise("Proporción de no Registrados" = round(sum(PONDERA[PP07H==2])/sum(PONDERA)*100, 1))
   
   return(tabla)
   
 }
+
 
 # Función de jerarquías en cada sexo (ocupades con jerarquía válida)
 # sexo_segun_jerarquias <- function(base){

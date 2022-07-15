@@ -33,8 +33,8 @@ tasas_sexo_server <- function(id) {
         #select(-periodo, -indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Sexo")
       select(-periodo, -indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", 
              "Mujeres", "Varones", 
-             "Brecha (%)") %>% 
-        relocate("Mujeres", "Varones", "Brecha (%)", .after = last_col())
+             "Brecha [(V-M)/V]"=  "Brecha (%)") %>% 
+        relocate("Mujeres", "Varones", "Brecha [(V-M)/V]", .after = last_col())
      
       
       
@@ -87,7 +87,7 @@ tasas_sexo_server <- function(id) {
       }                                                  
       
       grafico <- ggplot(datagraf, aes(periodo, valor, color = Sexo, group = grp
-                                      ,text=paste0('</br>',Sexo,'</br>Tasa: ',valor,'%', '</br>Período: ',periodo)
+                                      ,text=paste0('</br>',Sexo,'</br>Tasa: ',valor,'%','</br>Brecha [(V-M)/V]: ',`Brecha (%)`, '%', '</br>Período: ',periodo)
                                       )) +
         geom_line(size = 1, alpha = 0.75) +
         geom_point(size = 1) +
@@ -141,7 +141,17 @@ tasas_sexo_server <- function(id) {
     })
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$indicador]})
-    output$metadata_pea <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Población Económicamente Activa")]})
+    output$metadata_pea <- renderText({
+
+      if(grepl("económicamente activa",
+               tabla_metadata$metadata[tabla_metadata$indicador == input$indicador])
+      ){
+        tabla_metadata$metadata[tabla_metadata$indicador == paste0("Población Económicamente Activa")]
+      }else{
+        paste0("")
+      }
+
+      })
     
     output$titulo1 <- renderText({generar_titulo(input$indicador,
                                                  input$id_periodo[1],input$id_periodo[2])})

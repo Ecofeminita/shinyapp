@@ -13,9 +13,11 @@ about_ui <- tabPanel(title = 'Inicio',
                      includeMarkdown('README.md'))
 
 
+
+
 main_ui <- {
   
-  
+ 
   
   navbarPage('ECOFEMIDATA',
              #sample_plot_ui('ejemplo'),
