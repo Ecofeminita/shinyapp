@@ -13,7 +13,7 @@ library(tidyverse)
 library(readxl)
 library(openxlsx)
 
-#btn_style <- "float:right;border-radius: 15px;"
+btn_style <- "float:right;border-radius: 15px;"
 
 tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
