@@ -96,7 +96,7 @@ serv_dom_ing_server <- function(id) {
         geom_point(alpha = .5)+
         scale_size(range = c(1, 15))+
         theme_minimal() +
-        theme(axis.text.x = element_text(angle = 0, vjust = 0.7),
+        theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "bottom",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
               #plot.background = element_rect(fill="gray99", color = NA),
@@ -132,7 +132,7 @@ serv_dom_ing_server <- function(id) {
       
       grafico <- ggplot(tabla, aes(periodo, `Tasa de feminización`, color = `Rama de la ocupación`, group = `Rama de la ocupación`
                                    ,text=paste0('</br><b>',`Rama de la ocupación`,'</b></br>Período: ',periodo,
-                                                '</br>Tasa de feminización: ',`Tasa de feminización`,'%')
+                                                '</br>Tasa de feminización: ',round(`Tasa de feminización`,2),'%')
       )) +
         geom_line(size = 1, alpha = 0.75) +
         geom_point(size = 1) +
@@ -166,7 +166,7 @@ serv_dom_ing_server <- function(id) {
     
     
     generar_titulo <- function(periodo_i, periodo_f,valuacion){
-      titulo <- paste0("</br><b>","<font size='+2'>","Tasa de feminización e ingresos de las trabajadoras de Casas Particulares. </font>","<font size='+1'>","</br> Desde ", periodo_i, " hasta ", periodo_f,". ","</font>","</br>", valuacion,"</b>")
+      titulo <- paste0("</br><b>","<font size='+2'>","Ingresos y tasa de feminización de las trabajadoras de Casas Particulares. </font>","<font size='+1'>","</br> Desde ", periodo_i, " hasta ", periodo_f,". ","</font>","</br>", valuacion,"</b>")
       
       titulo
     }
