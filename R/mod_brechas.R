@@ -201,7 +201,8 @@ brechas_server <- function(id) {
                   input$id_periodo[2],
                   input$precios_id
       )
-    })
+    },
+    width="630px")
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("B-",input$ingreso_id)]})
     output$metadata_ingresos <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Valuación")]})

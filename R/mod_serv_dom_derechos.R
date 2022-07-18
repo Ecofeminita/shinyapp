@@ -29,7 +29,7 @@ serv_dom_derechos_server <- function(id) {
       
       datagraf <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
-        select(-periodo,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Porcentaje de trabajadoras del servicio doméstico que.."= "indicador", valor)
+        select(-periodo,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Porcentaje de trabajadoras del servicio doméstico que.."= "indicador", "Valor"= "valor")
       
       
       datagraf
@@ -38,7 +38,7 @@ serv_dom_derechos_server <- function(id) {
     generar_titulo <- function(variables, periodo_i, periodo_f){
       nombre_variable <-  paste0(variables, collapse = ", ")
       nombre_variable <- sub(",([^,]*)$", " y\\1", nombre_variable)   
-      titulo <- paste0("<b>","<font size='+2'></br>Trabajadoras de Casas Particulares que: ",nombre_variable ," desde ", periodo_i, " hasta ", periodo_f, ". </font> </br><font size='+1'> Trabajadoras de Casas Particulares.","</b>","</font>")
+      titulo <- paste0("<b>","<font size='+2'></br>Trabajadoras de Casas Particulares que: ",nombre_variable ,".</font>","<font size='+1'></br> Desde ", periodo_i, " hasta ", periodo_f, ". </font> </br> Trabajadoras de Casas Particulares.","</b>")
     }
     
     graficos_series <- function(dataframe, 
@@ -105,7 +105,8 @@ serv_dom_derechos_server <- function(id) {
                   input$id_periodo[1],input$id_periodo[2]
       )
       
-    })
+    },
+    width="600px")
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador %in% input$indicador]})
     

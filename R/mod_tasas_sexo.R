@@ -138,7 +138,8 @@ tasas_sexo_server <- function(id) {
                   valores_filter = input$indicador,
                   input$id_periodo[1],input$id_periodo[2]
                   )
-    })
+    },
+    width="600px")
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$indicador]})
     output$metadata_pea <- renderText({

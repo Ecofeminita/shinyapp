@@ -130,3 +130,4 @@ base_hogar <- bind_rows(bases_hogar,basesb_hogar)
 rm(basesb_hogar)
 
 rm(bases_hogar)
+

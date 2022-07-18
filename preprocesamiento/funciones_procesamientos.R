@@ -413,12 +413,13 @@ horas_semanales <- function(base){
                                 TRUE ~ PP3F_TOT),
            hs.total.ocup = PP3E_TOT + PP3F_TOT) %>%  # Sumo las horas de la ocup princ y de ocup sec
     group_by(ANO4, TRIMESTRE, Sexo) %>% 
-    summarise(Media.hs.ocup.princ = round(weighted.mean(PP3E_TOT, PONDERA), 2),
-              Media.hs.total.ocup = round(weighted.mean(hs.total.ocup, PONDERA), 2))
+    summarise(Media.hs.ocup.princ = round(weighted.mean(PP3E_TOT, PONDERA,na.rm=T), 2),
+              Media.hs.total.ocup = round(weighted.mean(hs.total.ocup, PONDERA,na.rm=T), 2))
   
   return(tabla)
   
 }
+
 
 # Función de brecha del INGHORA de la ocupación principal (ocupades con horas positivas)
 brecha_IOP_hr <- function(base){
@@ -546,8 +547,8 @@ OP_hr_calif <- function(base){
                                 TRUE ~ PP3F_TOT),
            hs.total.ocup = PP3E_TOT + PP3F_TOT) %>% 
     group_by(ANO4, TRIMESTRE, Sexo, CALIFICACION) %>% 
-    summarise(Media.hs.ocup.princ = round(weighted.mean(PP3E_TOT, PONDERA), 2),
-              Media.hs.total.ocup = round(weighted.mean(hs.total.ocup, PONDERA), 2))
+    summarise(Media.hs.ocup.princ = round(weighted.mean(PP3E_TOT, PONDERA,na.rm=T), 2),
+              Media.hs.total.ocup = round(weighted.mean(hs.total.ocup, PONDERA,na.rm=T), 2))
   
   return(tabla)
   
@@ -565,8 +566,8 @@ OP_hr_nivel_educ <- function(base){
                                 TRUE ~ PP3F_TOT),
            hs.total.ocup = PP3E_TOT + PP3F_TOT) %>% 
     group_by(ANO4, TRIMESTRE, Sexo, NIVEL_EDUCATIVO) %>% 
-    summarise(Media.hs.ocup.princ = round(weighted.mean(PP3E_TOT, PONDERA), 2),
-              Media.hs.total.ocup = round(weighted.mean(hs.total.ocup, PONDERA), 2))
+    summarise(Media.hs.ocup.princ = round(weighted.mean(PP3E_TOT, PONDERA,na.rm=T), 2),
+              Media.hs.total.ocup = round(weighted.mean(hs.total.ocup, PONDERA,na.rm=T), 2))
   
   return(tabla)
   

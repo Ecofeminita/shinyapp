@@ -8,7 +8,7 @@ library(gridExtra)
 library(shinyjs)
 library(shinydashboard)
 
-tabla_resultados <- readRDS("www/tabla_resultados.RDS")
+#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
 
 

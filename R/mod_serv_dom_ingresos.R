@@ -166,7 +166,7 @@ serv_dom_ing_server <- function(id) {
     
     
     generar_titulo <- function(periodo_i, periodo_f,valuacion){
-      titulo <- paste0("</br><b>","<font size='+2'>","Ingresos y tasa de feminización de las trabajadoras de Casas Particulares. </font>","<font size='+1'>","</br> Desde ", periodo_i, " hasta ", periodo_f,". ","</font>","</br>", valuacion,"</b>")
+      titulo <- paste0("</br><b>","<font size='+2'>","Ingresos y tasa de feminización de las trabajadoras de Casas Particulares. </font>","<font size='+1'>","</br> Desde ", periodo_i, " hasta ", periodo_f,". ","</font>","</br>", valuacion, ". Población con ingresos y horas trabajadas mayores a 0.","</b>")
       
       titulo
     }
@@ -210,6 +210,7 @@ serv_dom_ing_server <- function(id) {
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Ramas de la ocupación")]})
     output$metadata_femi <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Tasa de feminización")]})
     output$metadata_ingresos <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Valuación")]})
+    output$metadata_tamanio <- renderText({paste0("Nota: el tamaño de las esferas indica la proporción del empleo femenino total que representa la rama de actividad.")})
     
     output$titulo1 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2],
                                                  input$precios_id)})
@@ -275,7 +276,9 @@ serv_dom_ing_ui <- function(id) {
                hr(),
                h5(textOutput(ns('metadata_femi'))), 
                hr(),
-               h5(textOutput(ns('metadata_ingresos')))
+               h5(textOutput(ns('metadata_ingresos'))),
+               hr(),
+               h5(textOutput(ns('metadata_tamanio')))
                
              ),
              mainPanel( tabsetPanel(

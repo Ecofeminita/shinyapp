@@ -136,7 +136,8 @@ tipo_insercion_server <- function(id) {
                   input$id_periodo[1],
                   input$id_periodo[2]
       )
-    })
+    },
+    width="600px")
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0(input$jerarqs_id)]})
     
@@ -214,9 +215,9 @@ tipo_insercion_ui <- function(id) {
                         br(),
                         fluidRow(
                           column(12,
-                                 column(7, 
+                                 column(9, 
                                         box(tableOutput(ns('tabla')))),
-                                 column(5,          
+                                 column(3,          
                                        box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))
                                         

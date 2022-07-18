@@ -94,7 +94,8 @@ serv_dom_ocupadas_server <- function(id) {
                   
                   input$id_periodo[1],input$id_periodo[2]
       )
-    })
+    },
+    width="600px")
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == "Ocupadas servicio doméstico"]})
     

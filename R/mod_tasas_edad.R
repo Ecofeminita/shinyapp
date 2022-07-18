@@ -139,7 +139,8 @@ tasas_edad_server <- function(id) {
                   grupos = input$g_edad,
                   input$id_periodo[1],input$id_periodo[2]
       )
-    })
+    },
+    width="600px")
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$indicador]})
     output$metadata_edad <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Desagregación edad")]})

@@ -13,6 +13,7 @@ horas_no_remunerado_server <- function(id) {
     colores = c("#FE1764", "#00BDD6")
     
     armar_tabla <- function(dataframe,
+                            sexos,
                             periodo_i,
                             periodo_f
     ){
@@ -26,6 +27,8 @@ horas_no_remunerado_server <- function(id) {
       datagraf <- datagraf1%>% 
         
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
+        
+        filter(Sexo %in% sexos) %>% 
         
         select(-periodo) %>% 
         
@@ -55,7 +58,7 @@ horas_no_remunerado_server <- function(id) {
     
     
     grafico <- function(base,
-                        
+                        sexos,
                         periodo_i, periodo_f
                         
     ){
@@ -67,7 +70,9 @@ horas_no_remunerado_server <- function(id) {
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4))))
       
       tabla <-datagraf1 %>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
+        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
+        
+        filter(Sexo %in% sexos) 
       
       grafico <- tabla %>% 
         ggplot(.,aes(x = periodo, y = proporcion, fill = Sexo, group = Sexo
@@ -117,7 +122,7 @@ horas_no_remunerado_server <- function(id) {
 
     
     output$plot <- renderPlotly({grafico(base = tabla_resultados$tareas_domesticas_sexo_df,
-                                         
+                                         input$sexo_id,
                                          periodo_i = input$id_periodo[1],
                                          periodo_f = input$id_periodo[2]
     )})
@@ -125,11 +130,12 @@ horas_no_remunerado_server <- function(id) {
     output$tabla <- renderTable({
       armar_tabla(tabla_resultados$tareas_domesticas_sexo_df,
                   
-                  
+                  input$sexo_id,
                   input$id_periodo[1],
                   input$id_periodo[2]
       )
-    })
+    },
+    width="600px")
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Distribución de las tareas del hogar")]})
     
@@ -143,7 +149,7 @@ horas_no_remunerado_server <- function(id) {
         
         write.xlsx(armar_tabla(tabla_resultados$tareas_domesticas_sexo_df,
                                
-                               
+                               input$sexo_id,
                                input$id_periodo[1],
                                input$id_periodo[2]
         ), 
@@ -163,7 +169,10 @@ horas_no_remunerado_ui <- function(id) {
            titlePanel('Distribución de las tareas domésticas entre los varones y mujeres'),
            sidebarLayout(
              sidebarPanel(
-               
+               selectInput(ns('sexo_id'),label = 'Sexo:',
+                           choices = vec_sexo,
+                           selected = vec_sexo[1:2],
+                           multiple = TRUE),
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
