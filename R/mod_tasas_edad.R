@@ -40,7 +40,7 @@ tasas_edad_server <- function(id) {
     generar_titulo <- function(variables, periodo_i, periodo_f){
       nombre_variable <-  paste0(variables, collapse = ", ")
       nombre_variable <- sub(",([^,]*)$", " y\\1", nombre_variable)   
-      titulo <- paste0("<b>","<font size='+2'>",nombre_variable ," desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
+      titulo <- paste0("</br> <b>","<font size='+2'>",nombre_variable ,".</b></font>","<font size='+1'>","</br>  Desde ", periodo_i, " hasta ", periodo_f,"</font>")
     }
     
     graficos_series <- function(dataframe, 

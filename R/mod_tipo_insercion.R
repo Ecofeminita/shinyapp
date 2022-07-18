@@ -112,7 +112,7 @@ tipo_insercion_server <- function(id) {
     
     
     generar_titulo <- function(periodo_i, periodo_f){
-      titulo <- paste0("<b>","<font size='+2'>","Personas ocupadas según tipo de inserción laboral desde ", periodo_i, " hasta ", periodo_f,"</b>","</font>")
+      titulo <- paste0("</br><b>","<font size='+2'>","Personas ocupadas según tipo de inserción laboral",".</b></font>","<font size='+1'>", "</br> Desde ", periodo_i, " hasta ", periodo_f,"</font>")
       titulo
     }
     
