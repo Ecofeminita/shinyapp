@@ -177,10 +177,10 @@ nombres_horas_remuneradas <- data.frame("tabla" =c("OP_hr_calif_df",
 
 ##Provisorio, valores inusuales
 
-tabla_resultados$OP_hr_calif_df$Media.hs.total.ocup[tabla_resultados$OP_hr_calif_df$ANO4 == 2021 &                                                      tabla_resultados$OP_hr_calif_df$TRIMESTRE == 4] <- NA
-tabla_resultados$OP_hr_nivel_educ_df$Media.hs.total.ocup[tabla_resultados$OP_hr_nivel_educ_df$ANO4 == 2021 &                                                           tabla_resultados$OP_hr_nivel_educ_df$TRIMESTRE == 4] <- NA
+#tabla_resultados$OP_hr_calif_df$Media.hs.total.ocup[tabla_resultados$OP_hr_calif_df$ANO4 == 2021 &                                                      tabla_resultados$OP_hr_calif_df$TRIMESTRE == 4] <- NA
+#tabla_resultados$OP_hr_nivel_educ_df$Media.hs.total.ocup[tabla_resultados$OP_hr_nivel_educ_df$ANO4 == 2021 &                                                           tabla_resultados$OP_hr_nivel_educ_df$TRIMESTRE == 4] <- NA
 
-tabla_resultados$horas_semanales_df$Media.hs.total.ocup[tabla_resultados$horas_semanales_df$ANO4 ==2021 &tabla_resultados$horas_semanales_df$TRIMESTRE == 4] <- NA
+#tabla_resultados$horas_semanales_df$Media.hs.total.ocup[tabla_resultados$horas_semanales_df$ANO4 ==2021 &tabla_resultados$horas_semanales_df$TRIMESTRE == 4] <- NA
 
 ####Trabajo no remunerado##############
 

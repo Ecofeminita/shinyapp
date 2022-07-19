@@ -2,6 +2,7 @@ library(eph)
 library(tidyverse)
 library(readxl)
 library(janitor)
+library(readr)
 
 #Poner acá nuestra limpieza general de eph (cambios de tipo de variable, nombres, etc)
 
@@ -27,16 +28,24 @@ basesb <- get_microdata(year = 2020:2021,
                        )
 
 
+usu_individual_T421 <- read_delim("preprocesamiento/fuentes/EPH_usu_4_Trim_2021_txt/usu_individual_T421.txt", 
+                                  delim = ";", escape_double = FALSE, trim_ws = TRUE) %>% select(nombres_filtro_personas)
+usu_individual_T421$PP04D_COD <- as.character(usu_individual_T421$PP04D_COD)
+usu_individual_T421$DECINDR <- as.character(usu_individual_T421$DECINDR)
+usu_individual_T421$DECCFR <- as.character(usu_individual_T421$DECCFR)
+usu_individual_T421$PP04B_COD <- as.character(usu_individual_T421$PP04B_COD)
+
 bases <- bases %>% unnest(cols = c(microdata)) %>% select(-wave) 
-basesb <- basesb %>% unnest(cols = c(microdata)) %>% select(-wave)
+basesb <- basesb %>% unnest(cols = c(microdata)) %>% select(-wave) %>% filter(!(ANO4 == 2021 & TRIMESTRE ==4))
 
 bases <- bases %>% select(nombres_filtro_personas)
 basesb <- basesb %>% select(nombres_filtro_personas)
 
 
 
-bases <- bind_rows(bases,basesb)
+bases <- bind_rows(bases,basesb,usu_individual_T421)
 rm(basesb)
+rm(usu_individual_T421)
 # Función de limpieza de la base individual
 limpieza_individuos <- function(base){
   
@@ -118,16 +127,22 @@ basesb_hogar <- get_microdata(year = 2020:2021,
                         vars = nombres_filtro_hogares,
                         destfile = 'preprocesamiento/fuentes/bases_eph_hogar_b.rds')
 
+usu_hugar_T421 <- read_delim("preprocesamiento/fuentes/EPH_usu_4_Trim_2021_txt/usu_hogar_T421.txt", 
+                                  delim = ";", escape_double = FALSE, trim_ws = TRUE) %>% select(nombres_filtro_hogares)
+
+usu_hugar_T421$DECCFR <- as.character(usu_hugar_T421$DECCFR)
 
 bases_hogar <- bases_hogar %>% unnest(cols = c(microdata)) %>% select(-wave) 
-basesb_hogar <- basesb_hogar %>% unnest(cols = c(microdata)) %>% select(-wave)
+basesb_hogar <- basesb_hogar %>% unnest(cols = c(microdata)) %>% select(-wave)%>% filter(!(ANO4 == 2021 & TRIMESTRE ==4))
 
 bases_hogar <- bases_hogar %>% select(nombres_filtro_hogares)
 basesb_hogar <- basesb_hogar %>% select(nombres_filtro_hogares)
 
-base_hogar <- bind_rows(bases_hogar,basesb_hogar)
+base_hogar <- bind_rows(bases_hogar,basesb_hogar,usu_hugar_T421)
 
 rm(basesb_hogar)
 
 rm(bases_hogar)
+rm(usu_hugar_T421)
 
+rm(nombres_filtro_hogares,nombres_filtro_personas)
