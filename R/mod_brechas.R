@@ -31,7 +31,7 @@ brechas_server <- function(id) {
     
     
     
-    colores <-  c("#FE1764", "#00BDD6", "black")
+    colores <-  c(colores2, "black")
     
    
     

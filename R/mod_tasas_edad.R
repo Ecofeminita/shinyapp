@@ -10,7 +10,7 @@ tasas_edad_server <- function(id) {
     
     
     
-    colores = c("#FE1764", "#00BDD6", "#FE5764", "#49BDD6")
+    #colores4 = c("#e5616e", "#c9c9c9", "#e9c1d0", "#d8d8d8")
     
     
     armar_tabla <- function(dataframe,
@@ -87,7 +87,7 @@ tasas_edad_server <- function(id) {
               #plot.background = element_rect(fill="gray99", color = NA),
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
-        scale_color_manual(values = colores) +
+        scale_color_manual(values = colores4) +
         labs(title = titulo,
              subtitle = subtitulo,
              x = eje_x,

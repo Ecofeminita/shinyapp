@@ -35,8 +35,7 @@ tipo_insercion_server <- function(id) {
     
     
     
-    
-    colores <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
+    #colores5 <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
     
     
     ###funciones
@@ -97,7 +96,7 @@ tipo_insercion_server <- function(id) {
               #plot.background = element_rect(fill="gray99", color = NA),
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
-        scale_fill_manual(values = colores) +
+        scale_fill_manual(values = colores5) +
         labs(x = eje_x,
              y = "",
              fill = "",

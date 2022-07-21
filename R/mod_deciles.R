@@ -26,7 +26,7 @@ deciles_server <- function(id) {
     
     
     
-    colores = c("#FE1764", "#00BDD6")
+    #colores = c("#FE1764", "#00BDD6")
     
     #armar_tabla(tabla_resultados[["deciles_ITI_sexo_df"]],"DECINDR","16T2","16T3")
     
@@ -86,7 +86,7 @@ deciles_server <- function(id) {
              
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
-        scale_fill_gradient(low=colores[2], high=colores[1]) +
+        scale_fill_gradient(low=colores2[2], high=colores2[1]) +
     
         labs(x = "Período",
              y = "Decil")

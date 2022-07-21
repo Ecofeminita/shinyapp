@@ -10,7 +10,7 @@ serv_dom_ocupadas_server <- function(id) {
     
     
     
-    colores = c("#FE1764", "#00BDD6")
+    #colores = c("#FE1764", "#00BDD6")
     
     
     
@@ -57,15 +57,15 @@ serv_dom_ocupadas_server <- function(id) {
       grafico <- ggplot(datagraf, aes(periodo, proporcion,group=1
                                       ,text=paste0('</br>Porcentaje de ocupadas mujeres que se dedican al servicio doméstico: ',proporcion,'%', '</br>Período: ',periodo)
       )) +
-        geom_line(size = 1, alpha = 0.75, color = colores[1]) +
-        geom_point(size = 1, color = colores[1]) +
+        geom_line(size = 1, alpha = 0.75, color = colores2[1]) +
+        geom_point(size = 1, color = colores2[1]) +
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "bottom",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
-       # scale_color_manual(values = colores) +
+       # scale_color_manual(values = colores2) +
         labs(x = "Período",
              y = "Porcentaje de ocupadas mujeres que se dedican al servicio doméstico",
              color = "",

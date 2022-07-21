@@ -13,19 +13,7 @@ about_ui <- tabPanel(title = 'Inicio',
                      #includeMarkdown('README.md')
                      
                      titlePanel('EcofemiData'),
-                     br(),
-                     br(),
-                     tags$div( style="display: inline-flex;",  id = "intro_app",
-                               tags$p('Los datos presentados en esta app pertenecen a '),
-                              
-                               HTML('&nbsp;'),
-                               tags$a(" ecofeminita", id = "pagina_lnk",
-                                      
-                                      
-                                      href="https://ecofeminita.com/"
-                                      
-                               )
-                               ),
+                    
                      br(),
                      br(),
                      fluidRow(
@@ -45,7 +33,7 @@ about_ui <- tabPanel(title = 'Inicio',
                                      )
                               ),  
                               column(6,
-                                     tags$div( class="panel panel-success",
+                                     tags$div( class="panel panel-primary",
                                                tags$div( class= "panel-heading",
                                                          h3('Ingresos')),
                                                tags$div(class="panel-body",
@@ -53,7 +41,7 @@ about_ui <- tabPanel(title = 'Inicio',
                                                         p('En esta sección estudiamos las brechas de ingresos entre mujeres y varones, así como también la distribución de la población de cada sexo entre los distintos deciles de ingreso.'),
                                                         tags$a("Ir!", style=btn_style,
                                                                onclick="fakeClick('Brechas de ingresos - general')",
-                                                               class="btn btn-success btn-s")
+                                                               class="btn btn-primary btn-s")
                                                )
                                      )
                               )
@@ -64,7 +52,7 @@ about_ui <- tabPanel(title = 'Inicio',
                      fluidRow(
                        column(12,
                               column(6,
-                                     tags$div( class="panel panel-danger",
+                                     tags$div( class="panel panel-primary",
                                                tags$div(class= "panel-heading",
                                                         h3('Uso del tiempo')),
                                                tags$div(class="panel-body",
@@ -73,12 +61,12 @@ about_ui <- tabPanel(title = 'Inicio',
                                                         p('En esta sección exploramos el uso del tiempo de las personas de cada sexo, ¿cuánto tiempo se dedican al trabajo remunerado? ¿y al trabajo no remunerado?'),
                                                         tags$a("Ir!",style=btn_style,
                                                                onclick="fakeClick('Trabajo remunerado')",
-                                                               class="btn btn-danger btn-s")
+                                                               class="btn btn-primary btn-s")
                                                )
                                      )
                               ),  
                               column(6,
-                                     tags$div( class="panel panel-warning",
+                                     tags$div( class="panel panel-primary",
                                                tags$div( class= "panel-heading",
                                                          h3('Trabajadoras de Casas Particulares')),
                                                tags$div(class="panel-body",
@@ -86,11 +74,24 @@ about_ui <- tabPanel(title = 'Inicio',
                                                         p('En esta sección exploramos las principales características de las condiciones de inserción laboral de las trabajadoras de Casas Particulares.'),
                                                         tags$a("Ir!", style=btn_style,
                                                                onclick="fakeClick('Ocupadas en el servicio doméstico')",
-                                                               class="btn btn-warning btn-s")
+                                                               class="btn btn-primary btn-s")
                                                )
                                      )
                               )
                        )
+                     ),
+                     br(),
+                     br(),
+                     tags$div( style="display: inline-flex;",  id = "intro_app",
+                               tags$p('Los datos presentados en esta app pertenecen a '),
+                               
+                               HTML('&nbsp;'),
+                               tags$a(" ecofeminita", id = "pagina_lnk",
+                                      
+                                      
+                                      href="https://ecofeminita.com/"
+                                      
+                               )
                      )
                      
                      
@@ -144,6 +145,13 @@ main_ui <- {
                         serv_dom_derechos_ui('s_d_derechos')
                         
                         
+             ),
+             tabPanel(title = 'Metodología'),
+             
+             footer=tags$a("Volver", style=btn_style, id = "a_ecofem",
+                    href="https://ecofeminita.com/",
+                    class="btn btn-primary btn-s"
+                    
              )
              
              )

@@ -15,6 +15,12 @@ library(openxlsx)
 
 btn_style <- "float:right;border-radius: 15px;"
 
+colores2 = c("#e5616e", "#c9c9c9")
+
+colores4 = c("#e5616e", "#c9c9c9", "#8594c6", "#d8d8d8")
+
+colores5 <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
+
 tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
 

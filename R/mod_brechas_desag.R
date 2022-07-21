@@ -54,9 +54,9 @@ brechas_desag_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
     
-    colores_b <-  c("#FE1764", "#00BDD6", "black")
+    colores_b <-  c(colores2, "black")
     
-    colores_g <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
+    colores_g <- colores5
     
     
     

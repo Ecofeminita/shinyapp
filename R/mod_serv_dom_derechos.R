@@ -70,7 +70,7 @@ serv_dom_derechos_server <- function(id) {
               #plot.background = element_rect(fill="gray99", color = NA),
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
-       # scale_color_manual(values = colores) +
+        scale_color_manual(values = colores5) +
         labs(x = "Período",
              y = paste0("Porcentaje de trabajadoras del servicio doméstico que..."),
              color = "",

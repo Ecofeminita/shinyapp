@@ -102,7 +102,7 @@ serv_dom_ing_server <- function(id) {
               #plot.background = element_rect(fill="gray99", color = NA),
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
-        
+        scale_color_manual(values = colores2[1]) +
         labs(x = eje_x,
              y = vary,
              fill = "",
@@ -143,7 +143,7 @@ serv_dom_ing_server <- function(id) {
               #plot.background = element_rect(fill="gray99", color = NA),
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
-        #scale_color_manual(values = colores) +
+        scale_color_manual(values = colores2[1]) +
         labs(#title = titulo,
           #subtitle = subtitulo,
           x = "Período",

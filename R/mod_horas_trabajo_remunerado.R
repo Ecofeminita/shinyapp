@@ -8,7 +8,7 @@ horas_remunerado_server <- function(id) {
     
     
     
-    colores = c("#FE1764", "#00BDD6")
+    #colores = c("#FE1764", "#00BDD6")
     
     
     armar_tabla <- function(dataframe,
@@ -107,7 +107,7 @@ horas_remunerado_server <- function(id) {
               #plot.background = element_rect(fill="gray99", color = NA),
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
-        scale_color_manual(values = colores) +
+        scale_color_manual(values = colores2) +
         labs(title = "",
              x = "Periodo",
              y = paste0("Horas semanales de trabajo remunerado (", nombre, ")"),
