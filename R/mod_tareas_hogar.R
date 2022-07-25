@@ -109,16 +109,31 @@ horas_no_remunerado_server <- function(id) {
                date = yq(date))
         # filter(Sexo=='Mujeres')
       
-      df %>% 
-        ggplot(aes(x=date,y=proporcion, color = Sexo)) + 
+       df %>% 
+        ggplot(aes(x=date,y=proporcion, color = Sexo#,
+                   # text=paste0('</br><b>',Sexo, '</b>', '</br>Proporción: ', proporcion, '%', '</br>Período: ',date)
+                               
+                   )) + 
         geom_point() + 
         geom_hline(yintercept = 50)+
-        scale_x_date(limits = c(yq('2016-2'),yq('2045-1')),date_breaks = '5 years')+
+        scale_x_date(limits = c(yq('2016-2'),yq('2045-1')),date_breaks = '2 years'
+                     )+
         stat_smooth(method="lm",fullrange=TRUE)+
-        theme_minimal()
+        theme_minimal()+
+        labs(title = "",
+             x = "Periodo",
+             y = paste0("Personas de cada sexo que realizan las tareas domésticas del hogar"),
+             color = "")+
+        theme(legend.position = "right",
+              #text=element_text(family="Times New Roman"),
+              axis.text.x = element_text(angle = 35, vjust = 0.7))
       
+     
       
     }
+    
+    
+    proyeccion()
 
     
     output$plot <- renderPlotly({grafico(base = tabla_resultados$tareas_domesticas_sexo_df,
@@ -189,7 +204,20 @@ horas_no_remunerado_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 600)%>% withSpinner(type = 5, color ="#e5616e")
+                        plotlyOutput(ns('plot'), height = 600)%>% withSpinner(type = 5, color ="#e5616e"),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
+                        )
                         
                         
                ),
@@ -210,6 +238,19 @@ horas_no_remunerado_ui <- function(id) {
                                         
                                         
                                  ))
+                        ),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes2"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
                         )
                         
                )

@@ -159,15 +159,18 @@ deciles_server <- function(id) {
 
 deciles_ui <- function(id) {
   ns <- NS(id)
+  
   tabPanel(title = 'Deciles de ingreso',
            
            titlePanel('Deciles de ingreso'),
            sidebarLayout(
              sidebarPanel(
+               
                selectInput(ns('ingreso_id'),label = 'Elegir tipo de ingreso',
                            choices = ingresos,
                            selected = ingresos[2],
                            multiple = F),
+               
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
@@ -184,7 +187,20 @@ deciles_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 600)%>% withSpinner(type = 5, color ="#e5616e")
+                        plotlyOutput(ns('plot'), height = 600)%>% withSpinner(type = 5, color ="#e5616e"),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
+                        )
                         
                         
                ),
@@ -205,6 +221,19 @@ deciles_ui <- function(id) {
                                         
                                         
                                  ))
+                        ),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes2"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
                         )
                         
                )
@@ -218,6 +247,7 @@ deciles_ui <- function(id) {
              
            )
   )
+  
 }
 
 

@@ -293,7 +293,20 @@ ramas_ui <- function(id) {
                         br(),
                         plotlyOutput(ns('plot_ingreso'), height = 500)%>% withSpinner(type = 5, color ="#e5616e"),
                         br(),
-                        plotlyOutput(ns('plot_feminizacion'), height = 500)%>% withSpinner(type = 5, color ="#e5616e")
+                        plotlyOutput(ns('plot_feminizacion'), height = 500)%>% withSpinner(type = 5, color ="#e5616e"),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
+                        )
                         
                         
                ),
@@ -314,6 +327,19 @@ ramas_ui <- function(id) {
                                         
                                         
                                  ))
+                        ),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes2"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
                         )
                         
                )

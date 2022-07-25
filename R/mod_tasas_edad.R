@@ -229,7 +229,20 @@ tasas_edad_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('titulo1'))), 
                         br(),
-                        plotlyOutput(ns('plot'), height = 800)%>% withSpinner(type = 5, color ="#e5616e")
+                        plotlyOutput(ns('plot'), height = 800)%>% withSpinner(type = 5, color ="#e5616e"),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
+                        )
                         
                         
                ),
@@ -250,6 +263,19 @@ tasas_edad_ui <- function(id) {
                                         
                                         
                                  ))
+                        ),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes2"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
                         )
                         
                )

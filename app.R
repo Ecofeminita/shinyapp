@@ -26,6 +26,10 @@ ui <- fluidPage(
                                                          }
                                                          };
                                                          '))) ),
+    
+    
+    chooseSliderSkin("Flat", color = "#e5616e"),
+    
 
     uiOutput(outputId = "main_ui")
 )

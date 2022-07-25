@@ -112,6 +112,7 @@ main_ui <- {
  
   
   navbarPage('ECOFEMIDATA',
+             
              #sample_plot_ui('ejemplo'),
              about_ui,
              #tab de inicio (rmd): con ilustración, accesos directos, bienvenida, objetivos, como usar plotly
@@ -146,7 +147,8 @@ main_ui <- {
                         
                         
              ),
-             tabPanel(title = 'Metodología'),
+             
+             metodologia_ui,
              
              footer=tags$a("Volver", style=btn_style, id = "a_ecofem",
                     href="https://ecofeminita.com/",

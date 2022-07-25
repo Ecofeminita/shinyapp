@@ -597,6 +597,19 @@ brechas_desag_ui <- function(id) {
                         br(),
                         box(width = NULL, plotlyOutput(ns('plot_gral'), height = 500)%>% withSpinner(type = 5, color ="#e5616e"),
                             
+                        ),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
                         )
                         
                         
@@ -626,7 +639,20 @@ brechas_desag_ui <- function(id) {
                         br(),
                         box(width = NULL, htmlOutput(ns('st4'))), 
                         br(),
-                        plotlyOutput(ns('plot4'), height = 400)%>% withSpinner(type = 5, color ="#e5616e")
+                        plotlyOutput(ns('plot4'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes2"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
+                        )
                         
                         
                         
@@ -668,6 +694,19 @@ brechas_desag_ui <- function(id) {
                                         
                                         
                                  ))
+                        ),
+                        br(),
+                        
+                        
+                        tags$div( style="display: inline-flex;",  id = ns("fuentes3"),
+                                  tags$p(texto_fuentes), 
+                                  HTML('&nbsp;'),
+                                  tags$a("Metodología", id = ns("f_metod"),
+                                         
+                                         
+                                         onclick="fakeClick('Metodología')"#,
+                                         
+                                  ),
                         )
                         
                )
