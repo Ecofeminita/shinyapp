@@ -138,7 +138,7 @@ tipo_insercion_server <- function(id) {
     },
     width="600px")
     
-    output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0(input$jerarqs_id)]})
+    output$metadata <- renderText({paste0("</br>",tabla_metadata$metadata[tabla_metadata$indicador == paste0(input$jerarqs_id)], "</br>")})
     
     output$titulo1 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})
     output$titulo2 <- renderText({generar_titulo(input$id_periodo[1],input$id_periodo[2])})

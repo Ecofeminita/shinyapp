@@ -149,7 +149,8 @@ tasas_edad_server <- function(id) {
     output$metadata_pea <- renderText({
 
       if(grepl("económicamente activa",
-               tabla_metadata$metadata[tabla_metadata$indicador == input$indicador])
+               tabla_metadata$metadata[tabla_metadata$indicador == input$indicador],
+               ignore.case = T)
       ){
         tabla_metadata$metadata[tabla_metadata$indicador == paste0("Población Económicamente Activa")]
       }else{

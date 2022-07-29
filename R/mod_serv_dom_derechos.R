@@ -72,7 +72,7 @@ serv_dom_derechos_server <- function(id) {
               panel.grid.minor.y = element_blank()) +
         scale_color_manual(values = colores5) +
         labs(x = "Período",
-             y = paste0("Porcentaje de trabajadoras del servicio doméstico que..."),
+             y = paste0("Porcentaje de trabajadoras de Casas Particulares que..."),
              color = "",
              caption = "Fuente: Elaboración propia en base a EPH-INDEC")
       #scale_x_yearqtr(format = "%yQ%q", n = 19)               # Para trabajar con formato fecha
@@ -108,7 +108,7 @@ serv_dom_derechos_server <- function(id) {
     },
     width="600px")
     
-    output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador %in% input$indicador]})
+    output$metadata <- renderText({paste0("</br>",tabla_metadata$metadata[tabla_metadata$indicador %in% input$indicador], "</br>")})
     
     output$titulo1 <- renderText({generar_titulo(input$indicador,
                                                  input$id_periodo[1],input$id_periodo[2])})
