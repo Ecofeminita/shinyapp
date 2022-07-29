@@ -21,6 +21,8 @@ colores4 = c("#e5616e", "#c9c9c9", "#8594c6", "#d8d8d8")
 
 colores5 <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
 
+colores14 <- c("#e2616e","#e4808e","#e5a0ae","#e7bfce","#bda8c3","#9291b8","#687aad","#739ab9","#7fbbc5","#8adbd1","#afd7b5","#d5d399","#facf7d","#f7e8cb")
+
 texto_fuentes <- '¿Cuál es la fuente de estos datos? Ver '#Metodología
 
 tabla_resultados <- readRDS("www/tabla_resultados.RDS")
