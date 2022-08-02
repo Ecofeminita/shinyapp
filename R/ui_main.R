@@ -21,28 +21,59 @@ about_ui <- tabPanel(title = 'Inicio',
                               column(6,
                                      tags$div( class="panel panel-primary",
                                                style = "border-color: #e2616e",
-                                               tags$div(class= "panel-heading",
+                                               
+                                               a(tags$div(class= "panel-heading",
                                                         style="background:#e2616e;border-color: #e2616e",
                                                         h3('Mercado de Trabajo')),
-                                               tags$div(class="panel-body", style="text-align: center;",
-                                                        
-                                                        img(height = 250, width = 250,src = "img/Iconosapp-01.png"),
-                                                        p('En esta sección presentamos las tasas básicas del mercado de trabajo desagregadas por sexo, así como también por grupo etario. Por otro lado, estudiamos las condiciones de inserción laboral de las mujeres y los varones a partir de su jerarquía y rama de actividad.', style="text-align: left;"),
-                                                        tags$a("Ir!",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
-                                                               onclick="fakeClick('Tasas básicas')",
-                                                               class="btn btn-primary btn-s")
+                                                 onclick="fakeClick('Tasas básicas')",
+                                                 style ="text-decoration: none !important;"
                                                )
+                                               ,
+                                               
+                                               tags$div(class="panel-body", style="display: flex;",
+                                                        
+                                                        a(img(height = 100, width = 100,src = "img/Iconosapp-01.png", style="flex: 0 0 15%;")
+                                                          ,  onclick="fakeClick('Tasas básicas')")
+                                                          ,
+                                                        
+                                                        a(p('En esta sección presentamos las tasas básicas del mercado de trabajo desagregadas por sexo, así como también por grupo etario. Por otro lado, estudiamos las condiciones de inserción laboral de las mujeres y los varones a partir de su jerarquía y rama de actividad.', style="text-align: left;font-size:18px")
+                                                          ,  onclick="fakeClick('Tasas básicas')",
+                                                          style ="text-decoration: none !important;color: black !important;")
+                                                        
+                                                        
+                                                        
+                                                        
+                                               ),tags$div(class="panel-body",
+                                                 tags$a("Ir!",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                                                        onclick="fakeClick('Tasas básicas')",
+                                                        class="btn btn-primary btn-s")
+                                                 
+                                               )
+                                               
                                      )
                               ),  
                               column(6,
                                      tags$div( class="panel panel-primary",
                                                style = "border-color: #687aad",
-                                               tags$div( class= "panel-heading",
+                                               
+                                               a(tags$div( class= "panel-heading",
                                                          style="background:#687aad;border-color: #687aad",
                                                          h3('Ingresos')),
-                                               tags$div(class="panel-body",style="text-align: center;",
-                                                        img(height = 250, width = 250,src = "img/Iconosapp-02.png"),
-                                                        p('En esta sección estudiamos las brechas de ingresos entre mujeres y varones, así como también la distribución de la población de cada sexo entre los distintos deciles de ingreso.', style="text-align: left;"),
+                                                 onclick="fakeClick('Brechas de ingresos - general')",
+                                                 style ="text-decoration: none !important;"
+                                               )
+                                               ,
+                                               
+                                               tags$div(class="panel-body",style="display: flex;",
+                                                        a(img(height = 100, width = 100,src = "img/Iconosapp-02.png", style="flex: 0 0 15%;"),
+                                                          onclick="fakeClick('Brechas de ingresos - general')"
+                                                          ),
+                                                        
+                                                        a(p('En esta sección estudiamos las brechas de ingresos entre mujeres y varones, así como también la distribución de la población de cada sexo entre los distintos deciles de ingreso.', style="text-align: left;font-size:18px")
+                                                          ,  onclick="fakeClick('Brechas de ingresos - general')",
+                                                          style ="text-decoration: none !important;color: black !important;")
+                                                        
+                                               ),tags$div(class="panel-body",
                                                         tags$a("Ir!", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
                                                                onclick="fakeClick('Brechas de ingresos - general')",
                                                                class="btn btn-primary btn-s")
@@ -58,13 +89,28 @@ about_ui <- tabPanel(title = 'Inicio',
                               column(6,
                                      tags$div( class="panel panel-primary",
                                                style = "border-color: #e7bfce",
-                                               tags$div(class= "panel-heading",
+                                               
+                                               a(tags$div(class= "panel-heading",
                                                         style="background:#e7bfce;border-color: #e7bfce",
                                                         h3('Uso del tiempo')),
-                                               tags$div(class="panel-body",style="text-align: center;",
+                                                 onclick="fakeClick('Trabajo remunerado')",
+                                                 style ="text-decoration: none !important;"
+                                               )
+                                                 ,
+                                               
+                                               
+                                               tags$div(class="panel-body",style="display: flex;",
                                                         
-                                                        img(height = 250, width = 250,src = "img/Iconosapp-03.png"),
-                                                        p('En esta sección exploramos el uso del tiempo de las personas de cada sexo, ¿cuánto tiempo se dedican al trabajo remunerado? ¿y al trabajo no remunerado?', style="text-align: left;"),
+                                                        
+                                                        a(img(height = 100, width = 100,src = "img/Iconosapp-03.png", style="flex: 0 0 15%;"),
+                                                          onclick="fakeClick('Trabajo remunerado')"
+                                                          ),                                                        
+                                                       
+                                                         a(p('En esta sección exploramos el uso del tiempo de las personas de cada sexo, ¿cuánto tiempo se dedican al trabajo remunerado? ¿y al trabajo no remunerado?', style="text-align: left;font-size:18px;")
+                                                           ,  onclick="fakeClick('Trabajo remunerado')",
+                                                           style ="text-decoration: none !important;color: black !important;")
+                                                        
+                                               ),tags$div(class="panel-body",
                                                         tags$a("Ir!",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;"),
                                                                onclick="fakeClick('Trabajo remunerado')",
                                                                class="btn btn-primary btn-s")
@@ -74,12 +120,25 @@ about_ui <- tabPanel(title = 'Inicio',
                               column(6,
                                      tags$div( class="panel panel-primary",
                                                style = "border-color: #8adbd1",
-                                               tags$div( class= "panel-heading",
+                                               
+                                               
+                                               a(tags$div( class= "panel-heading",
                                                          style="background:#8adbd1;border-color: #8adbd1",
                                                          h3('Trabajadoras de Casas Particulares')),
-                                               tags$div(class="panel-body",style="text-align: center;",
-                                                        img(height = 250, width = 250,src = "img/Iconosapp-04.png"),
-                                                        p('En esta sección exploramos las principales características de las condiciones de inserción laboral de las trabajadoras de Casas Particulares.', style="text-align: left;"),
+                                                 onclick="fakeClick('Ocupadas en el servicio doméstico')",
+                                                 style ="text-decoration: none !important;"
+                                               )
+                                               ,
+                                               
+                                               tags$div(class="panel-body",style="display: flex;",
+                                                        a(img(height = 100, width = 100,src = "img/Iconosapp-04.png", style="flex: 0 0 15%;"),
+                                                          onclick="fakeClick('Ocupadas en el servicio doméstico')"
+                                                          ),
+                                                        a(p('En esta sección exploramos las principales características de las condiciones de inserción laboral de las trabajadoras de Casas Particulares.', style="text-align: left;font-size:18px;")
+                                                          ,  onclick="fakeClick('Ocupadas en el servicio doméstico')",
+                                                          style ="text-decoration: none !important;color: black !important;")
+                                                        
+                                               ),tags$div(class="panel-body",
                                                         tags$a("Ir!", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;"),
                                                                onclick="fakeClick('Ocupadas en el servicio doméstico')",
                                                                class="btn btn-primary btn-s")
