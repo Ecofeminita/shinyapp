@@ -10,8 +10,6 @@ horas_no_remunerado_server <- function(id) {
     
     
     
-    #colores = c("#FE1764", "#00BDD6")
-    
     armar_tabla <- function(dataframe,
                             sexos,
                             periodo_i,
@@ -66,7 +64,7 @@ horas_no_remunerado_server <- function(id) {
       
       
       datagraf1 <- base%>%                           
-        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         # Periodo como factor y con formato 
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),          
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4))))
       
       tabla <-datagraf1 %>% 
@@ -83,7 +81,7 @@ horas_no_remunerado_server <- function(id) {
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "none",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
-              #plot.background = element_rect(fill="gray99", color = NA),
+             
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
         scale_fill_manual(values = colores2) +

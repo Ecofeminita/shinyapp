@@ -4,31 +4,11 @@ library(shinyWidgets)
 library(shinydashboard)
 
 
-#armar_tabla(tabla_tipo_insercion, jerarqs[1], trimestres[1], trimestres[4])
-#plot(tabla_tipo_insercion, "Período", jerarqs[1], trimestres[1], trimestres[4])
-
-#tabla_resultados$deciles_IPCF_sexo_df
-#tabla_resultados$deciles_ITI_sexo_df
-
-# nombres_deciles <- data.frame("tabla" =c("deciles_IPCF_sexo_df",
-#                                          "deciles_ITI_sexo_df"),
-#                               
-#                               "cod" =c("DECCFR",
-#                                        "DECINDR"),
-#                               
-#                               "nombre"= c("Ingreso per cápita Familiar",
-#                                           "Ingreso Total Individual"
-#                               ))
 
 deciles_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
     
-    
-    
-    #colores = c("#FE1764", "#00BDD6")
-    
-    #armar_tabla(tabla_resultados[["deciles_ITI_sexo_df"]],"DECINDR","16T2","16T3")
     
     armar_tabla <- function(dataframe,
                             tipo_ingreso,
@@ -51,13 +31,7 @@ deciles_server <- function(id) {
       datagraf
     }
     
-    # generar_titulo <- function(variables, periodo_i, periodo_f){
-    #   nombre_variable <-  paste0(variables, collapse = ", ")
-    #   nombre_variable <- sub(",([^,]*)$", " y\\1", nombre_variable)   
-    #   titulo <- paste0(nombre_variable ," desde ", periodo_i, " hasta ", periodo_f)
-    # }
-    
-    
+   
     
     plot <- function(base,
                      tipo_ingreso,
@@ -98,8 +72,7 @@ deciles_server <- function(id) {
     }
     
     
-    #plot(tabla_resultados[["deciles_ITI_sexo_df"]],"DECINDR","16T2","16T3")
-    
+   
     generar_titulo <- function(tipo_ingreso,periodo_i, periodo_f){
       titulo <- paste0("</br><b>","<font size='+2'>","Distribución de la población según decil de ",tipo_ingreso,".","</font>","</b>", "<font size='+1'>","</br> Desde ", periodo_i, " hasta ", periodo_f,".","</font>","</br> Población perceptora de ingresos.")
       titulo
@@ -149,13 +122,7 @@ deciles_server <- function(id) {
 }
 
 
-# ingresos <- nombres_deciles %>% pull(nombre)
-# 
-# 
-# trimestres <- tabla_resultados[["deciles_ITI_sexo_df"]] %>% ungroup() %>% 
-#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
-#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-#   pull(periodo) 
+
 
 deciles_ui <- function(id) {
   ns <- NS(id)
@@ -249,31 +216,3 @@ deciles_ui <- function(id) {
   )
   
 }
-
-
-
-
-
-####guardo el anterior
-
-
-# grafico <- ggplot(datagraf2, aes(x=periodo, y=Prop, fill=Decil
-#                                  ,text=paste0('</br>',Sexo,'</br><b>Decíl: ',Decil,'</b></br>Población: ',Prop,'%', '</br>Período: ',periodo)
-#                                  
-# )) + 
-#   geom_col(position = "stack")+
-#   facet_wrap(~Sexo)+
-#   theme_minimal() +
-#   theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
-#         legend.position = "bottom",
-#         panel.background = element_rect(fill = "gray99", color = "gray90"),
-#         #plot.background = element_rect(fill="gray99", color = NA),
-#         strip.text.y = element_text(angle = 0),
-#         panel.grid.minor.y = element_blank()) +
-#   scale_fill_viridis_d(option = "B", alpha = .7, end = .7)+
-#   #scale_fill_manual(values = colores) +
-#   labs(x = eje_x,
-#        y = "",
-#        fill = "",
-#        caption = "Fuente: Elaboración propia en base a EPH-INDEC")+
-#   scale_y_continuous(labels = function(x) (paste0(x,"%")))

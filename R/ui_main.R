@@ -5,9 +5,7 @@ library(plotly)
 library(gt)
 library(markdown)
 
-# load('data.Rdata')
 
-#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
 about_ui <- tabPanel(title = 'Inicio',
                      #includeMarkdown('README.md')
@@ -168,7 +166,7 @@ about_ui <- tabPanel(title = 'Inicio',
                      
                      
                      
-                     #esto cierra el tab
+                     
                      )
 
 
@@ -180,9 +178,9 @@ main_ui <- {
   
   navbarPage('ECOFEMIDATA',
              
-             #sample_plot_ui('ejemplo'),
+            
              about_ui,
-             #tab de inicio (rmd): con ilustración, accesos directos, bienvenida, objetivos, como usar plotly
+            
              
              navbarMenu(title = 'Mercado de Trabajo',
              tasas_sexo_ui('tasas_sexo'),

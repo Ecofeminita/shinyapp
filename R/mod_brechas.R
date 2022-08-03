@@ -3,28 +3,6 @@ library(plotly)
 
 options(scipen = 9999)
 
-#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
-
-#tabla_resultados$brecha_ITI_df
-#tabla_resultados$brecha_IOP_df
-#tabla_resultados$brecha_IOP_no_reg_df
-#tabla_resultados$brecha_IOP_hr_df
-
-# #respetar orden!!!!!
-# nombres_brechas <- data.frame("tabla" =c("brecha_ITI_df",
-#                                          "brecha_IOP_df",
-#                                          "brecha_IOP_hr_df",
-#                                          "brecha_IOP_no_reg_df"),
-#                               
-#                               "cod" =c("brecha.ITI",
-#                                        "brecha.IOP",
-#                                        "brecha.IOP.hr",
-#                                        "brecha.IOP.nr"),
-#                               
-#                               "nombre"= c("Ingreso Total Individual",
-#                                           "Ingreso mensual de la Ocupación Principal",
-#                                           "Ingreso horario de la Ocupación Principal",
-#                                           "Ingreso de la Ocupación Principal - Asalariadas/os sin desc. jubil"))
 
 brechas_server <- function(id) {
   moduleServer(id, function(input, output, session) {
@@ -52,7 +30,7 @@ brechas_server <- function(id) {
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
         
         select(-periodo,
-               #-nombre_trim_base,
+             
                "Año" = "ANO4", 
                "Trimestre" = "TRIMESTRE", 
                "Brecha (%)" = "brecha", 
@@ -230,13 +208,6 @@ brechas_server <- function(id) {
 
 
 
-# trimestres <- tabla_resultados[[(nombres_brechas$tabla[1])]] %>% ungroup() %>% 
-#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
-#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-#   select(periodo) %>% unique()
-# 
-# trimestres <- trimestres$periodo
-
 brechas_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Brechas de ingresos - general',
@@ -314,7 +285,7 @@ brechas_ui <- function(id) {
                                   tags$a("Metodología", id = ns("f_metod"),
                                          
                                          
-                                         onclick="fakeClick('Metodología')"#,
+                                         onclick="fakeClick('Metodología')"
                                          
                                   ),
                         )

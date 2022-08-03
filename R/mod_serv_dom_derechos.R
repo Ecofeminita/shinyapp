@@ -2,16 +2,9 @@ library(plotly)
 library(shinyWidgets)
 library(shinydashboard)
 
-#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
-#tabla_resultados$derechos_servicio_domestico_df
 
 serv_dom_derechos_server <- function(id) {
   moduleServer(id, function(input, output, session) {
-    
-    
-    
-    #colores = c("#FE1764", "#00BDD6")
-    
     
     
     armar_tabla <- function(dataframe,
@@ -43,7 +36,7 @@ serv_dom_derechos_server <- function(id) {
     
     graficos_series <- function(dataframe, 
                                 valores_filter = c("No tiene descuento jubilatorio"),
-                               # eje_y = "",
+                               
                                 porcentaje = TRUE,
                                 periodo_i,
                                 periodo_f
@@ -67,7 +60,7 @@ serv_dom_derechos_server <- function(id) {
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "bottom",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
-              #plot.background = element_rect(fill="gray99", color = NA),
+              
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
         scale_color_manual(values = colores5) +
@@ -75,11 +68,11 @@ serv_dom_derechos_server <- function(id) {
              y = paste0("Porcentaje de trabajadoras de Casas Particulares que..."),
              color = "",
              caption = "Fuente: Elaboración propia en base a EPH-INDEC")
-      #scale_x_yearqtr(format = "%yQ%q", n = 19)               # Para trabajar con formato fecha
+     
       
       if(porcentaje){
         grafico <- grafico + 
-          scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(0,100))    # Para que se peque el valor y el signo de %
+          scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(0,100))   
       }
       
       grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "Times New Roman"))
@@ -106,7 +99,8 @@ serv_dom_derechos_server <- function(id) {
       )
       
     },
-    width="600px")
+    width="600px"
+    )
     
     output$metadata <- renderText({paste0("</br>",tabla_metadata$metadata[tabla_metadata$indicador %in% input$indicador], "</br>")})
     
@@ -186,7 +180,9 @@ serv_dom_derechos_ui <- function(id) {
                         br(),
                         fluidRow(
                           column(12,
+                                 
                                  column(9, 
+                                        
                                         box(tableOutput(ns('tabla')))),
                                  column(3,          
                                         box(width = NULL,

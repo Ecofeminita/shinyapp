@@ -28,10 +28,6 @@ texto_fuentes <- '¿Cuál es la fuente de estos datos? Ver '#Metodología
 tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
 
-# trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% ungroup() %>% 
-#   mutate(periodo = factor(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE),         
-#                           levels = unique(paste0(substr(ANO4, 3, 4), "T", TRIMESTRE)))) %>% 
-#   select(periodo) %>% unique() %>% pull(periodo)
 
 trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% ungroup() %>% 
   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
@@ -41,8 +37,6 @@ trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% ungroup() %>%
 tabla_metadata <- read_excel("www/metadata.xlsx") %>% select(indicador, metadata)
 
 ###Inflación#####
-
-
 
 
 ipc_series_ctes <- read_excel("preprocesamiento/fuentes/ipc_series_ctes.xlsx")
@@ -184,13 +178,6 @@ nombres_horas_remuneradas <- data.frame("tabla" =c("OP_hr_calif_df",
                                         "nombre"= c(vector_horas[1],
                                                     vector_horas[2]))
 
-
-##Provisorio, valores inusuales
-
-#tabla_resultados$OP_hr_calif_df$Media.hs.total.ocup[tabla_resultados$OP_hr_calif_df$ANO4 == 2021 &                                                      tabla_resultados$OP_hr_calif_df$TRIMESTRE == 4] <- NA
-#tabla_resultados$OP_hr_nivel_educ_df$Media.hs.total.ocup[tabla_resultados$OP_hr_nivel_educ_df$ANO4 == 2021 &                                                           tabla_resultados$OP_hr_nivel_educ_df$TRIMESTRE == 4] <- NA
-
-#tabla_resultados$horas_semanales_df$Media.hs.total.ocup[tabla_resultados$horas_semanales_df$ANO4 ==2021 &tabla_resultados$horas_semanales_df$TRIMESTRE == 4] <- NA
 
 ####Trabajo no remunerado##############
 

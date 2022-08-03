@@ -2,15 +2,9 @@ library(plotly)
 library(shinyWidgets)
 library(shinydashboard)
 
-#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
-#tabla_resultados$servicio_domestico_ocupadas_df
 
 serv_dom_ocupadas_server <- function(id) {
   moduleServer(id, function(input, output, session) {
-    
-    
-    
-    #colores = c("#FE1764", "#00BDD6")
     
     
     
@@ -44,8 +38,8 @@ serv_dom_ocupadas_server <- function(id) {
                                 periodo_f
     ){
       
-      datagraf1 <- tabla_resultados[[dataframe]] %>%                           # Daraframe para 2016-19
-        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         # Periodo como factor y con formato 
+      datagraf1 <- tabla_resultados[[dataframe]] %>%                           
+        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),        
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4))))  %>% 
         filter(servicio.domestico == "Sí")
       
@@ -125,10 +119,7 @@ serv_dom_ocupadas_ui <- function(id) {
            titlePanel('Ocupadas en el servicio doméstico'),
            sidebarLayout(
              sidebarPanel(
-               # selectInput(ns('indicador'),label = 'Elegir indicador',
-               #             choices = tasas,
-               #             selected = tasas[1],
-               #             multiple = FALSE),
+              
                sliderTextInput(ns('id_periodo'), "Trimestre:", choices = trimestres, selected = trimestres[c(1,length(trimestres))]),
                
                br(), 
@@ -189,7 +180,7 @@ serv_dom_ocupadas_ui <- function(id) {
                                   tags$a("Metodología", id = ns("f_metod"),
                                          
                                          
-                                         onclick="fakeClick('Metodología')"#,
+                                         onclick="fakeClick('Metodología')"
                                          
                                   ),
                         )

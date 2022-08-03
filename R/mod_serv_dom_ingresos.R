@@ -1,12 +1,3 @@
-
-#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
-
-#tabla_resultados[["ramas_sexo_df"]]
-
-
-#colores <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
-
-
 library(plotly)
 library(shinyWidgets)
 library(shinydashboard)
@@ -99,7 +90,7 @@ serv_dom_ing_server <- function(id) {
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "bottom",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
-              #plot.background = element_rect(fill="gray99", color = NA),
+             
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
         scale_color_manual(values = colores2[1]) +
@@ -140,16 +131,13 @@ serv_dom_ing_server <- function(id) {
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "none",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
-              #plot.background = element_rect(fill="gray99", color = NA),
+             
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
         scale_color_manual(values = colores2[1]) +
-        labs(#title = titulo,
-          #subtitle = subtitulo,
-          x = "Período",
+        labs( x = "Período",
           y = paste0("Tasa de feminización"),
-          color = "",
-          #caption = "Fuente: Elaboración propia en base a EPH-INDEC"
+          color = ""
         )+ 
         scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(0,100)) 
       
@@ -238,16 +226,6 @@ serv_dom_ing_server <- function(id) {
 }
 
 
-# ramas <- tabla_resultados[["ramas_sexo_df"]] %>% ungroup() %>%  select(`Rama de la ocupación`) %>% unique() %>% drop_na()
-# 
-# ramas <- ramas$`Rama de la ocupación`
-# 
-# trimestres <- tabla_resultados[["ramas_sexo_df"]] %>% ungroup() %>% 
-#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
-#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-#   select(periodo) %>% unique()
-# 
-# trimestres <- trimestres$periodo
 
 serv_dom_ing_ui <- function(id) {
   ns <- NS(id)

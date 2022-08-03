@@ -6,11 +6,7 @@ library(shinydashboard)
 horas_remunerado_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
-    
-    
-    #colores = c("#FE1764", "#00BDD6")
-    
-    
+
     armar_tabla <- function(dataframe,
                             horas_var,
                             facet_var,
@@ -104,7 +100,7 @@ horas_remunerado_server <- function(id) {
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "none",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
-              #plot.background = element_rect(fill="gray99", color = NA),
+             
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
         scale_color_manual(values = colores2) +
@@ -190,15 +186,6 @@ horas_remunerado_server <- function(id) {
     
   })
 }
-
-
-# trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% 
-#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
-#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-#   select(periodo) %>% unique()
-# 
-# trimestres <- trimestres$periodo
-
 
 
 horas_remunerado_ui <- function(id) {

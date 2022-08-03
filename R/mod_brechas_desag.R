@@ -3,51 +3,6 @@ library(plotly)
 
 options(scipen = 9999)
 
-#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
-
-# tabla_resultados$brecha_IOP_calif_df
-# tabla_resultados$brecha_IOP_hr_calif_df
-# tabla_resultados$brecha_IOP_nivel_educ_df
-# tabla_resultados$brecha_IOP_hr_nivel_educ_df
-
-# #respetar orden!!!!!
-# nombres_brechas_desag <- data.frame("tabla" =c("brecha_IOP_calif_df",
-#                                          "brecha_IOP_hr_calif_df",
-#                                          "brecha_IOP_nivel_educ_df",
-#                                          "brecha_IOP_hr_nivel_educ_df"),
-#                               
-#                               "cod" =c("brecha.IOP.calif",
-#                                        "brecha.IOP.hr.calif",
-#                                        "brecha.IOP.nivel.educ",
-#                                        "brecha.IOP.hr.nivel.educ"),
-#                               
-#                               "nombre"= c("Ingreso mensual de la Ocupación Principal",
-#                                           "Ingreso horario de la Ocupación Principal",
-#                                           "Ingreso mensual de la Ocupación Principal",
-#                                           "Ingreso horario de la Ocupación Principal"),
-#                               
-#                               "variable_desag" = c("CALIFICACION", "CALIFICACION", "NIVEL_EDUCATIVO","NIVEL_EDUCATIVO"),
-#                               "variable_desag_nombre" = c("Calificación", "Calificación", "Nivel educativo","Nivel educativo"))
-# 
-# 
-# v1 <- as.character(unique(tabla_resultados[["brecha_IOP_calif_df"]]$CALIFICACION))
-# v2 <- as.character(unique(tabla_resultados[["brecha_IOP_nivel_educ_df"]]$NIVEL_EDUCATIVO))
-# 
-# 
-# opciones_actualizacion<- data.frame("Calificación" = v1,"Nivel educativo" = v2, "id" = c(1,2,3,4)
-#                ) %>% 
-#   pivot_longer(!id,names_to = "variable", values_to = "valores")
-# 
-# opciones_actualizacion$variable[opciones_actualizacion$variable =="Nivel.educativo"] <- "Nivel educativo"
-# 
-# 
-# trimestres <- tabla_resultados[[(nombres_brechas_desag$tabla[1])]] %>% #ungroup() %>% 
-#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
-#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-#   select(periodo) %>% unique()
-# 
-# trimestres <- trimestres$periodo
-
 
 
 brechas_desag_server <- function(id) {
@@ -58,9 +13,6 @@ brechas_desag_server <- function(id) {
     
     colores_g <- colores5
     
-    
-    
-    #armar_tabla(tabla_resultados[["brecha_IOP_calif_df"]],"brecha.IOP.calif","CALIFICACION", nombre_facet="Calificación","16T2","19T2")
     
     armar_tabla <- function(dataframe,
                             brecha,
@@ -151,16 +103,13 @@ brechas_desag_server <- function(id) {
        theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
              legend.position = "bottom",
              panel.background = element_rect(fill = "gray99", color = "gray90"),
-             #plot.background = element_rect(fill="gray99", color = NA),
+            
              strip.text.y = element_text(angle = 0),
              panel.grid.minor.y = element_blank()) +
        scale_color_manual(values = colores_g) +
-       labs(#title = titulo,
-            #subtitle = subtitulo,
-            x = "Período",
+       labs(x = "Período",
             y = paste0("Brecha de ",nombre),
-            color = "",
-            #caption = "Fuente: Elaboración propia en base a EPH-INDEC"
+            color = ""
             )
      
      
@@ -272,7 +221,7 @@ brechas_desag_server <- function(id) {
       
       updateSelectInput(session, 'valores_id',
                         choices = options,
-                        selected = options#[1]
+                        selected = options
                         )
     })
     
@@ -497,8 +446,7 @@ brechas_desag_server <- function(id) {
     output$metadata_desag <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$var_desag_id]})
     output$metadata_ingresos <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Valuación")]})
     
-    # output$interpretacion_horas <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, estudiemos el <b>Uso del tiempo</b> de cada segmento de la población.</font>")})
-    # output$interpretacion_horas_1 <- renderText({paste0("<font size='+1'>Para interpretar estos resultados, estudiemos el <b>Uso del tiempo</b> de cada segmento de la población.</font>")})
+   
     
     output$titulo0 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
     output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})

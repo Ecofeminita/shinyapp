@@ -2,17 +2,12 @@ library(plotly)
 library(shinyWidgets)
 library(shinydashboard)
 
-#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
+
 
 tasas_sexo_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
    
-    
-    #colores2 = c("#e5616e", "#494949")
-    
-   
-    
     armar_tabla <- function(dataframe,
                               variable = "indicador", 
                               valores_filter = c("Tasa de Actividad"),
@@ -22,15 +17,11 @@ tasas_sexo_server <- function(id) {
       datagraf1 <- tabla_resultados[[dataframe]] %>%                          
         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-        filter(eval(parse(text=variable)) %in% valores_filter) #%>% 
-        #relocate(valor, .after = last_col())
-        
-      
-      #names(datagraf1)[length(datagraf1)] <- paste0(valores_filter[1])
+        filter(eval(parse(text=variable)) %in% valores_filter) 
       
       datagraf <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
-        #select(-periodo, -indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Sexo")
+      
       select(-periodo, -indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", 
              "Mujeres", "Varones", 
              "Brecha [(V-M)/V]"=  "Brecha (%)") %>% 
@@ -44,11 +35,7 @@ tasas_sexo_server <- function(id) {
       datagraf
     }
     
-    # armar_tabla("tabla_brechas_tasas",
-    #             variable = "indicador", 
-    #             valores_filter = c("Tasa de Actividad"),
-    #             "2°T 2016",
-    #             "3°T 2016")
+   
     
     generar_titulo <- function(variables, periodo_i, periodo_f){
       nombre_variable <-  paste0(variables, collapse = ", ")
@@ -69,19 +56,18 @@ tasas_sexo_server <- function(id) {
                                 periodo_f
                                 ){
       
-      datagraf1 <- tabla_resultados[[dataframe]] %>%                           # Daraframe para 2016-19
-        mutate(dummy = case_when(ANO4 %in% c(2004:2006) ~ "2004-2006",              # Identifico periodos
+      datagraf1 <- tabla_resultados[[dataframe]] %>%                           
+        mutate(dummy = case_when(ANO4 %in% c(2004:2006) ~ "2004-2006",           
                                  TRUE ~ "2016-2019"),
-               grp = paste0(Sexo, dummy),                                           # Grupos por Sexo y Período (4 grupos)
-               # periodo = as.yearqtr(paste0(ANO4,".",TRIMESTRE), format="%Y.%q")), # Para trabajar con formato fecha 
-               periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         # Periodo como factor y con formato 
+               grp = paste0(Sexo, dummy),                                           
+               periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),          
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) 
       
       datagraf <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
        
       
-      if (filtro) {                                    # Por si tengo que filtrar la base antes
+      if (filtro) {                                   
         datagraf <- datagraf %>% 
           filter(eval(parse(text=variable)) %in% valores_filter)
       }                                                  
@@ -95,7 +81,6 @@ tasas_sexo_server <- function(id) {
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "bottom",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
-              #plot.background = element_rect(fill="gray99", color = NA),
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
         scale_color_manual(values = colores2) +
@@ -105,11 +90,11 @@ tasas_sexo_server <- function(id) {
              y = eje_y,
              color = "",
              caption = "Fuente: Elaboración propia en base a EPH-INDEC")
-      #scale_x_yearqtr(format = "%yQ%q", n = 19)               # Para trabajar con formato fecha
+      
       
       if(porcentaje){
         grafico <- grafico + 
-          scale_y_continuous(labels = function(x) paste0(x, "%"))    # Para que se peque el valor y el signo de %
+          scale_y_continuous(labels = function(x) paste0(x, "%"))    
       }
       
       grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "Times New Roman"))
@@ -126,7 +111,7 @@ tasas_sexo_server <- function(id) {
                                                  valores_filter = input$indicador,
                                                  eje_x = "Período",
                                                  eje_y = "",
-                                                 titulo = "",#input$indicador, 
+                                                 titulo = "",
                                                  subtitulo = "Población de 14 años y más. Por sexo y período. Total 31 aglomerados urbanos.",
                                                  periodo_i = input$id_periodo[1],
                                                  periodo_f = input$id_periodo[2]
@@ -178,16 +163,7 @@ tasas_sexo_server <- function(id) {
 }
 
 
-# tasas <- tabla_resultados[["tasas_por_sexo_df"]]$indicador %>% unique()
-# 
-# tasas <- tasas[grepl("Tasa",tasas)]
-# 
-# trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% 
-#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
-#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-#   select(periodo) %>% unique()
-# 
-# trimestres <- trimestres$periodo
+
 
 tasas_sexo_ui <- function(id) {
   ns <- NS(id)
@@ -261,7 +237,7 @@ tasas_sexo_ui <- function(id) {
                                   tags$a("Metodología", id = ns("f_metod"),
                                          
                                          
-                                         onclick="fakeClick('Metodología')"#,
+                                         onclick="fakeClick('Metodología')"
                                          
                                   ),
                         )

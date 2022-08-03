@@ -1,41 +1,14 @@
 
-
-
-
-
 library(plotly)
 library(shinyWidgets)
 library(shinydashboard)
 
 
-#armar_tabla(tabla_tipo_insercion, jerarqs[1], trimestres[1], trimestres[4])
-#plot(tabla_tipo_insercion, "Período", jerarqs[1], trimestres[1], trimestres[4])
 
-
-#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
-
-# t3_acomodo <- tabla_resultados[["tasas_no_registro_df"]] %>% 
-#   mutate(JERARQUIA = "Trabajadores Asalariados")
-# 
-# tabla_tipo_insercion <- tabla_resultados[["sexo_segun_jerarquias_df"]] %>% 
-#   left_join(.,t3_acomodo, by = c("ANO4", "TRIMESTRE","Sexo", "JERARQUIA"))
-# 
-# tabla_tipo_insercion_asal <- tabla_tipo_insercion %>% 
-#   filter(JERARQUIA == "Trabajadores Asalariados") %>% 
-#   mutate("Trabajadores Asalariados No Registrados" = round(tasa*(`Proporción de no Registrados`)/100,1),
-#          "Trabajadores Asalariados Registrados" = round(tasa*(100-`Proporción de no Registrados`)/100,1)) %>% 
-#   select(-`Proporción de no Registrados`,-"JERARQUIA",-tasa) %>% 
-#   gather(., key ="JERARQUIA", value = "tasa",-Sexo,-ANO4,-TRIMESTRE)
-# 
-# tabla_tipo_insercion <- bind_rows((tabla_tipo_insercion %>% select(-`Proporción de no Registrados`)),tabla_tipo_insercion_asal) %>%
-#   filter(JERARQUIA != "Trabajadores Asalariados")
 
 tipo_insercion_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
-    
-    
-    #colores5 <- c("#e5616e","#e9c1d0","#fbd17e","#8594c6","#8cddd3")
     
     
     ###funciones
@@ -80,8 +53,7 @@ tipo_insercion_server <- function(id) {
       
       datagraf2 <- datagraf1%>% 
         filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
-        filter(JERARQUIA %in% jerarquias)# %>% 
-        #filter(periodo != "16T4") %>% 
+        filter(JERARQUIA %in% jerarquias)
         
         grafico <- ggplot(datagraf2, aes(x=periodo, y=tasa, fill=JERARQUIA
                       ,text=paste0('</br>',Sexo,'</br><b>',JERARQUIA,'</b></br>Tasa: ',tasa,'%', '</br>Período: ',periodo)
@@ -93,7 +65,7 @@ tipo_insercion_server <- function(id) {
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "bottom",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
-              #plot.background = element_rect(fill="gray99", color = NA),
+              
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
         scale_fill_manual(values = colores5) +
@@ -159,17 +131,6 @@ tipo_insercion_server <- function(id) {
   })
 }
 
-
-# jerarqs <- tabla_tipo_insercion %>% ungroup() %>%  select(JERARQUIA) %>% unique()
-# 
-# jerarqs <- jerarqs$JERARQUIA
-# 
-# trimestres <- tabla_tipo_insercion %>% ungroup() %>% 
-#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
-#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-#   select(periodo) %>% unique()
-# 
-# trimestres <- trimestres$periodo
 
 tipo_insercion_ui <- function(id) {
   ns <- NS(id)

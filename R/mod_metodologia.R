@@ -48,9 +48,9 @@ metodologia_ui <- tabPanel(title = 'Metodología',
                    tags$p('elaborados por el equipo de ecofemidata en base a los datos publicados cada trimestre.',
                           style = "color:black"))
                    
-                   #acá cierra el fluid
+                   
                   )))
   
          
-         #esto cierra el tab
+       
 )

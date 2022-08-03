@@ -12,9 +12,6 @@ library(shinyWidgets)
 library(shinydashboard)
 
 
-
-#armar_tabla(tabla_resultados[["ramas_sexo_df"]],c("Enseñanza"),"16T2","19T4")
-
 ramas_server <- function(id) {
   moduleServer(id, function(input, output, session) {
     
@@ -61,11 +58,6 @@ ramas_server <- function(id) {
         return(datagraff)
     }
     
-    # generar_titulo <- function(variables, periodo_i, periodo_f,valuacion){
-    #   nombre_variable <-  paste0(variables, collapse = ", ")
-    #   nombre_variable <- sub(",([^,]*)$", " y\\1", nombre_variable)   
-    #   titulo <- paste0(nombre_variable,"." ," Desde ", periodo_i, " hasta ", periodo_f,".",valuacion)
-    # }
     
     
     plot_i <- function(base,
@@ -146,16 +138,14 @@ ramas_server <- function(id) {
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "none",
               panel.background = element_rect(fill = "gray99", color = "gray90"),
-              #plot.background = element_rect(fill="gray99", color = NA),
+          
               strip.text.y = element_text(angle = 0),
               panel.grid.minor.y = element_blank()) +
         scale_color_manual(values = colores14) +
-        labs(#title = titulo,
-          #subtitle = subtitulo,
-          x = "Período",
+        labs( x = "Período",
           y = paste0("Tasa de feminización"),
           color = "",
-          #caption = "Fuente: Elaboración propia en base a EPH-INDEC"
+         
         )+ 
         scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(0,100)) 
       
@@ -239,16 +229,6 @@ ramas_server <- function(id) {
 }
 
 
-# ramas <- tabla_resultados[["ramas_sexo_df"]] %>% ungroup() %>%  select(`Rama de la ocupación`) %>% unique() %>% drop_na()
-# 
-# ramas <- ramas$`Rama de la ocupación`
-# 
-# trimestres <- tabla_resultados[["ramas_sexo_df"]] %>% ungroup() %>% 
-#   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
-#                           levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-#   select(periodo) %>% unique()
-# 
-# trimestres <- trimestres$periodo
 
 ramas_ui <- function(id) {
   ns <- NS(id)
@@ -259,7 +239,7 @@ ramas_ui <- function(id) {
              sidebarPanel(
                selectInput(ns('ramas_id'),label = 'Elegir ramas de actividad',
                            choices = ramas,
-                           selected = ramas[c(2,4,9,11)],
+                           selected = ramas[c(2,4,11)],
                            multiple = TRUE),
                selectInput(ns('ingreso_id'),label = 'Elegir variable de ingreso',
                            choices = c("Ingreso mensual promedio", "Ingreso horario"),
