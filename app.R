@@ -30,6 +30,21 @@ ui <- fluidPage(
     
     chooseSliderSkin("Flat", color = "#e5616e"),
     
+    tags$style(type = 'text/css', 
+               HTML(".container-fluid > .nav > li > 
+                        a[data-value='Metodología'] {background-color: #D3D3D3; color:black}
+                    ")),
+    
+    #y agregar esto?
+    # .container-fluid > .nav > li > 
+    #   a[data-value='Mercado de Trabajo'] {background-color: #e2616e; color:black}
+    #       .container-fluid > .nav > li > 
+    #       a[data-value='Ingresos'] {background-color: #687aad; color:black}
+    #           .container-fluid > .nav > li > 
+    #           a[data-value='Uso del tiempo'] {background-color: #e7bfce; color:black}
+    #               .container-fluid > .nav > li > 
+    #               a[data-value='Trabajadoras de Casas Particulares'] {background-color: #8adbd1; color:black}
+    
 
     uiOutput(outputId = "main_ui")
 )

@@ -275,6 +275,20 @@ ramas_ui <- function(id) {
                hr(), 
                h4("Sobre el indicador"), 
                h5(textOutput(ns('metadata'))), 
+               br(), 
+               tags$div( style="display: inline-flex;",  id = "div_1",
+                         tags$p('Ver ejemplo: ', style="color: black;font-size:15px; font-family: 'News Cycle';
+  font-style: normal"), 
+                         HTML('&nbsp;'),
+                         tags$a(" Trabajadoras de casas particulares", id = "sd_der",
+                                
+                                onclick="fakeClick('Derechos laborales')",
+                                style="font-size:15px; font-family: 'News Cycle';
+  font-style: normal"
+                                
+                         ),
+               ),
+               
                hr(),
                h5(textOutput(ns('metadata_femi'))), 
                hr(),

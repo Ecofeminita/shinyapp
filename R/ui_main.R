@@ -13,9 +13,9 @@ about_ui <- tabPanel(title = 'Inicio',
                      #includeMarkdown('README.md')
                      
                      titlePanel('EcofemiData'),
-                    
+                     
                      br(),
-                     br(),
+                   
                      fluidRow(
                        column(12,
                               column(6,
