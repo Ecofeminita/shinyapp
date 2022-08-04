@@ -470,7 +470,26 @@ brechas_desag_server <- function(id) {
                                input$precios_id
         )
       , 
-                   file)    }
+                   file)   
+        
+        shinyalert(
+          title = "",
+          text = texto_cita,
+          size = "xs", 
+          closeOnEsc = TRUE,
+          closeOnClickOutside = FALSE,
+          html = FALSE,
+          type = "",
+          showConfirmButton = TRUE,
+          showCancelButton = FALSE,
+          confirmButtonText = "ok!",
+          confirmButtonCol = colores2[1],
+          timer = 0,
+          imageUrl = "",
+          animation = TRUE
+        )
+        
+        }
     )
     
     
@@ -635,7 +654,7 @@ brechas_desag_ui <- function(id) {
                         fluidRow(
                           column(12,
                                  column(9, 
-                                        box(tableOutput(ns('tabla')))),
+                                        box(tableOutput(ns('tabla')), width = 12)),
                                  column(3,          
                                         box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))

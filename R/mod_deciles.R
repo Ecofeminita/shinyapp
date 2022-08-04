@@ -97,8 +97,9 @@ deciles_server <- function(id) {
                   input$id_periodo[1],
                   input$id_periodo[2]
       )
-    },
-    width="600px")
+    }#,
+    #width="600px"
+    )
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0(input$ingreso_id)]})
     
@@ -115,7 +116,26 @@ deciles_server <- function(id) {
                                input$id_periodo[1],
                                input$id_periodo[2]
         ), 
-                   file)    }
+                   file)   
+        
+        shinyalert(
+          title = "",
+          text = texto_cita,
+          size = "xs", 
+          closeOnEsc = TRUE,
+          closeOnClickOutside = FALSE,
+          html = FALSE,
+          type = "",
+          showConfirmButton = TRUE,
+          showCancelButton = FALSE,
+          confirmButtonText = "ok!",
+          confirmButtonCol = colores2[1],
+          timer = 0,
+          imageUrl = "",
+          animation = TRUE
+        )
+        
+        }
     )
     
   })
@@ -181,7 +201,7 @@ deciles_ui <- function(id) {
                         fluidRow(
                           column(12,
                                  column(9, 
-                                        box(tableOutput(ns('tabla')))),
+                                        box(tableOutput(ns('tabla')), width = 12)),
                                  column(3,          
                                        box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))

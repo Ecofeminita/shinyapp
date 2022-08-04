@@ -198,8 +198,9 @@ ramas_server <- function(id) {
                   input$id_periodo[2],
                   input$precios_id
       )
-    },
-    width="600px")
+    }#,
+    #width="600px"
+    )
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Ramas de la ocupación")]})
     output$metadata_femi <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Tasa de feminización")]})
@@ -222,7 +223,26 @@ ramas_server <- function(id) {
                                input$id_periodo[2],
                                input$precios_id
         ), 
-                   file)    }
+                   file)  
+        
+        shinyalert(
+          title = "",
+          text = texto_cita,
+          size = "xs", 
+          closeOnEsc = TRUE,
+          closeOnClickOutside = FALSE,
+          html = FALSE,
+          type = "",
+          showConfirmButton = TRUE,
+          showCancelButton = FALSE,
+          confirmButtonText = "ok!",
+          confirmButtonCol = colores2[1],
+          timer = 0,
+          imageUrl = "",
+          animation = TRUE
+        )
+        
+        }
     )
     
   })
@@ -314,7 +334,7 @@ ramas_ui <- function(id) {
                         fluidRow(
                           column(12,
                                  column(10, 
-                                        box(tableOutput(ns('tabla')))),
+                                        box(tableOutput(ns('tabla')), width = 12)),
                                  column(2,   
                                         box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))

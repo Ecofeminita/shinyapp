@@ -219,7 +219,26 @@ serv_dom_ing_server <- function(id) {
                                input$id_periodo[2],
                                input$precios_id
         ), 
-        file)    }
+        file) 
+        
+        shinyalert(
+          title = "",
+          text = texto_cita,
+          size = "xs", 
+          closeOnEsc = TRUE,
+          closeOnClickOutside = FALSE,
+          html = FALSE,
+          type = "",
+          showConfirmButton = TRUE,
+          showCancelButton = FALSE,
+          confirmButtonText = "ok!",
+          confirmButtonCol = colores2[1],
+          timer = 0,
+          imageUrl = "",
+          animation = TRUE
+        )
+        
+        }
     )
     
   })
@@ -326,7 +345,7 @@ serv_dom_ing_ui <- function(id) {
                         fluidRow(
                           column(12,
                                  column(10, 
-                                        box(tableOutput(ns('tabla')))),
+                                        box(tableOutput(ns('tabla')), width = 12)),
                                  column(2,   
                                         box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))

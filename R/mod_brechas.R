@@ -179,8 +179,9 @@ brechas_server <- function(id) {
                   input$id_periodo[2],
                   input$precios_id
       )
-    },
-    width="630px")
+    }#,
+    #width="630px"
+    )
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("B-",input$ingreso_id)]})
     output$metadata_ingresos <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == paste0("Valuación")]})
@@ -199,7 +200,26 @@ brechas_server <- function(id) {
                                input$id_periodo[2],
                                input$precios_id
         ), 
-                   file)    }
+                   file)   
+        
+        shinyalert(
+          title = "",
+          text = texto_cita,
+          size = "xs", 
+          closeOnEsc = TRUE,
+          closeOnClickOutside = FALSE,
+          html = FALSE,
+          type = "",
+          showConfirmButton = TRUE,
+          showCancelButton = FALSE,
+          confirmButtonText = "ok!",
+          confirmButtonCol = colores2[1],
+          timer = 0,
+          imageUrl = "",
+          animation = TRUE
+        )
+        
+        }
     )
     
   })
@@ -268,7 +288,7 @@ brechas_ui <- function(id) {
                         fluidRow(
                           column(12,
                                  column(9, 
-                                        box(tableOutput(ns('tabla')))),
+                                        box(tableOutput(ns('tabla')), width = 12)),
                                  column(3,          
                                         box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))

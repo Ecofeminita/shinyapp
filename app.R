@@ -7,6 +7,7 @@ library(plotly)
 library(gridExtra)
 library(shinyjs)
 library(shinydashboard)
+library(shinyalert)
 
 #tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 

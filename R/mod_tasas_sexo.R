@@ -123,8 +123,9 @@ tasas_sexo_server <- function(id) {
                   valores_filter = input$indicador,
                   input$id_periodo[1],input$id_periodo[2]
                   )
-    },
-    width="600px")
+    }#,
+    #width="600px"
+    )
     
     output$metadata <- renderText({tabla_metadata$metadata[tabla_metadata$indicador == input$indicador]})
     output$metadata_pea <- renderText({
@@ -146,6 +147,8 @@ tasas_sexo_server <- function(id) {
     output$titulo2 <- renderText({generar_titulo(input$indicador,
                                                  input$id_periodo[1],input$id_periodo[2])})
     
+    
+    
     output$downloadTable <- downloadHandler(
       
       filename = function(){paste(input$indicador,'.xlsx',sep='')},
@@ -156,8 +159,33 @@ tasas_sexo_server <- function(id) {
                                valores_filter = input$indicador,
                                input$id_periodo[1],input$id_periodo[2]
         ), 
-                   file)    }
+                   file)  
+        
+        shinyalert(
+          title = "",
+          text = texto_cita,
+          size = "xs", 
+          closeOnEsc = TRUE,
+          closeOnClickOutside = FALSE,
+          html = FALSE,
+          type = "",
+          showConfirmButton = TRUE,
+          showCancelButton = FALSE,
+          confirmButtonText = "ok!",
+          confirmButtonCol = colores2[1],
+          timer = 0,
+          imageUrl = "",
+          animation = TRUE
+        )
+     
+        
+        }
     )
+    
+    
+   
+    
+    
     
   })
 }
@@ -220,7 +248,7 @@ tasas_sexo_ui <- function(id) {
                         fluidRow(
                           column(12,
                                  column(9, 
-                                        box(tableOutput(ns('tabla')))),
+                                        box(tableOutput(ns('tabla')), width = 12)),
                                  column(3,          
                                         box(width = NULL,
                                             downloadButton(ns('downloadTable'),'Descargar tabla'))
