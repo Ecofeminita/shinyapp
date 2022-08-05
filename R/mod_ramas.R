@@ -254,6 +254,23 @@ ramas_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Ramas de la actividad',
            
+           
+           tags$div(p("También puede interesarte: ", style= "text-align: right") ),
+           
+           tags$div( 
+             tags$a("Tasas básicas",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                    onclick="fakeClick('Tasas básicas')",
+                    class="btn btn-primary btn-s"),
+             tags$a("Tasas básicas por grupos de edad",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                    onclick="fakeClick('Por grupos de edad')",
+                    class="btn btn-primary btn-s"),
+             tags$a("Tipo de inserción laboral",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                    onclick="fakeClick('Tipo de inserción laboral')",
+                    class="btn btn-primary btn-s")
+             
+           ),
+           
+           
            titlePanel('Ramas de la actividad'),
            sidebarLayout(
              sidebarPanel(

@@ -250,6 +250,18 @@ serv_dom_ing_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Ingresos y tasa de feminización',
            
+           tags$div(p("También puede interesarte: ", style= "text-align: right") ),
+           
+           tags$div( 
+             tags$a("Ocupadas en el servicio doméstico", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
+                    onclick="fakeClick('Ocupadas en el servicio doméstico')",
+                    class="btn btn-primary btn-s"),
+             tags$a("Derechos laborales", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
+                    onclick="fakeClick('Derechos laborales')",
+                    class="btn btn-primary btn-s")
+             
+           ),
+           
            titlePanel('Ingresos de las trabajadoras de Casas Particulares'),
            sidebarLayout(
              sidebarPanel(

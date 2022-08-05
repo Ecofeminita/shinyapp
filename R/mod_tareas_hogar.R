@@ -199,6 +199,16 @@ horas_no_remunerado_server <- function(id) {
 horas_no_remunerado_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Trabajo no remunerado',
+           
+           tags$div(p("También puede interesarte: ", style= "text-align: right") ),
+           
+           tags$div( 
+             tags$a("Trabajo remunerado",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;color: black"),
+                    onclick="fakeClick('Trabajo remunerado')",
+                    class="btn btn-primary btn-s")
+             
+           ),
+           
            titlePanel('Distribución de las tareas domésticas entre los varones y mujeres'),
            sidebarLayout(
              sidebarPanel(

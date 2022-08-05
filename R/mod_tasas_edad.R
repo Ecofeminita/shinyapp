@@ -172,6 +172,24 @@ tasas_edad_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Por grupos de edad',
            
+           tags$div(p("También puede interesarte: ", style= "text-align: right") ),
+           
+           tags$div( 
+             tags$a("Tasas básicas",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                    onclick="fakeClick('Tasas básicas')",
+                    class="btn btn-primary btn-s"),
+             
+             tags$a("Tipo de inserción laboral",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                    onclick="fakeClick('Tipo de inserción laboral')",
+                    class="btn btn-primary btn-s"),
+             
+             tags$a("Ramas de la actividad",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                    onclick="fakeClick('Ramas de la actividad')",
+                    class="btn btn-primary btn-s")
+             
+           ),
+           
+           
            titlePanel('Tasas básicas por grupo de edad'),
            sidebarLayout(
              sidebarPanel(

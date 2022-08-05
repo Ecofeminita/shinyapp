@@ -38,13 +38,26 @@ about_ui <- tabPanel(title = 'Inicio',
                                                           ,  onclick="fakeClick('Tasas básicas')",
                                                           style ="text-decoration: none !important;color: black !important;")
                                                         
-                                                        
-                                                        
-                                                        
-                                               ),tags$div(class="panel-body",
-                                                 tags$a("Ir!",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                                                   
+                                               ),tags$div(class="panel-body", style = "display: flex;justify-content: space-between;padding: 5px 0",
+                                                 tags$a("Tasas básicas",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
                                                         onclick="fakeClick('Tasas básicas')",
+                                                        class="btn btn-primary btn-s"),
+                                                 
+                                                 tags$a("Tasas básicas por grupos de edad",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                                                        onclick="fakeClick('Por grupos de edad')",
+                                                        class="btn btn-primary btn-s"))
+                                                 
+                                               ,tags$div(class="panel-body", style = "display: flex;justify-content: space-between;padding: 5px 0;",
+                                                 
+                                                 tags$a("Tipo de inserción laboral",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                                                        onclick="fakeClick('Tipo de inserción laboral')",
+                                                        class="btn btn-primary btn-s"),
+                                                 
+                                                 tags$a("Ramas de la actividad",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                                                        onclick="fakeClick('Ramas de la actividad')",
                                                         class="btn btn-primary btn-s")
+                                                 
                                                  
                                                )
                                                
@@ -71,9 +84,19 @@ about_ui <- tabPanel(title = 'Inicio',
                                                           ,  onclick="fakeClick('Brechas de ingresos - general')",
                                                           style ="text-decoration: none !important;color: black !important;")
                                                         
-                                               ),tags$div(class="panel-body",
-                                                        tags$a("Ir!", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
+                                               ),tags$div(class="panel-body",  style = "display: flex;justify-content: space-between;padding: 5px 0;",
+                                                        tags$a("Brechas de ingresos - general", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
                                                                onclick="fakeClick('Brechas de ingresos - general')",
+                                                               class="btn btn-primary btn-s"),
+                                                        
+                                                        tags$a("Brechas de ingresos - desagregado", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
+                                                               onclick="fakeClick('Brechas de ingresos - desagregado')",
+                                                               class="btn btn-primary btn-s")
+                                               ),
+                                               
+                                               tags$div(class="panel-body",  style = "display: flex;justify-content: space-between;padding: 5px 0;",
+                                                        tags$a("Deciles de ingreso", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
+                                                               onclick="fakeClick('Deciles de ingreso')",
                                                                class="btn btn-primary btn-s")
                                                )
                                      )
@@ -108,9 +131,12 @@ about_ui <- tabPanel(title = 'Inicio',
                                                            ,  onclick="fakeClick('Trabajo remunerado')",
                                                            style ="text-decoration: none !important;color: black !important;")
                                                         
-                                               ),tags$div(class="panel-body",
-                                                        tags$a("Ir!",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;"),
+                                               ),tags$div(class="panel-body",  style = "display: flex;justify-content: space-between;padding: 5px 0;",
+                                                        tags$a("Trabajo remunerado",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;color: black"),
                                                                onclick="fakeClick('Trabajo remunerado')",
+                                                               class="btn btn-primary btn-s"),
+                                                        tags$a("Trabajo no remunerado",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;color: black"),
+                                                               onclick="fakeClick('Trabajo no remunerado')",
                                                                class="btn btn-primary btn-s")
                                                )
                                      )
@@ -136,9 +162,17 @@ about_ui <- tabPanel(title = 'Inicio',
                                                           ,  onclick="fakeClick('Ocupadas en el servicio doméstico')",
                                                           style ="text-decoration: none !important;color: black !important;")
                                                         
-                                               ),tags$div(class="panel-body",
-                                                        tags$a("Ir!", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;"),
+                                               ),tags$div(class="panel-body",  style = "display: flex;justify-content: space-between;padding: 5px 0;",
+                                                        tags$a("Ocupadas en el servicio doméstico", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
                                                                onclick="fakeClick('Ocupadas en el servicio doméstico')",
+                                                               class="btn btn-primary btn-s"),
+                                                        tags$a("Ingresos y tasa de feminización", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
+                                                               onclick="fakeClick('Ingresos y tasa de feminización')",
+                                                               class="btn btn-primary btn-s")
+                                               ),
+                                               tags$div(class="panel-body",  style = "display: flex;justify-content: space-between;padding: 5px 0;",
+                                                        tags$a("Derechos laborales", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
+                                                               onclick="fakeClick('Derechos laborales')",
                                                                class="btn btn-primary btn-s")
                                                )
                                      )
@@ -181,6 +215,7 @@ main_ui <- {
             
              about_ui,
             
+          
              
              navbarMenu(title = 'Mercado de Trabajo',
              tasas_sexo_ui('tasas_sexo'),
@@ -189,6 +224,10 @@ main_ui <- {
              ramas_ui('ramas')
              ),
              
+             
+           
+             
+             
              navbarMenu(title = 'Ingresos',
              brechas_ui('brechas_general'),
              brechas_desag_ui('brechas_desag'),
@@ -196,30 +235,35 @@ main_ui <- {
 
              ),
              
+            
+             
              navbarMenu(title = 'Uso del tiempo',
                         #remunerado
                         horas_remunerado_ui('horas_remuneradas'),
                         #no remunerado
                         horas_no_remunerado_ui('horas_no_rem')
-                       
+
              ),
              
+       
              navbarMenu(title = 'Trabajadoras de Casas Particulares',
                         #principales indicadores del informe
                         serv_dom_ocupadas_ui('s_d_ocup'),
                         serv_dom_ing_ui('s_d_ing'),
                         serv_dom_derechos_ui('s_d_derechos')
-                        
-                        
+
+
              ),
+
+
              
              metodologia_ui,
              
-             footer=tags$a("Volver", style=btn_style, id = "a_ecofem",
-                    href="https://ecofeminita.com/",
-                    class="btn btn-primary btn-s"
-                    
-             )
+             # footer=tags$a("Volver", style=btn_style, id = "a_ecofem",
+             #        href="https://ecofeminita.com/",
+             #        class="btn btn-primary btn-s"
+             #        
+             # )
              
              )
 }

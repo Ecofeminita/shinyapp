@@ -506,6 +506,18 @@ brechas_desag_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Brechas de ingresos - desagregado',
            
+           tags$div(p("También puede interesarte: ", style= "text-align: right") ),
+           
+           tags$div( 
+             tags$a("Brechas de ingresos - general", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
+                    onclick="fakeClick('Brechas de ingresos - general')",
+                    class="btn btn-primary btn-s"),
+             tags$a("Deciles de ingreso", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
+                    onclick="fakeClick('Deciles de ingreso')",
+                    class="btn btn-primary btn-s")
+             
+           ),
+           
            titlePanel('Brechas de ingresos - desagregado'),
            sidebarLayout(
              sidebarPanel(

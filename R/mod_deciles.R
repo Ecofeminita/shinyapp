@@ -149,6 +149,18 @@ deciles_ui <- function(id) {
   
   tabPanel(title = 'Deciles de ingreso',
            
+           tags$div(p("También puede interesarte: ", style= "text-align: right") ),
+           
+           tags$div( 
+             tags$a("Brechas de ingresos - general", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
+                    onclick="fakeClick('Brechas de ingresos - general')",
+                    class="btn btn-primary btn-s"),
+             tags$a("Brechas de ingresos - desagregado", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
+                    onclick="fakeClick('Brechas de ingresos - desagregado')",
+                    class="btn btn-primary btn-s")
+             
+           ),
+           
            titlePanel('Deciles de ingreso'),
            sidebarLayout(
              sidebarPanel(

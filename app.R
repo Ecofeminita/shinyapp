@@ -12,7 +12,6 @@ library(shinyalert)
 #tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
 
-
 ui <- fluidPage( 
     theme = shinytheme("journal"),
     
@@ -34,6 +33,7 @@ ui <- fluidPage(
     tags$style(type = 'text/css', 
                HTML(".container-fluid > .nav > li > 
                         a[data-value='Metodología'] {background-color: #D3D3D3; color:black}
+                      
                     ")),
     
     #y agregar esto?

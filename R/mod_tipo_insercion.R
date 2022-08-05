@@ -156,6 +156,23 @@ tipo_insercion_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Tipo de inserción laboral',
            
+           tags$div(p("También puede interesarte: ", style= "text-align: right") ),
+           
+           tags$div( 
+             tags$a("Tasas básicas",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                    onclick="fakeClick('Tasas básicas')",
+                    class="btn btn-primary btn-s"),
+             tags$a("Tasas básicas por grupos de edad",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                    onclick="fakeClick('Por grupos de edad')",
+                    class="btn btn-primary btn-s"),
+             
+             
+             tags$a("Ramas de la actividad",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                    onclick="fakeClick('Ramas de la actividad')",
+                    class="btn btn-primary btn-s")
+             
+           ),
+           
            titlePanel('Tipo de inserción laboral'),
            sidebarLayout(
              sidebarPanel(

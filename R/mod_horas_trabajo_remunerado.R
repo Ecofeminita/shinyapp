@@ -211,6 +211,16 @@ horas_remunerado_server <- function(id) {
 horas_remunerado_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Trabajo remunerado',
+           
+           tags$div(p("También puede interesarte: ", style= "text-align: right") ),
+           
+           tags$div( 
+             tags$a("Trabajo no remunerado",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;color: black"),
+                    onclick="fakeClick('Trabajo no remunerado')",
+                    class="btn btn-primary btn-s")
+             
+           ),
+           
            titlePanel('Horas de trabajo remunerado'),
            sidebarLayout(
              sidebarPanel(

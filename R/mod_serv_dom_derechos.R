@@ -152,6 +152,19 @@ serv_dom_derechos_server <- function(id) {
 serv_dom_derechos_ui <- function(id) {
   ns <- NS(id)
   tabPanel(title = 'Derechos laborales',
+           
+           tags$div(p("También puede interesarte: ", style= "text-align: right") ),
+           
+           tags$div( 
+             tags$a("Ingresos y tasa de feminización", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
+                    onclick="fakeClick('Ingresos y tasa de feminización')",
+                    class="btn btn-primary btn-s"),
+             tags$a("Ocupadas en el servicio doméstico", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
+                    onclick="fakeClick('Ocupadas en el servicio doméstico')",
+                    class="btn btn-primary btn-s")
+             
+           ),
+           
            titlePanel('Derechos laborales de las trabajadoras de Casas Particulares'),
            sidebarLayout(
              sidebarPanel(
