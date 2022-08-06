@@ -235,7 +235,7 @@ brechas_ui <- function(id) {
            
            tags$div(p("También puede interesarte: ", style= "text-align: right") ),
            
-           tags$div( 
+           tags$div( style = "display: flex;padding: 1px 0;justify-content: flex-end;",
              tags$a("Brechas de ingresos - desagregado", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
                     onclick="fakeClick('Brechas de ingresos - desagregado')",
                     class="btn btn-primary btn-s"),

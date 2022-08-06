@@ -202,7 +202,7 @@ horas_no_remunerado_ui <- function(id) {
            
            tags$div(p("También puede interesarte: ", style= "text-align: right") ),
            
-           tags$div( 
+           tags$div( style = "display: flex;padding: 1px 0;justify-content: flex-end;",
              tags$a("Trabajo remunerado",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;color: black"),
                     onclick="fakeClick('Trabajo remunerado')",
                     class="btn btn-primary btn-s")

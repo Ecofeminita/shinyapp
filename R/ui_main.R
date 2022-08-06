@@ -39,22 +39,24 @@ about_ui <- tabPanel(title = 'Inicio',
                                                           style ="text-decoration: none !important;color: black !important;")
                                                         
                                                    
-                                               ),tags$div(class="panel-body", style = "display: flex;justify-content: space-between;padding: 5px 0",
-                                                 tags$a("Tasas básicas",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                                               ),tags$div(class="panel-body", style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                 tags$a("Tasas básicas",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;font-size:14px"),
                                                         onclick="fakeClick('Tasas básicas')",
-                                                        class="btn btn-primary btn-s"),
-                                                 
-                                                 tags$a("Tasas básicas por grupos de edad",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                                                        class="btn btn-primary btn-s")),
+                                               
+                                               tags$div(class="panel-body",  style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                 tags$a("Tasas básicas por grupos de edad",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;font-size:14px"),
                                                         onclick="fakeClick('Por grupos de edad')",
                                                         class="btn btn-primary btn-s"))
                                                  
-                                               ,tags$div(class="panel-body", style = "display: flex;justify-content: space-between;padding: 5px 0;",
+                                               ,tags$div(class="panel-body", style = "display: flex;padding: 1px 0;justify-content: flex-end",
                                                  
-                                                 tags$a("Tipo de inserción laboral",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                                                 tags$a("Tipo de inserción laboral",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;font-size:14px"),
                                                         onclick="fakeClick('Tipo de inserción laboral')",
-                                                        class="btn btn-primary btn-s"),
-                                                 
-                                                 tags$a("Ramas de la actividad",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
+                                                        class="btn btn-primary btn-s")),
+                                               
+                                               tags$div(class="panel-body",  style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                 tags$a("Ramas de la actividad",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;font-size:14px"),
                                                         onclick="fakeClick('Ramas de la actividad')",
                                                         class="btn btn-primary btn-s")
                                                  
@@ -84,18 +86,19 @@ about_ui <- tabPanel(title = 'Inicio',
                                                           ,  onclick="fakeClick('Brechas de ingresos - general')",
                                                           style ="text-decoration: none !important;color: black !important;")
                                                         
-                                               ),tags$div(class="panel-body",  style = "display: flex;justify-content: space-between;padding: 5px 0;",
-                                                        tags$a("Brechas de ingresos - general", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
+                                               ),tags$div(class="panel-body",  style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                        tags$a("Brechas de ingresos - general", style=paste0(btn_style,"background:#687aad;border-color: #687aad;font-size:14px"),
                                                                onclick="fakeClick('Brechas de ingresos - general')",
-                                                               class="btn btn-primary btn-s"),
-                                                        
-                                                        tags$a("Brechas de ingresos - desagregado", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
+                                                               class="btn btn-primary btn-s")),
+                                               
+                                               tags$div(class="panel-body",  style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                        tags$a("Brechas de ingresos - desagregado", style=paste0(btn_style,"background:#687aad;border-color: #687aad;font-size:14px"),
                                                                onclick="fakeClick('Brechas de ingresos - desagregado')",
                                                                class="btn btn-primary btn-s")
                                                ),
                                                
-                                               tags$div(class="panel-body",  style = "display: flex;justify-content: space-between;padding: 5px 0;",
-                                                        tags$a("Deciles de ingreso", style=paste0(btn_style,"background:#687aad;border-color: #687aad;"),
+                                               tags$div(class="panel-body",  style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                        tags$a("Deciles de ingreso", style=paste0(btn_style,"background:#687aad;border-color: #687aad;font-size:14px"),
                                                                onclick="fakeClick('Deciles de ingreso')",
                                                                class="btn btn-primary btn-s")
                                                )
@@ -131,11 +134,12 @@ about_ui <- tabPanel(title = 'Inicio',
                                                            ,  onclick="fakeClick('Trabajo remunerado')",
                                                            style ="text-decoration: none !important;color: black !important;")
                                                         
-                                               ),tags$div(class="panel-body",  style = "display: flex;justify-content: space-between;padding: 5px 0;",
-                                                        tags$a("Trabajo remunerado",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;color: black"),
+                                               ),tags$div(class="panel-body",  style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                        tags$a("Trabajo remunerado",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;color: black;font-size:14px"),
                                                                onclick="fakeClick('Trabajo remunerado')",
-                                                               class="btn btn-primary btn-s"),
-                                                        tags$a("Trabajo no remunerado",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;color: black"),
+                                                               class="btn btn-primary btn-s")),
+                                               tags$div(class="panel-body",  style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                        tags$a("Trabajo no remunerado",style=paste0(btn_style,"background:#e7bfce;border-color: #e7bfce;color: black;font-size:14px"),
                                                                onclick="fakeClick('Trabajo no remunerado')",
                                                                class="btn btn-primary btn-s")
                                                )
@@ -162,16 +166,17 @@ about_ui <- tabPanel(title = 'Inicio',
                                                           ,  onclick="fakeClick('Ocupadas en el servicio doméstico')",
                                                           style ="text-decoration: none !important;color: black !important;")
                                                         
-                                               ),tags$div(class="panel-body",  style = "display: flex;justify-content: space-between;padding: 5px 0;",
-                                                        tags$a("Ocupadas en el servicio doméstico", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
+                                               ),tags$div(class="panel-body",  style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                        tags$a("Ocupadas en el servicio doméstico", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black;font-size:14px"),
                                                                onclick="fakeClick('Ocupadas en el servicio doméstico')",
-                                                               class="btn btn-primary btn-s"),
-                                                        tags$a("Ingresos y tasa de feminización", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
+                                                               class="btn btn-primary btn-s")),
+                                               tags$div(class="panel-body",  style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                        tags$a("Ingresos y tasa de feminización", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black;font-size:14px"),
                                                                onclick="fakeClick('Ingresos y tasa de feminización')",
                                                                class="btn btn-primary btn-s")
                                                ),
-                                               tags$div(class="panel-body",  style = "display: flex;justify-content: space-between;padding: 5px 0;",
-                                                        tags$a("Derechos laborales", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
+                                               tags$div(class="panel-body",  style = "display: flex;padding: 1px 0;justify-content: flex-end",
+                                                        tags$a("Derechos laborales", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black;font-size:14px"),
                                                                onclick="fakeClick('Derechos laborales')",
                                                                class="btn btn-primary btn-s")
                                                )

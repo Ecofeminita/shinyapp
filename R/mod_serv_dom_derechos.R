@@ -155,7 +155,7 @@ serv_dom_derechos_ui <- function(id) {
            
            tags$div(p("También puede interesarte: ", style= "text-align: right") ),
            
-           tags$div( 
+           tags$div( style = "display: flex;padding: 1px 0;justify-content: flex-end;",
              tags$a("Ingresos y tasa de feminización", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
                     onclick="fakeClick('Ingresos y tasa de feminización')",
                     class="btn btn-primary btn-s"),

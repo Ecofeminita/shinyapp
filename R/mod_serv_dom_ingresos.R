@@ -252,7 +252,7 @@ serv_dom_ing_ui <- function(id) {
            
            tags$div(p("También puede interesarte: ", style= "text-align: right") ),
            
-           tags$div( 
+           tags$div( style = "display: flex;padding: 1px 0;justify-content: flex-end;",
              tags$a("Ocupadas en el servicio doméstico", style=paste0(btn_style,"background:#8adbd1;border-color: #8adbd1;color: black"),
                     onclick="fakeClick('Ocupadas en el servicio doméstico')",
                     class="btn btn-primary btn-s"),

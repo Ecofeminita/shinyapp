@@ -257,7 +257,7 @@ ramas_ui <- function(id) {
            
            tags$div(p("También puede interesarte: ", style= "text-align: right") ),
            
-           tags$div( 
+           tags$div( style = "display: flex;padding: 1px 0;justify-content: flex-end;",
              tags$a("Tasas básicas",style=paste0(btn_style,"background:#e2616e;border-color: #e2616e;"),
                     onclick="fakeClick('Tasas básicas')",
                     class="btn btn-primary btn-s"),
