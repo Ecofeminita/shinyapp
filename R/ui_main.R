@@ -16,9 +16,11 @@ about_ui <- tabPanel(title = 'Inicio',
                    
                      fluidRow(
                        column(12,
-                              column(6,
+                              tags$div(style = "display:flex",
+                             
+                             
                                      tags$div( class="panel panel-primary",
-                                               style = "border-color: #e2616e",
+                                               style = "border-color: #e2616e;width:50%",
                                                
                                                a(tags$div(class= "panel-heading",
                                                         style="background:#e2616e;border-color: #e2616e",
@@ -34,7 +36,7 @@ about_ui <- tabPanel(title = 'Inicio',
                                                           ,  onclick="fakeClick('Tasas básicas')")
                                                           ,
                                                         
-                                                        a(p('En esta sección presentamos las tasas básicas del mercado de trabajo desagregadas por sexo, así como también por grupo etario. Por otro lado, estudiamos las condiciones de inserción laboral de las mujeres y los varones a partir de su jerarquía y rama de actividad.', style="text-align: left;font-size:18px")
+                                                        a(p('En esta sección presentamos las tasas básicas del mercado de trabajo desagregadas por sexo, así como también por grupo etario. Por otro lado, estudiamos las condiciones de inserción laboral de las mujeres y los varones a partir de su jerarquía y rama de actividad.', style="text-align: left;font-size:18px;")
                                                           ,  onclick="fakeClick('Tasas básicas')",
                                                           style ="text-decoration: none !important;color: black !important;")
                                                         
@@ -63,11 +65,20 @@ about_ui <- tabPanel(title = 'Inicio',
                                                  
                                                )
                                                
-                                     )
+                                   
+                                    
                               ),  
-                              column(6,
+                              
+                              #espacio entre cajas
+                              HTML('&nbsp;'),
+                              HTML('&nbsp;'),
+                              HTML('&nbsp;'),
+                              
+                       
+                                     
                                      tags$div( class="panel panel-primary",
-                                               style = "border-color: #687aad",
+                                               style = "border-color: #687aad;width:50%",
+                                               
                                                
                                                a(tags$div( class= "panel-heading",
                                                          style="background:#687aad;border-color: #687aad",
@@ -103,16 +114,20 @@ about_ui <- tabPanel(title = 'Inicio',
                                                                class="btn btn-primary btn-s")
                                                )
                                      )
-                              )
+                            #  )
+                             
+                              
+                       )
                        )
                      ),
                      
                      
                      fluidRow(
                        column(12,
-                              column(6,
+                              tags$div(style = "display:flex",
+                             
                                      tags$div( class="panel panel-primary",
-                                               style = "border-color: #e7bfce",
+                                               style = "border-color: #e7bfce;width:50%",
                                                
                                                a(tags$div(class= "panel-heading",
                                                         style="background:#e7bfce;border-color: #e7bfce",
@@ -143,11 +158,15 @@ about_ui <- tabPanel(title = 'Inicio',
                                                                onclick="fakeClick('Trabajo no remunerado')",
                                                                class="btn btn-primary btn-s")
                                                )
-                                     )
-                              ),  
-                              column(6,
+                                    
+                              ),
+                              #espacio entre cajas
+                             HTML('&nbsp;'),
+                             HTML('&nbsp;'),
+                             HTML('&nbsp;'),
+                            
                                      tags$div( class="panel panel-primary",
-                                               style = "border-color: #8adbd1",
+                                               style = "border-color: #8adbd1;width:50%",
                                                
                                                
                                                a(tags$div( class= "panel-heading",
@@ -182,8 +201,13 @@ about_ui <- tabPanel(title = 'Inicio',
                                                )
                                      )
                               )
+                      # )
+                       
                        )
-                     ),
+                      
+                     )
+                    
+                     ,
                      br(),
                      br(),
                      tags$div( style="display: inline-flex;",  id = "intro_app",
