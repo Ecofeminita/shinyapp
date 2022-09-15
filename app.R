@@ -9,8 +9,6 @@ library(shinyjs)
 library(shinydashboard)
 library(shinyalert)
 
-#tabla_resultados <- readRDS("www/tabla_resultados.RDS")
-
 
 ui <- fluidPage( 
     theme = shinytheme("journal"),
