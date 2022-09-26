@@ -41,7 +41,7 @@ texto_fuentes <- '¿Cuál es la fuente de estos datos? Ver '#Metodología
 
 tabla_resultados <- readRDS("www/tabla_resultados.RDS")
 
-texto_cita <- "Vas a usar nuestros datos? Citanos!"
+texto_cita <- "Vas a usar nuestros datos? Citanos! DOI: 10.5281/zenodo.7114666"
 
 trimestres <- tabla_resultados[["tasas_por_sexo_df"]] %>% ungroup() %>% 
   mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         

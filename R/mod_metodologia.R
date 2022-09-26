@@ -30,7 +30,7 @@ metodologia_ui <- tabPanel(title = 'Metodología',
                    )),
          
          tags$div(   id = "invita",
-                     tags$p('Obviamente, estás invitade a utilizar estos datos en notas, reflexiones, trabajos, infografías, etc.',
+                     tags$p('Obviamente, estás invitade a utilizar estos datos en notas, reflexiones, trabajos, infografías, etc. Nos podés citar a partir del DOI: 10.5281/zenodo.7114666',
                             style = "color:black")
                      ),
                    
