@@ -30,7 +30,9 @@ brechas_desag_server <- function(id) {
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         rename("brecha" = brecha,
                "var_filtro" = facet_var)  %>% 
-        rename("brecha_corriente" = names(dataframe)[grepl("corr",names(dataframe))])
+        rename("brecha_corriente" = names(dataframe)[grepl("corr",names(dataframe))]) %>% 
+        mutate(ANO4 = as.character(round(as.numeric(ANO4),0)),
+               TRIMESTRE = as.character(round(as.numeric(TRIMESTRE),0)))
       
       
       

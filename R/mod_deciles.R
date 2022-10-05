@@ -20,7 +20,9 @@ deciles_server <- function(id) {
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         rename("Decil" = tipo_ingreso) %>% 
         filter(Sexo == "Mujeres") %>% 
-        rename("Porcentaje de población femenina del decil" = Prop)
+        rename("Porcentaje de población femenina del decil" = Prop)%>% 
+        mutate(ANO4 = as.character(round(as.numeric(ANO4),0)),
+               TRIMESTRE = as.character(round(as.numeric(TRIMESTRE),0)))
       
       datagraf <- datagraf1%>% 
         

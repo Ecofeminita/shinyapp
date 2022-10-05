@@ -17,6 +17,8 @@ serv_dom_derechos_server <- function(id) {
         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         filter(indicador %in% valores_filter) %>% 
+        mutate(ANO4 = as.character(round(as.numeric(ANO4),0)),
+               TRIMESTRE = as.character(round(as.numeric(TRIMESTRE),0)))%>% 
         relocate(valor, .after = last_col())
       
       

@@ -15,7 +15,9 @@ serv_dom_ocupadas_server <- function(id) {
       datagraf1 <- tabla_resultados[[dataframe]] %>%                          
         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-        filter(servicio.domestico == "Sí")
+        filter(servicio.domestico == "Sí")%>% 
+        mutate(ANO4 = as.character(round(as.numeric(ANO4),0)),
+               TRIMESTRE = as.character(round(as.numeric(TRIMESTRE),0)))
       
       
      

@@ -27,7 +27,9 @@ brechas_server <- function(id) {
         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         rename("brecha" = brecha) %>% 
-        rename("brecha_corriente" = names(dataframe)[grepl("corr",names(dataframe))])
+        rename("brecha_corriente" = names(dataframe)[grepl("corr",names(dataframe))])%>% 
+        mutate(ANO4 = as.character(round(as.numeric(ANO4),0)),
+               TRIMESTRE = as.character(round(as.numeric(TRIMESTRE),0)))
       
       datagraf <- datagraf1%>% 
         

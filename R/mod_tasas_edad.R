@@ -22,6 +22,8 @@ tasas_edad_server <- function(id) {
         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         filter(eval(parse(text=variable)) %in% valores_filter) %>% 
+        mutate(ANO4 = as.character(round(as.numeric(ANO4),0)),
+               TRIMESTRE = as.character(round(as.numeric(TRIMESTRE),0)))%>% 
         relocate(valor, .after = last_col())
       
       names(datagraf1)[length(datagraf1)] <- paste0(valores_filter[1])
