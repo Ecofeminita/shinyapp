@@ -19,11 +19,15 @@ brechas_server <- function(id) {
                             periodo_f,
                             valuacion
     ){
+      
+      
+      
       datagraf1 <- dataframe %>% 
                                   
         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-        rename("brecha" = brecha)
+        rename("brecha" = brecha) %>% 
+        rename("brecha_corriente" = names(dataframe)[grepl("corr",names(dataframe))])
       
       datagraf <- datagraf1%>% 
         
@@ -33,7 +37,8 @@ brechas_server <- function(id) {
              
                "Año" = "ANO4", 
                "Trimestre" = "TRIMESTRE", 
-               "Brecha (%)" = "brecha", 
+               "Brecha (%) - precios constantes" = "brecha", 
+               "Brecha (%) - precios corrientes" = "brecha_corriente", 
                "Mujeres (Ingreso medio - precios corrientes)"="media.mujeres",
                "Varones (Ingreso medio - precios corrientes)"="media.varones", 
                "Mujeres (Ingreso medio - precios constantes)"="cte_media.mujeres",
@@ -42,14 +47,14 @@ brechas_server <- function(id) {
       if(valuacion =="Precios corrientes"){
         
         datagraff <- datagraf %>% 
-          select(-c("Varones (Ingreso medio - precios constantes)","Mujeres (Ingreso medio - precios constantes)"))
+          select(-c("Varones (Ingreso medio - precios constantes)","Mujeres (Ingreso medio - precios constantes)","Brecha (%) - precios constantes" ))
         
         return(datagraff)
         
       } else if(valuacion ==paste0("Precios constantes (",nombre_trimestre_base,")")){
         
         datagraff <- datagraf %>% 
-          select(-c("Mujeres (Ingreso medio - precios corrientes)","Varones (Ingreso medio - precios corrientes)"))
+          select(-c("Mujeres (Ingreso medio - precios corrientes)","Varones (Ingreso medio - precios corrientes)","Brecha (%) - precios corrientes"))
         
         return(datagraff)
       }

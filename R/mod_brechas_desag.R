@@ -29,7 +29,8 @@ brechas_desag_server <- function(id) {
         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
         rename("brecha" = brecha,
-               "var_filtro" = facet_var) 
+               "var_filtro" = facet_var)  %>% 
+        rename("brecha_corriente" = names(dataframe)[grepl("corr",names(dataframe))])
       
       
       
@@ -43,7 +44,8 @@ brechas_desag_server <- function(id) {
         
         rename("Año" = "ANO4", 
                "Trimestre" = "TRIMESTRE", 
-               "Brecha (%)" = "brecha",
+               "Brecha (%) - precios constantes" = "brecha", 
+               "Brecha (%) - precios corrientes" = "brecha_corriente", 
                "Mujeres (Ingreso medio - precios corrientes)"="media.mujeres",
                "Varones (Ingreso medio - precios corrientes)"="media.varones", 
                "Mujeres (Ingreso medio - precios constantes)"="cte_media.mujeres",
@@ -56,14 +58,14 @@ brechas_desag_server <- function(id) {
       if(valuacion =="Precios corrientes"){
         
         datagraff <- datagraf %>% 
-          select(-c("Varones (Ingreso medio - precios constantes)","Mujeres (Ingreso medio - precios constantes)"))
+          select(-c("Varones (Ingreso medio - precios constantes)","Mujeres (Ingreso medio - precios constantes)", "Brecha (%) - precios constantes"))
         
         return(datagraff)
         
       } else if(valuacion ==paste0("Precios constantes (",nombre_trimestre_base,")")){
         
         datagraff <- datagraf %>% 
-          select(-c("Mujeres (Ingreso medio - precios corrientes)","Varones (Ingreso medio - precios corrientes)"))
+          select(-c("Mujeres (Ingreso medio - precios corrientes)","Varones (Ingreso medio - precios corrientes)", "Brecha (%) - precios corrientes"))
         
         return(datagraff)
       }
@@ -81,14 +83,28 @@ brechas_desag_server <- function(id) {
                             valores, 
                             nombre,
                             porcentaje,
-                            periodo_i, periodo_f){
+                            periodo_i, periodo_f,
+                            valuacion){
+     
+     
+     if(valuacion =="Precios corrientes"){
      
      datagraf1 <- base %>% 
        mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
                                levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
-       rename("brecha" = var) %>% 
+       rename("brecha" = names(base)[grepl("corr",names(base))]) %>% 
        rename("var_facet" = facet_var)%>% 
        filter(var_facet %in% c(valores))
+     
+     }else if(valuacion ==paste0("Precios constantes (",nombre_trimestre_base,")")){
+       
+       datagraf1 <- base %>% 
+         mutate(periodo = factor(paste0(TRIMESTRE, "°T ",ANO4),         
+                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) %>% 
+         rename("brecha" = var) %>% 
+         rename("var_facet" = facet_var)%>% 
+         filter(var_facet %in% c(valores))
+     }
      
      tabla <- datagraf1%>% 
        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
@@ -115,7 +131,7 @@ brechas_desag_server <- function(id) {
      
      if(porcentaje){
        grafico <- grafico + 
-         scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(0,60))    
+         scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(-30,60))    
      }
      
      grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "Times New Roman"))
@@ -237,7 +253,8 @@ brechas_desag_server <- function(id) {
            nombre =input$ingreso_id,
            porcentaje = T, #para constantes!
            input$id_periodo[1],
-           input$id_periodo[2]) 
+           input$id_periodo[2],
+           input$precios_id) 
     })
     
     observe({

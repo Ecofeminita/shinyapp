@@ -29,11 +29,11 @@ basesb <- get_microdata(year = 2020:2021,
 
 
 
-bases <- bases %>% unnest(cols = c(microdata)) %>% select(-wave) 
-basesb <- basesb %>% unnest(cols = c(microdata)) %>% select(-wave) 
+#bases <- bases %>% unnest(cols = c(microdata)) %>% select(-wave) 
+#basesb <- basesb %>% unnest(cols = c(microdata)) %>% select(-wave) 
 
-bases <- bases %>% select(nombres_filtro_personas)
-basesb <- basesb %>% select(nombres_filtro_personas)
+#bases <- bases %>% select(nombres_filtro_personas)
+#basesb <- basesb %>% select(nombres_filtro_personas)
 
 
 
@@ -121,11 +121,11 @@ basesb_hogar <- get_microdata(year = 2020:2021,
                         destfile = 'preprocesamiento/fuentes/bases_eph_hogar_b.rds')
 
 
-bases_hogar <- bases_hogar %>% unnest(cols = c(microdata)) %>% select(-wave) 
-basesb_hogar <- basesb_hogar %>% unnest(cols = c(microdata)) %>% select(-wave)
+#bases_hogar <- bases_hogar %>% unnest(cols = c(microdata)) %>% select(-wave) 
+#basesb_hogar <- basesb_hogar %>% unnest(cols = c(microdata)) %>% select(-wave)
 
-bases_hogar <- bases_hogar %>% select(nombres_filtro_hogares)
-basesb_hogar <- basesb_hogar %>% select(nombres_filtro_hogares)
+#bases_hogar <- bases_hogar %>% select(nombres_filtro_hogares)
+#basesb_hogar <- basesb_hogar %>% select(nombres_filtro_hogares)
 
 base_hogar <- bind_rows(bases_hogar,basesb_hogar)
 
