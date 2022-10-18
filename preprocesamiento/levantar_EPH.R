@@ -27,6 +27,13 @@ basesb <- get_microdata(year = 2020:2021,
                        destfile = 'preprocesamiento/fuentes/bases_eph_b.rds'
                        )
 
+basesc <- get_microdata(year = 2022, 
+                        trimester = 1,
+                        type =  'individual',
+                        vars = nombres_filtro_personas,
+                        destfile = 'preprocesamiento/fuentes/bases_eph_c.rds'
+)
+
 
 
 #bases <- bases %>% unnest(cols = c(microdata)) %>% select(-wave) 
@@ -37,8 +44,9 @@ basesb <- get_microdata(year = 2020:2021,
 
 
 
-bases <- bind_rows(bases,basesb)
+bases <- bind_rows(bases,basesb,basesc)
 rm(basesb)
+rm(basesc)
 # Función de limpieza de la base individual
 limpieza_individuos <- function(base){
   
@@ -121,16 +129,22 @@ basesb_hogar <- get_microdata(year = 2020:2021,
                         destfile = 'preprocesamiento/fuentes/bases_eph_hogar_b.rds')
 
 
+basesc_hogar <- get_microdata(year = 2022, 
+                              trimester = 1,
+                              type =  'hogar',
+                              vars = nombres_filtro_hogares,
+                              destfile = 'preprocesamiento/fuentes/bases_eph_hogar_c.rds')
+
 #bases_hogar <- bases_hogar %>% unnest(cols = c(microdata)) %>% select(-wave) 
 #basesb_hogar <- basesb_hogar %>% unnest(cols = c(microdata)) %>% select(-wave)
 
 #bases_hogar <- bases_hogar %>% select(nombres_filtro_hogares)
 #basesb_hogar <- basesb_hogar %>% select(nombres_filtro_hogares)
 
-base_hogar <- bind_rows(bases_hogar,basesb_hogar)
+base_hogar <- bind_rows(bases_hogar,basesb_hogar,basesc_hogar)
 
 rm(basesb_hogar)
-
+rm(basesc_hogar)
 rm(bases_hogar)
 
 rm(nombres_filtro_hogares,nombres_filtro_personas)
