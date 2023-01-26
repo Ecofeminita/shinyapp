@@ -133,7 +133,7 @@ brechas_desag_server <- function(id) {
      
      if(porcentaje){
        grafico <- grafico + 
-         scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(-30,60))    
+         scale_y_continuous(labels = function(x) paste0(x, "%"), limits = c(-30,65))    
      }
      
      grafico <- ggplotly(grafico, tooltip = c("text")) %>% layout(font = list(family = "Times New Roman"))
