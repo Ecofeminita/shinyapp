@@ -247,6 +247,10 @@ main_ui <- {
           
              
              navbarMenu(title = 'Mercado de Trabajo',
+                        tags$style(type="text/css",
+                                   ".shiny-output-error { visibility: hidden; }",
+                                   ".shiny-output-error:before { visibility: hidden; }"
+                        ),
              tasas_sexo_ui('tasas_sexo'),
              tasas_edad_ui('tasas_edad'),
              tipo_insercion_ui('jerarquias'),
@@ -258,6 +262,10 @@ main_ui <- {
              
              
              navbarMenu(title = 'Ingresos',
+                        tags$style(type="text/css",
+                                   ".shiny-output-error { visibility: hidden; }",
+                                   ".shiny-output-error:before { visibility: hidden; }"
+                        ),
              brechas_ui('brechas_general'),
              brechas_desag_ui('brechas_desag'),
              deciles_ui('deciles')
@@ -267,6 +275,10 @@ main_ui <- {
             
              
              navbarMenu(title = 'Uso del tiempo',
+                        tags$style(type="text/css",
+                                   ".shiny-output-error { visibility: hidden; }",
+                                   ".shiny-output-error:before { visibility: hidden; }"
+                        ),
                         #remunerado
                         horas_remunerado_ui('horas_remuneradas'),
                         #no remunerado
@@ -276,6 +288,10 @@ main_ui <- {
              
        
              navbarMenu(title = 'Trabajadoras de Casas Particulares',
+                        tags$style(type="text/css",
+                                   ".shiny-output-error { visibility: hidden; }",
+                                   ".shiny-output-error:before { visibility: hidden; }"
+                        ),
                         #principales indicadores del informe
                         serv_dom_ocupadas_ui('s_d_ocup'),
                         serv_dom_ing_ui('s_d_ing'),
