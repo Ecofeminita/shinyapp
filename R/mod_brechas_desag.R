@@ -38,7 +38,7 @@ brechas_desag_server <- function(id) {
       
       datagraf <- datagraf1%>% 
         
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) %>% 
         select(-periodo#,-nombre_trim_base
                ) %>% 
       
@@ -109,7 +109,8 @@ brechas_desag_server <- function(id) {
      }
      
      tabla <- datagraf1%>% 
-       filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
+       
+       filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])) : unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))))
      
      
      grafico <- ggplot(tabla, aes(periodo, brecha, color = var_facet, group = var_facet
@@ -161,7 +162,7 @@ brechas_desag_server <- function(id) {
         filter(var_facet %in% c(valores))
       
       tabla <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))))
       
       if(valuacion =="Precios corrientes"){
         

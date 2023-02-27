@@ -22,7 +22,7 @@ serv_dom_ocupadas_server <- function(id) {
       
      
       datagraf <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))))%>% 
         select(-periodo, -servicio.domestico, -frecuencia, "Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Porcentaje de ocupadas mujeres que se dedican al servicio doméstico"="proporcion")
       
       datagraf
@@ -46,7 +46,7 @@ serv_dom_ocupadas_server <- function(id) {
         filter(servicio.domestico == "Sí")
       
       datagraf <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) 
       
       
       

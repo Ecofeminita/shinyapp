@@ -23,7 +23,7 @@ serv_dom_derechos_server <- function(id) {
       
       
       datagraf <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))))%>% 
         select(-periodo,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Porcentaje de trabajadoras del servicio doméstico que.."= "indicador", "Valor"= "valor")
       
       
@@ -49,7 +49,7 @@ serv_dom_derechos_server <- function(id) {
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) 
       
       datagraf <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) %>% 
         filter(indicador %in% valores_filter) 
       
       

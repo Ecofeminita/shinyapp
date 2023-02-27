@@ -22,7 +22,7 @@ tasas_sexo_server <- function(id) {
                TRIMESTRE = as.character(round(as.numeric(TRIMESTRE),0)))
       
       datagraf <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))))%>% 
       
       select(-periodo, -indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", 
              "Mujeres", "Varones", 
@@ -66,7 +66,7 @@ tasas_sexo_server <- function(id) {
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) 
       
       datagraf <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) 
        
       
       if (filtro) {                                   

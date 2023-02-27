@@ -29,7 +29,7 @@ tasas_edad_server <- function(id) {
       names(datagraf1)[length(datagraf1)] <- paste0(valores_filter[1])
       
       datagraf <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))))%>% 
         select(-periodo,-indicador,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Grupo edad" = "GRUPO_EDAD", "Sexo")
       
       datagraf
@@ -64,7 +64,7 @@ tasas_edad_server <- function(id) {
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4)))) 
       
       datagraf <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) 
       
       
       if (filtro) {                                    

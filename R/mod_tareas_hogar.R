@@ -26,7 +26,7 @@ horas_no_remunerado_server <- function(id) {
       
       datagraf <- datagraf1%>% 
         
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) %>% 
         
         filter(Sexo %in% sexos) %>% 
         
@@ -70,7 +70,7 @@ horas_no_remunerado_server <- function(id) {
                                 levels = unique(paste0(TRIMESTRE, "°T ",ANO4))))
       
       tabla <-datagraf1 %>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) %>% 
         
         filter(Sexo %in% sexos) 
       

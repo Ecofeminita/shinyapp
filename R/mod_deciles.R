@@ -26,7 +26,7 @@ deciles_server <- function(id) {
       
       datagraf <- datagraf1%>% 
         
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))))%>% 
         
         select(-periodo, -Pob,"Año" = "ANO4", "Trimestre" = "TRIMESTRE", "Decil","Porcentaje de población femenina del decil")
       
@@ -48,7 +48,7 @@ deciles_server <- function(id) {
         
       
       datagraf2 <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) 
       
       grafico <- ggplot(datagraf2, aes(x=periodo, y=Decil, fill=Prop
                                        ,text=paste0('</br><b>Decíl: ',Decil,'</b></br>Población femenina del decil: ',Prop,'%', '</br>Período: ',periodo)

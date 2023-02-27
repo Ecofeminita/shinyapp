@@ -28,7 +28,7 @@ horas_remunerado_server <- function(id) {
       
       datagraf <- datagraf1%>% 
         
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) %>% 
         select(-periodo) %>% 
         
         filter(var_filtro %in% c(valores)) %>% 
@@ -88,7 +88,7 @@ horas_remunerado_server <- function(id) {
       
       
       t_unida <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) 
       
       grafico <- t_unida %>% 
         ggplot(.,aes(x = periodo, y = valor, color = Sexo, group = Grupo, alpha =resaltar, size = resaltar

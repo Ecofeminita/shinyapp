@@ -28,7 +28,7 @@ basesb <- get_microdata(year = 2020:2021,
                        )
 
 basesc <- get_microdata(year = 2022, 
-                        trimester = 1:2,
+                        trimester = 1:3,
                         type =  'individual',
                         vars = nombres_filtro_personas,
                         destfile = 'preprocesamiento/fuentes/bases_eph_c.rds'
@@ -130,7 +130,7 @@ basesb_hogar <- get_microdata(year = 2020:2021,
 
 
 basesc_hogar <- get_microdata(year = 2022, 
-                              trimester = 1:2,
+                              trimester = 1:3,
                               type =  'hogar',
                               vars = nombres_filtro_hogares,
                               destfile = 'preprocesamiento/fuentes/bases_eph_hogar_c.rds')

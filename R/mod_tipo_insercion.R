@@ -26,7 +26,7 @@ tipo_insercion_server <- function(id) {
       
       datagraf <- datagraf1%>% 
         
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))%>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))))%>% 
         mutate(ANO4 = as.character(round(as.numeric(ANO4),0)),
                TRIMESTRE = as.character(round(as.numeric(TRIMESTRE),0)))%>% 
         
@@ -54,7 +54,7 @@ tipo_insercion_server <- function(id) {
         mutate(JERARQUIA = factor(JERARQUIA, levels = c("Jefes","Dirección","Cuentapropia","Trabajadores Asalariados Registrados","Trabajadores Asalariados No Registrados"))) 
       
       datagraf2 <- datagraf1%>% 
-        filter(as.integer(periodo) %in% c(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i]):as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))) %>% 
+        filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f])))) %>% 
         filter(JERARQUIA %in% jerarquias)
         
         grafico <- ggplot(datagraf2, aes(x=periodo, y=tasa, fill=JERARQUIA
