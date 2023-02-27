@@ -109,8 +109,7 @@ brechas_desag_server <- function(id) {
      }
      
      tabla <- datagraf1%>% 
-       
-       filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])) : unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))))
+       filter(as.integer(periodo) %in% c(unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_i])):unique(as.integer(datagraf1$periodo[datagraf1$periodo == periodo_f]))))
      
      
      grafico <- ggplot(tabla, aes(periodo, brecha, color = var_facet, group = var_facet
