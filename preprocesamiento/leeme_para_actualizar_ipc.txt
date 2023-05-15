@@ -1,0 +1,14 @@
+Hola! cómo estás? Te cuento como actualizar la info para deflactar:
+
+1. Agregá manualmente los últimos datos de INDEC para el IPC en 
+preprocesamiento/fuentes/ipc_series_ctes_manual.xlsx", sheet = "indec_2016_100"
+
+2. Corré el script de R preprocesamiento/aux_ipc cambiando en las líneas 38/42 los datos del nuevo año base, por ejemplo:
+
+ano4_base <- 2022
+
+trimestre_base <- 4
+
+texto <- "4to trimestre 2022"
+
+3. Listo! Terminamos :)
