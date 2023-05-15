@@ -81,4 +81,11 @@ ipc_cambia_base <- bind_rows(aux_2016_2_3_f, ipc_cambia_base)
 ipc_cambia_base <- ipc_cambia_base %>% 
   mutate(nombre_trim_base = texto)
 
+ipc_cambia_base <- ipc_cambia_base %>% 
+  rename("ANO4" = "ano4",
+         "TRIMESTRE" = "trimestre",
+         "REGION" = "region") %>% 
+  select(-ipc_trim) %>% 
+  ungroup()
+
 write.xlsx(ipc_cambia_base, "preprocesamiento/fuentes/ipc_series_ctes.xlsx")
