@@ -134,7 +134,7 @@ ramas_server <- function(id) {
                                    ,text=paste0('</br><b>',`Rama de la ocupación`,'</b></br>Período: ',periodo,
                                                  '</br>Tasa de feminización: ',round(`Tasa de feminización`,2),'%')
       )) +
-        geom_line(size = 1, alpha = 0.75) +
+        geom_line(linewidth = 1, alpha = 0.75) +
         geom_point(size = 1) +
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),

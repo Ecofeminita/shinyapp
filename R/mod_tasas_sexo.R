@@ -77,7 +77,7 @@ tasas_sexo_server <- function(id) {
       grafico <- ggplot(datagraf, aes(periodo, valor, color = Sexo, group = grp
                                       ,text=paste0('</br>',Sexo,'</br>Tasa: ',valor,'%','</br>Brecha [(V-M)/V]: ',`Brecha (%)`, '%', '</br>Período: ',periodo)
                                       )) +
-        geom_line(size = 1, alpha = 0.75) +
+        geom_line(linewidth = 1, alpha = 0.75) +
         geom_point(size = 1) +
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),

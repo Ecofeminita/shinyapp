@@ -78,7 +78,7 @@ horas_no_remunerado_server <- function(id) {
         ggplot(.,aes(x = periodo, y = proporcion, fill = Sexo, group = Sexo
                      ,text=paste0('</br><b>',Sexo, '</b>', '</br>Proporción: ', proporcion, '%', '</br>Período: ',periodo
                      )))+
-        geom_col(size = 1, alpha = 0.75, postion = "stack")+ 
+        geom_col(size = 1, alpha = 0.75, position = "stack")+ 
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),
               legend.position = "none",

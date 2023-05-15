@@ -75,7 +75,7 @@ tasas_edad_server <- function(id) {
       grafico <- ggplot(datagraf, aes(periodo, valor, color = grp, group = grp, shape=GRUPO_EDAD
                                       ,text=paste0('</br><b>',Sexo,'</br>',GRUPO_EDAD,'</b></br>Tasa: ',valor,'%', '</br>Período: ',periodo)
       )) +
-        geom_line(size = 1, alpha = 0.75) +
+        geom_line(linewidth = 1, alpha = 0.75) +
         geom_point(size = 1) +
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),

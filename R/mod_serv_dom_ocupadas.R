@@ -53,7 +53,7 @@ serv_dom_ocupadas_server <- function(id) {
       grafico <- ggplot(datagraf, aes(periodo, proporcion,group=1
                                       ,text=paste0('</br>Porcentaje de ocupadas mujeres que se dedican al servicio doméstico: ',proporcion,'%', '</br>Período: ',periodo)
       )) +
-        geom_line(size = 1, alpha = 0.75, color = colores2[1]) +
+        geom_line(linewidth = 1, alpha = 0.75, color = colores2[1]) +
         geom_point(size = 1, color = colores2[1]) +
         theme_minimal() +
         theme(axis.text.x = element_text(angle = 35, vjust = 0.7),

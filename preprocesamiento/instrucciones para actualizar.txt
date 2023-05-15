@@ -1,0 +1,10 @@
+Hola! ¿cómo estás?
+Para actualizar la información que muestra la app con cada nueva encuesta:
+
+1. Actualizá la info de precios (ver leeme_para_actualizar_ipc).
+
+2. En levantar_EPH.R, agregá el nuevo trimestre.
+
+3. Corré prepare_data.
+
+4. Corré la app localmente para chequear que todo haya funcionado normalmente.
