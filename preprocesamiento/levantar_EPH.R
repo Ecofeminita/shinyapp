@@ -20,15 +20,15 @@ bases <- get_microdata(year = 2016:2019,
                        vars = nombres_filtro_personas,
                        destfile = 'preprocesamiento/fuentes/bases_eph.rds')
 
-basesb <- get_microdata(year = 2020:2021, 
+basesb <- get_microdata(year = 2020:2022, 
                        trimester = 1:4,
                        type =  'individual',
                        vars = nombres_filtro_personas,
                        destfile = 'preprocesamiento/fuentes/bases_eph_b.rds'
                        )
 
-basesc <- get_microdata(year = 2022, 
-                        trimester = 1:4,
+basesc <- get_microdata(year = 2023, 
+                        trimester = 1:2,
                         type =  'individual',
                         vars = nombres_filtro_personas,
                         destfile = 'preprocesamiento/fuentes/bases_eph_c.rds'
@@ -47,6 +47,9 @@ basesc <- get_microdata(year = 2022,
 bases <- bind_rows(bases,basesb,basesc)
 rm(basesb)
 rm(basesc)
+
+bases <- unnest(bases, cols = c("microdata"))
+
 # Función de limpieza de la base individual
 limpieza_individuos <- function(base){
   
@@ -122,15 +125,15 @@ bases_hogar <- get_microdata(year = 2016:2019,
                        vars = nombres_filtro_hogares,
                        destfile = 'preprocesamiento/fuentes/bases_eph_hogar.rds')
 
-basesb_hogar <- get_microdata(year = 2020:2021, 
+basesb_hogar <- get_microdata(year = 2020:2022, 
                         trimester = 1:4,
                         type =  'hogar',
                         vars = nombres_filtro_hogares,
                         destfile = 'preprocesamiento/fuentes/bases_eph_hogar_b.rds')
 
 
-basesc_hogar <- get_microdata(year = 2022, 
-                              trimester = 1:4,
+basesc_hogar <- get_microdata(year = 2023, 
+                              trimester = 1:2,
                               type =  'hogar',
                               vars = nombres_filtro_hogares,
                               destfile = 'preprocesamiento/fuentes/bases_eph_hogar_c.rds')
@@ -148,3 +151,5 @@ rm(basesc_hogar)
 rm(bases_hogar)
 
 rm(nombres_filtro_hogares,nombres_filtro_personas)
+
+base_hogar <- unnest(base_hogar, cols = c("microdata"))
