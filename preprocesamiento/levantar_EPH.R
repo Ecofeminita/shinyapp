@@ -28,7 +28,7 @@ basesb <- get_microdata(year = 2020:2022,
                        )
 
 basesc <- get_microdata(year = 2023, 
-                        trimester = 1:2,
+                        trimester = 1:3,
                         type =  'individual',
                         vars = nombres_filtro_personas,
                         destfile = 'preprocesamiento/fuentes/bases_eph_c.rds'
@@ -37,7 +37,7 @@ basesc <- get_microdata(year = 2023,
 
 
 #bases <- bases %>% unnest(cols = c(microdata)) %>% select(-wave) 
-#basesb <- basesb %>% unnest(cols = c(microdata)) %>% select(-wave) 
+#basesb <- basesb %>% unnest(cols = c(microdata)) 
 
 #bases <- bases %>% select(nombres_filtro_personas)
 #basesb <- basesb %>% select(nombres_filtro_personas)
@@ -48,7 +48,7 @@ bases <- bind_rows(bases,basesb,basesc)
 rm(basesb)
 rm(basesc)
 
-bases <- unnest(bases, cols = c("microdata"))
+#bases <- unnest(bases, cols = c("microdata"))
 
 # Función de limpieza de la base individual
 limpieza_individuos <- function(base){
@@ -138,11 +138,11 @@ basesc_hogar <- get_microdata(year = 2023,
                               vars = nombres_filtro_hogares,
                               destfile = 'preprocesamiento/fuentes/bases_eph_hogar_c.rds')
 
-#bases_hogar <- bases_hogar %>% unnest(cols = c(microdata)) %>% select(-wave) 
-#basesb_hogar <- basesb_hogar %>% unnest(cols = c(microdata)) %>% select(-wave)
-
-#bases_hogar <- bases_hogar %>% select(nombres_filtro_hogares)
-#basesb_hogar <- basesb_hogar %>% select(nombres_filtro_hogares)
+# bases_hogar <- bases_hogar %>% unnest(cols = c(microdata)) %>% select(-wave) 
+# basesb_hogar <- basesb_hogar %>% unnest(cols = c(microdata)) 
+# 
+# bases_hogar <- bases_hogar %>% select(nombres_filtro_hogares)
+# basesb_hogar <- basesb_hogar %>% select(nombres_filtro_hogares)
 
 base_hogar <- bind_rows(bases_hogar,basesb_hogar,basesc_hogar)
 
@@ -152,4 +152,4 @@ rm(bases_hogar)
 
 rm(nombres_filtro_hogares,nombres_filtro_personas)
 
-base_hogar <- unnest(base_hogar, cols = c("microdata"))
+#base_hogar <- unnest(base_hogar, cols = c("microdata"))
