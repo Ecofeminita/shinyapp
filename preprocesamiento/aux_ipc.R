@@ -37,9 +37,9 @@ write.xlsx(ipc_series_ctes, "preprocesamiento/ipc_aux.xlsx")
 
 ano4_base <- 2023
 
-trimestre_base <- 3
+trimestre_base <- 4
 
-texto <- "3er trimestre 2023"
+texto <- "4to trimestre 2023"
 
 ##construyo 2016 2 y 3 a mano (se publicaba únicamente GBA)
 

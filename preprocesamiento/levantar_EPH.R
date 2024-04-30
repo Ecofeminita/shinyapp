@@ -28,7 +28,7 @@ basesb <- get_microdata(year = 2020:2022,
                        )
 
 basesc <- get_microdata(year = 2023, 
-                        trimester = 1:3,
+                        trimester = 1:4,
                         type =  'individual',
                         vars = nombres_filtro_personas,
                         destfile = 'preprocesamiento/fuentes/bases_eph_c.rds'
@@ -36,12 +36,13 @@ basesc <- get_microdata(year = 2023,
 
 
 
-#bases <- bases %>% unnest(cols = c(microdata)) %>% select(-wave) 
-#basesb <- basesb %>% unnest(cols = c(microdata)) 
+bases <- bases %>% unnest(cols = c(microdata)) %>% select(-wave)
+basesb <- basesb %>% unnest(cols = c(microdata))
+basesc <- basesc %>% unnest(cols = c(microdata))
 
-#bases <- bases %>% select(nombres_filtro_personas)
-#basesb <- basesb %>% select(nombres_filtro_personas)
-
+bases <- bases %>% select(nombres_filtro_personas)
+basesb <- basesb %>% select(nombres_filtro_personas)
+basesc <- basesc %>% select(nombres_filtro_personas)
 
 
 bases <- bind_rows(bases,basesb,basesc)
@@ -95,6 +96,7 @@ limpieza_individuos <- function(base){
 
 bases <- limpieza_individuos(bases)
 
+bases <- bases %>% filter(!is.na(ANO4))
 
 ###Para más adelante
 
@@ -133,16 +135,18 @@ basesb_hogar <- get_microdata(year = 2020:2022,
 
 
 basesc_hogar <- get_microdata(year = 2023, 
-                              trimester = 1:2,
+                              trimester = 1:4,
                               type =  'hogar',
                               vars = nombres_filtro_hogares,
                               destfile = 'preprocesamiento/fuentes/bases_eph_hogar_c.rds')
 
-# bases_hogar <- bases_hogar %>% unnest(cols = c(microdata)) %>% select(-wave) 
-# basesb_hogar <- basesb_hogar %>% unnest(cols = c(microdata)) 
-# 
-# bases_hogar <- bases_hogar %>% select(nombres_filtro_hogares)
-# basesb_hogar <- basesb_hogar %>% select(nombres_filtro_hogares)
+bases_hogar <- bases_hogar %>% unnest(cols = c(microdata)) %>% select(-wave)
+basesb_hogar <- basesb_hogar %>% unnest(cols = c(microdata))
+basesc_hogar <- basesc_hogar %>% unnest(cols = c(microdata))
+
+bases_hogar <- bases_hogar %>% select(nombres_filtro_hogares)
+basesb_hogar <- basesb_hogar %>% select(nombres_filtro_hogares)
+basesc_hogar <- basesc_hogar %>% select(nombres_filtro_hogares)
 
 base_hogar <- bind_rows(bases_hogar,basesb_hogar,basesc_hogar)
 
@@ -153,3 +157,5 @@ rm(bases_hogar)
 rm(nombres_filtro_hogares,nombres_filtro_personas)
 
 #base_hogar <- unnest(base_hogar, cols = c("microdata"))
+
+base_hogar <- base_hogar %>% filter(!is.na(ANO4))
