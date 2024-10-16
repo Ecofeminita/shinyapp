@@ -20,15 +20,15 @@ bases <- get_microdata(year = 2016:2019,
                        vars = nombres_filtro_personas,
                        destfile = 'preprocesamiento/fuentes/bases_eph.rds')
 
-basesb <- get_microdata(year = 2020:2022, 
+basesb <- get_microdata(year = 2020:2023, 
                        trimester = 1:4,
                        type =  'individual',
                        vars = nombres_filtro_personas,
                        destfile = 'preprocesamiento/fuentes/bases_eph_b.rds'
                        )
 
-basesc <- get_microdata(year = 2023, 
-                        trimester = 1:4,
+basesc <- get_microdata(year = 2024, 
+                        trimester = 1,
                         type =  'individual',
                         vars = nombres_filtro_personas,
                         destfile = 'preprocesamiento/fuentes/bases_eph_c.rds'
@@ -127,15 +127,15 @@ bases_hogar <- get_microdata(year = 2016:2019,
                        vars = nombres_filtro_hogares,
                        destfile = 'preprocesamiento/fuentes/bases_eph_hogar.rds')
 
-basesb_hogar <- get_microdata(year = 2020:2022, 
+basesb_hogar <- get_microdata(year = 2020:2023, 
                         trimester = 1:4,
                         type =  'hogar',
                         vars = nombres_filtro_hogares,
                         destfile = 'preprocesamiento/fuentes/bases_eph_hogar_b.rds')
 
 
-basesc_hogar <- get_microdata(year = 2023, 
-                              trimester = 1:4,
+basesc_hogar <- get_microdata(year = 2024, 
+                              trimester = 1,
                               type =  'hogar',
                               vars = nombres_filtro_hogares,
                               destfile = 'preprocesamiento/fuentes/bases_eph_hogar_c.rds')
