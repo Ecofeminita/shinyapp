@@ -37,9 +37,9 @@ write.xlsx(ipc_series_ctes, "preprocesamiento/ipc_aux.xlsx")
 
 ano4_base <- 2024
 
-trimestre_base <- 1
+trimestre_base <- 2
 
-texto <- "1er trimestre 2024"
+texto <- "2do trimestre 2024"
 
 ##construyo 2016 2 y 3 a mano (se publicaba únicamente GBA)
 
