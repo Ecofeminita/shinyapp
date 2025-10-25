@@ -20,7 +20,7 @@ metodologia_ui <- tabPanel(title = 'Metodología',
                           style = "color:black")),
          
          tags$div(style="display: inline-flex;", id = "codigo_git",
-                   tags$p('La app se realizó utilizando el lenguaje de programación R. Para les curioses, todo el código se encuentra disponible para su ',
+                   tags$p('La app se realizó utilizando el lenguaje de programación R. Para les curioses, todo el código se encuentra disponible para su',
                           style = "color:black"),
                    HTML('&nbsp;'),
                    tags$a(" descarga.", id = "descarga_cod",

@@ -4,6 +4,7 @@ library(shinycssloaders)
 library(glue)
 library(DT)
 library(plotly)
+library(scales)
 library(gridExtra)
 library(shinyjs)
 library(shinydashboard)
@@ -11,6 +12,7 @@ library(shinyalert)
 
 
 ui <- fluidPage( 
+    shinyjs::useShinyjs(),
     theme = shinytheme("journal"),
     
     #define fakeClick for buttons

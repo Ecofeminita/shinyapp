@@ -1,5 +1,6 @@
 library(tidyverse)
 library(plotly)
+library(shinyjs) # hidden (oculta elementos del UI)
 
 options(scipen = 9999)
 
@@ -218,8 +219,10 @@ brechas_desag_server <- function(id) {
     
     
     
-    generar_titulo <- function(nombre,facet_var, valores,periodo_i, periodo_f){
-      titulo <- paste0('</br>',"<b>","<font size='+2'>","Brechas de ", nombre , " por ", facet_var,".","</font>", '</br>',"Desde ", periodo_i, " hasta ", periodo_f,"</b>")
+    # generar_titulo <- function(nombre,facet_var, valores,periodo_i, periodo_f){
+      # titulo <- paste0('</br>',"<b>","<font size='+2'>","Brechas de ", nombre , " por ", facet_var,".","</font>", '</br>',"Desde ", periodo_i, " hasta ", periodo_f,"</b>")
+    generar_titulo <- function(nombre,facet_var, valores,periodo_i, periodo_f, valuacion){
+      titulo <- paste0('</br>',"<b>","<font size='+2'>","Brechas de ", nombre , " por ", facet_var,".","</font>", '</br>',"Desde ", periodo_i, " hasta ", periodo_f,"</b>", "</br>",valuacion)
       titulo
     }
     
@@ -467,9 +470,9 @@ brechas_desag_server <- function(id) {
     
    
     
-    output$titulo0 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
-    output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
-    output$titulo2 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2])})
+    output$titulo0 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2], valuacion=input$precios_id)})
+    output$titulo1 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2], valuacion=input$precios_id)})
+    output$titulo2 <- renderText({generar_titulo(input$ingreso_id,input$var_desag_id, valores = input$valores_id,input$id_periodo[1],input$id_periodo[2], valuacion=input$precios_id)})
     
     output$downloadTable <- downloadHandler(
       
@@ -544,10 +547,10 @@ brechas_desag_ui <- function(id) {
                            choices = unique(nombres_brechas_desag$nombre),
                            selected = unique(nombres_brechas_desag$nombre)[1],
                            multiple = FALSE),
-               selectInput(ns('precios_id'),label = 'Valuación:',
+               hidden(selectInput(ns('precios_id'),label = 'Valuación:',
                            choices = c("Precios corrientes", paste0("Precios constantes (",nombre_trimestre_base,")")),
-                           selected = paste0("Precios constantes (",nombre_trimestre_base,")"),
-                           multiple = FALSE),
+                           selected = "Precios corrientes",
+                           multiple = FALSE)),
                selectInput(ns('var_desag_id'),label = 'Elegir desagregación:',
                            choices = unique(nombres_brechas_desag$variable_desag_nombre),
                            selected = NULL,
@@ -565,9 +568,10 @@ brechas_desag_ui <- function(id) {
                h4("Sobre el indicador"), 
                h5(textOutput(ns('metadata'))), 
                hr(),
-               h5(textOutput(ns('metadata_desag'))), 
-               hr(),
-               h5(textOutput(ns('metadata_ingresos')))
+               h5(textOutput(ns('metadata_desag')))
+               # , 
+               # hr(),
+               # h5(textOutput(ns('metadata_ingresos')))
                
              ),
              mainPanel( tabsetPanel(
@@ -616,46 +620,46 @@ brechas_desag_ui <- function(id) {
                ),
                
                
-               tabPanel("Gráfico-Desagregado",
-                        value = "g_br_des",
-                        
-                        br(),
-                        box(width = NULL, htmlOutput(ns('titulo1'))), 
-                        br(),
-                       
-                        box(width = NULL, htmlOutput(ns('st1'))), 
-                        br(),
-                        plotlyOutput(ns('plot1'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
-                        br(),
-                        box(width = NULL, htmlOutput(ns('st2'))), 
-                        br(),
-                        plotlyOutput(ns('plot2'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
-                        br(),
-                        box(width = NULL, htmlOutput(ns('st3'))), 
-                        br(),
-                        plotlyOutput(ns('plot3'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
-                        br(),
-                        box(width = NULL, htmlOutput(ns('st4'))), 
-                        br(),
-                        plotlyOutput(ns('plot4'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
-                        br(),
-                        
-                        
-                        tags$div( style="display: inline-flex;",  id = ns("fuentes2"),
-                                  tags$p(texto_fuentes), 
-                                  HTML('&nbsp;'),
-                                  tags$a("Metodología", id = ns("f_metod"),
-                                         
-                                         
-                                         onclick="fakeClick('Metodología')"#,
-                                         
-                                  ),
-                        )
-                        
-                        
-                        
-                        
-               ),
+               # tabPanel("Gráfico-Desagregado",
+               #          value = "g_br_des",
+               #          
+               #          br(),
+               #          box(width = NULL, htmlOutput(ns('titulo1'))), 
+               #          br(),
+               #         
+               #          box(width = NULL, htmlOutput(ns('st1'))), 
+               #          br(),
+               #          plotlyOutput(ns('plot1'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
+               #          br(),
+               #          box(width = NULL, htmlOutput(ns('st2'))), 
+               #          br(),
+               #          plotlyOutput(ns('plot2'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
+               #          br(),
+               #          box(width = NULL, htmlOutput(ns('st3'))), 
+               #          br(),
+               #          plotlyOutput(ns('plot3'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
+               #          br(),
+               #          box(width = NULL, htmlOutput(ns('st4'))), 
+               #          br(),
+               #          plotlyOutput(ns('plot4'), height = 400)%>% withSpinner(type = 5, color ="#e5616e"),
+               #          br(),
+               #          
+               #          
+               #          tags$div( style="display: inline-flex;",  id = ns("fuentes2"),
+               #                    tags$p(texto_fuentes), 
+               #                    HTML('&nbsp;'),
+               #                    tags$a("Metodología", id = ns("f_metod"),
+               #                           
+               #                           
+               #                           onclick="fakeClick('Metodología')"#,
+               #                           
+               #                    ),
+               #          )
+               #          
+               #          
+               #          
+               #          
+               # ),
                
                tabPanel("Tabla",
                         value = "t_br_des",

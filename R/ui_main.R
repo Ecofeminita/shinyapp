@@ -114,9 +114,6 @@ about_ui <- tabPanel(title = 'Inicio',
                                                                class="btn btn-primary btn-s")
                                                )
                                      )
-                            #  )
-                             
-                              
                        )
                        )
                      ),
@@ -201,8 +198,6 @@ about_ui <- tabPanel(title = 'Inicio',
                                                )
                                      )
                               )
-                      # )
-                       
                        )
                       
                      )

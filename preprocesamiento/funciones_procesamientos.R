@@ -190,23 +190,22 @@ brecha_ITI <- function(base){
   tabla <- base %>% 
     filter(P47T > 0) %>% 
     group_by(ANO4, TRIMESTRE, Sexo) %>% 
-    summarise(Media.ITI = round(weighted.mean(P47T, PONDII), 2)) %>% 
+    summarise(Media.ITI = round(weighted.mean(P47T, PONDII/sum(PONDII)), 2)) %>% 
     spread(., Sexo, Media.ITI) %>% 
     mutate(brecha.ITI_corrientes = round(((Varones-Mujeres)/Varones)*100, 1)) %>% 
     select(ANO4, TRIMESTRE, media.mujeres = Mujeres, media.varones = Varones, brecha.ITI_corrientes)
   
   tabla_reg <- base %>% 
     filter(P47T > 0) %>% 
-    group_by(ANO4, TRIMESTRE, Sexo, REGION) %>% 
-    summarise(Media.ITI = round(weighted.mean(P47T, PONDII), 2)) %>% 
     left_join(.,ipc_series_ctes, by = c("ANO4", "TRIMESTRE", "REGION")) %>% 
-    mutate(cte_Media.ITI = Media.ITI*inflador) %>% 
+    group_by(ANO4, TRIMESTRE, Sexo, REGION) %>% 
+    mutate(i_inflado = P47T*inflador) %>% 
     group_by(ANO4, TRIMESTRE, Sexo) %>%
-    summarise(Media.ITI = mean(cte_Media.ITI, na.rm = T)) %>% 
+    summarise(Media.ITI = round(weighted.mean(i_inflado, PONDII), 2)) %>% 
     spread(., Sexo, Media.ITI) %>% 
     mutate(brecha.ITI = round(((Varones-Mujeres)/Varones)*100, 1)) %>% 
     select(ANO4, TRIMESTRE, cte_media.mujeres = Mujeres, cte_media.varones = Varones,brecha.ITI)
-  
+
   tabla <- tabla %>% 
     left_join(.,tabla_reg, by = c("ANO4","TRIMESTRE"))
   
